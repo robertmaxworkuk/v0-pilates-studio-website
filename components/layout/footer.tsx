@@ -1,3 +1,5 @@
+'use client'
+
 import { studioInfo } from '@/lib/data/studio'
 import { formatPhone } from '@/lib/format'
 

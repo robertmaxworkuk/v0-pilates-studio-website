@@ -1,3 +1,5 @@
+'use client'
+
 import { CTAButton } from '@/components/shared/cta-button'
 import { ImagePlaceholder } from '@/components/shared/image-placeholder'
 
