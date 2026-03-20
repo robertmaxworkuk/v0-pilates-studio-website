@@ -1,28 +1,29 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Cormorant_Garamond } from 'next/font/google'
+import { Plus_Jakarta_Sans, Playfair_Display } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
+import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
-const inter = Inter({ 
-  subsets: ['latin', 'cyrillic'],
-  variable: '--font-inter',
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ['latin', 'cyrillic-ext'],
+  variable: '--font-jakarta',
   display: 'swap',
 })
 
-const cormorant = Cormorant_Garamond({ 
+const playfair = Playfair_Display({ 
   subsets: ['latin', 'cyrillic'],
-  weight: ['400', '500', '600'],
-  variable: '--font-cormorant',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-playfair',
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'Студия пилатеса Ксении | Персональные тренировки в Москве',
+  title: 'Pilatta | Студия пилатеса в Москве',
   description: 'Персональные и групповые занятия пилатесом с сертифицированным тренером. 15 лет опыта, индивидуальный подход. Запишитесь на пробное занятие.',
-  keywords: ['пилатес', 'студия пилатеса', 'персональные тренировки', 'групповые занятия', 'Москва'],
-  authors: [{ name: 'Ксения' }],
+  keywords: ['пилатес', 'Pilatta', 'студия пилатеса', 'персональные тренировки', 'групповые занятия', 'Москва'],
+  authors: [{ name: 'Pilatta' }],
   openGraph: {
-    title: 'Студия пилатеса Ксении',
+    title: 'Pilatta | Студия пилатеса',
     description: 'Персональные и групповые занятия пилатесом с сертифицированным тренером',
     type: 'website',
     locale: 'ru_RU',
@@ -32,7 +33,10 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#C9A98C',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#faf9f7' },
+    { media: '(prefers-color-scheme: dark)', color: '#1a1a1f' },
+  ],
 }
 
 export default function RootLayout({
@@ -41,9 +45,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="ru" className={`${inter.variable} ${cormorant.variable}`}>
+    <html lang="ru" className={`${jakarta.variable} ${playfair.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Analytics />
       </body>
     </html>

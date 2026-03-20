@@ -2,25 +2,27 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { ArrowRight } from 'lucide-react'
 
 interface CTAButtonProps {
   variant?: 'default' | 'outline' | 'ghost'
   size?: 'default' | 'lg' | 'sm'
   className?: string
   children?: React.ReactNode
+  showArrow?: boolean
 }
 
 export function CTAButton({
   variant = 'default',
   size = 'lg',
   className,
-  children = 'Записаться на пробное занятие',
+  children = 'Записаться на пробное',
+  showArrow = true,
 }: CTAButtonProps) {
   const handleClick = () => {
     const contactSection = document.getElementById('contact')
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' })
-      // Focus on first input after scroll
       setTimeout(() => {
         const firstInput = contactSection.querySelector('input')
         if (firstInput) {
@@ -36,12 +38,15 @@ export function CTAButton({
       size={size}
       onClick={handleClick}
       className={cn(
-        'font-medium transition-all duration-300',
-        variant === 'default' && 'hover:opacity-90 hover:scale-[1.02]',
+        'group font-semibold transition-all duration-300 gap-2',
+        variant === 'default' && 'hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02]',
         className
       )}
     >
-      {children}
+      <span>{children}</span>
+      {showArrow && (
+        <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+      )}
     </Button>
   )
 }
