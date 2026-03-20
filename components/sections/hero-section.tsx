@@ -64,11 +64,11 @@ export function HeroSection() {
             </p>
 
             {/* CTA */}
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-              <CTAButton size="lg" className="shadow-lg shadow-primary/25" />
+            <div className="mt-8 flex items-center gap-4 flex-wrap">
+              <CTAButton size="lg" className="shadow-lg shadow-primary/25 shrink-0" />
               <a
                 href="#about"
-                className="group inline-flex items-center justify-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+                className="group inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground shrink-0"
                 onClick={(e) => {
                   e.preventDefault()
                   document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
