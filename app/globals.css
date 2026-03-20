@@ -5,47 +5,75 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  /* Pilates Studio - Warm Muted Palette */
-  --background: oklch(0.98 0.005 75);      /* Ivory cream */
-  --foreground: oklch(0.30 0.02 50);       /* Warm charcoal */
-  --card: oklch(1 0 0);                     /* Pure white cards */
-  --card-foreground: oklch(0.30 0.02 50);
+  /* Pilatta Studio - Elegant Warm Palette */
+  --background: oklch(0.985 0.003 75);
+  --foreground: oklch(0.18 0.02 50);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 50);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.30 0.02 50);
-  --primary: oklch(0.72 0.06 55);          /* Taupe/clay - CTA */
-  --primary-foreground: oklch(0.98 0.005 75);
-  --secondary: oklch(0.94 0.01 70);        /* Light warm gray */
-  --secondary-foreground: oklch(0.30 0.02 50);
-  --muted: oklch(0.96 0.008 70);           /* Very light warm */
-  --muted-foreground: oklch(0.55 0.02 50); /* Muted text */
-  --accent: oklch(0.80 0.05 20);           /* Dusty rose accent */
-  --accent-foreground: oklch(0.30 0.02 50);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.98 0.005 75);
-  --border: oklch(0.92 0.01 70);
-  --input: oklch(0.92 0.01 70);
-  --ring: oklch(0.72 0.06 55);
-  --chart-1: oklch(0.72 0.06 55);
-  --chart-2: oklch(0.80 0.05 20);
-  --chart-3: oklch(0.65 0.04 45);
-  --chart-4: oklch(0.75 0.03 80);
-  --chart-5: oklch(0.60 0.05 30);
-  --radius: 0.5rem;
+  --popover-foreground: oklch(0.18 0.02 50);
+  --primary: oklch(0.55 0.12 35);
+  --primary-foreground: oklch(0.98 0.003 75);
+  --secondary: oklch(0.95 0.008 70);
+  --secondary-foreground: oklch(0.18 0.02 50);
+  --muted: oklch(0.96 0.006 70);
+  --muted-foreground: oklch(0.45 0.02 50);
+  --accent: oklch(0.75 0.08 25);
+  --accent-foreground: oklch(0.18 0.02 50);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.98 0.003 75);
+  --border: oklch(0.90 0.01 70);
+  --input: oklch(0.90 0.01 70);
+  --ring: oklch(0.55 0.12 35);
+  --chart-1: oklch(0.55 0.12 35);
+  --chart-2: oklch(0.75 0.08 25);
+  --chart-3: oklch(0.65 0.06 45);
+  --chart-4: oklch(0.70 0.04 80);
+  --chart-5: oklch(0.58 0.08 30);
+  --radius: 0.75rem;
   --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.30 0.02 50);
-  --sidebar-primary: oklch(0.72 0.06 55);
-  --sidebar-primary-foreground: oklch(0.98 0.005 75);
-  --sidebar-accent: oklch(0.94 0.01 70);
-  --sidebar-accent-foreground: oklch(0.30 0.02 50);
-  --sidebar-border: oklch(0.92 0.01 70);
-  --sidebar-ring: oklch(0.72 0.06 55);
+  --sidebar-foreground: oklch(0.18 0.02 50);
+  --sidebar-primary: oklch(0.55 0.12 35);
+  --sidebar-primary-foreground: oklch(0.98 0.003 75);
+  --sidebar-accent: oklch(0.95 0.008 70);
+  --sidebar-accent-foreground: oklch(0.18 0.02 50);
+  --sidebar-border: oklch(0.90 0.01 70);
+  --sidebar-ring: oklch(0.55 0.12 35);
 }
 
-/* Dark mode not used for this project - keeping light theme only */
+.dark {
+  --background: oklch(0.14 0.01 260);
+  --foreground: oklch(0.95 0.005 75);
+  --card: oklch(0.18 0.01 260);
+  --card-foreground: oklch(0.95 0.005 75);
+  --popover: oklch(0.18 0.01 260);
+  --popover-foreground: oklch(0.95 0.005 75);
+  --primary: oklch(0.72 0.10 35);
+  --primary-foreground: oklch(0.14 0.01 260);
+  --secondary: oklch(0.22 0.01 260);
+  --secondary-foreground: oklch(0.95 0.005 75);
+  --muted: oklch(0.22 0.008 260);
+  --muted-foreground: oklch(0.65 0.01 75);
+  --accent: oklch(0.65 0.08 25);
+  --accent-foreground: oklch(0.95 0.005 75);
+  --destructive: oklch(0.55 0.22 25);
+  --destructive-foreground: oklch(0.95 0.005 75);
+  --border: oklch(0.28 0.01 260);
+  --input: oklch(0.28 0.01 260);
+  --ring: oklch(0.72 0.10 35);
+  --sidebar: oklch(0.16 0.01 260);
+  --sidebar-foreground: oklch(0.95 0.005 75);
+  --sidebar-primary: oklch(0.72 0.10 35);
+  --sidebar-primary-foreground: oklch(0.14 0.01 260);
+  --sidebar-accent: oklch(0.22 0.01 260);
+  --sidebar-accent-foreground: oklch(0.95 0.005 75);
+  --sidebar-border: oklch(0.28 0.01 260);
+  --sidebar-ring: oklch(0.72 0.10 35);
+}
 
 @theme inline {
-  --font-sans: 'Inter', 'Inter Fallback', system-ui, sans-serif;
-  --font-serif: 'Cormorant Garamond', 'Georgia', serif;
+  --font-sans: 'Plus Jakarta Sans', 'Plus Jakarta Sans Fallback', system-ui, sans-serif;
+  --font-serif: 'Playfair Display', 'Georgia', serif;
   --font-mono: 'Geist Mono', 'Geist Mono Fallback';
   --color-background: var(--background);
   --color-foreground: var(--foreground);

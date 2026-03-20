@@ -23,7 +23,7 @@ export interface StudioInfo {
 }
 
 export const studioInfo: StudioInfo = {
-  name: 'Студия пилатеса Ксении',
+  name: 'Pilatta',
   address: 'ул. Примерная, д. 123, офис 45',
   metro: 'м. Центральная',
   phone: '+79001234567',

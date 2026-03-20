@@ -22,8 +22,13 @@ export function Footer() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {/* Brand */}
             <div className="lg:col-span-2">
-              <h3 className="font-serif text-2xl font-medium">Студия Ксении</h3>
-              <p className="mt-4 max-w-md text-background/70">
+              <div className="flex items-center gap-2 mb-4">
+                <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
+                  <span className="font-serif text-xl font-bold text-primary-foreground">P</span>
+                </div>
+                <span className="font-serif text-2xl font-semibold">Pilatta</span>
+              </div>
+              <p className="max-w-md text-background/70 leading-relaxed">
                 Персональные и групповые занятия пилатесом для здоровья, 
                 красоты и гармонии тела и духа.
               </p>
@@ -31,7 +36,7 @@ export function Footer() {
 
             {/* Navigation */}
             <div>
-              <h4 className="font-medium mb-4">Навигация</h4>
+              <h4 className="font-semibold mb-4">Навигация</h4>
               <ul className="space-y-2">
                 {navLinks.map((link) => (
                   <li key={link.href}>
@@ -48,7 +53,7 @@ export function Footer() {
 
             {/* Contact */}
             <div>
-              <h4 className="font-medium mb-4">Контакты</h4>
+              <h4 className="font-semibold mb-4">Контакты</h4>
               <ul className="space-y-2 text-background/70">
                 <li>
                   <a 
@@ -78,7 +83,7 @@ export function Footer() {
         <div className="border-t border-background/10 py-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-sm text-background/50">
-              {currentYear} Студия пилатеса Ксении. Все права защищены.
+              {currentYear} Pilatta. Все права защищены.
             </p>
             <div className="flex gap-6">
               {studioInfo.socialLinks.map((link) => (

@@ -6,25 +6,27 @@ import { SectionHeading } from '@/components/shared/section-heading'
 import { CTAButton } from '@/components/shared/cta-button'
 import { individualPricing, groupPricing, type PricingPlan } from '@/lib/data/pricing'
 import { formatPrice } from '@/lib/format'
-import { Check } from 'lucide-react'
+import { Check, Sparkles, Star } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 type PricingType = 'individual' | 'group'
 
-function PricingCard({ plan }: { plan: PricingPlan }) {
+function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-lg border bg-card p-6 transition-all duration-300',
+        'relative flex flex-col rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
         plan.isPopular 
-          ? 'border-primary shadow-lg scale-[1.02]' 
-          : 'border-border hover:border-primary/30 hover:shadow-md'
+          ? 'border-primary shadow-2xl shadow-primary/10 scale-[1.02] z-10' 
+          : 'border-border/50 hover:border-primary/30 hover:shadow-xl'
       )}
+      style={{ animationDelay: `${index * 100}ms` }}
     >
       {/* Popular badge */}
       {plan.isPopular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="rounded-full bg-primary px-4 py-1 text-xs font-medium text-primary-foreground">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground shadow-lg shadow-primary/25">
+            <Star className="h-3.5 w-3.5 fill-current" />
             Популярный выбор
           </span>
         </div>
@@ -32,41 +34,46 @@ function PricingCard({ plan }: { plan: PricingPlan }) {
 
       {/* Trial badge */}
       {plan.isTrial && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="rounded-full bg-accent px-4 py-1 text-xs font-medium text-accent-foreground">
+        <div className="absolute -top-4 left-1/2 -translate-x-1/2">
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-accent-foreground">
+            <Sparkles className="h-3.5 w-3.5" />
             Первое занятие
           </span>
         </div>
       )}
 
-      <div className="mb-4 pt-2">
-        <h3 className="font-serif text-lg font-medium text-foreground">
+      <div className="mb-6 pt-2">
+        <h3 className="font-serif text-xl font-semibold text-foreground">
           {plan.name}
         </h3>
         {plan.sessions > 1 && plan.sessions < 999 && (
-          <p className="text-sm text-muted-foreground">
-            {plan.sessions} {plan.sessions === 8 ? 'занятий' : 'занятий'}
+          <p className="text-sm text-muted-foreground mt-1">
+            {plan.sessions} занятий
           </p>
         )}
       </div>
 
       {/* Price */}
       <div className="mb-6">
-        <span className="font-serif text-3xl font-medium text-foreground">
-          {formatPrice(plan.price)}
-        </span>
+        <div className="flex items-baseline gap-1">
+          <span className="font-serif text-4xl font-semibold text-foreground">
+            {formatPrice(plan.price)}
+          </span>
+        </div>
         {plan.perSession && (
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground">
             {formatPrice(plan.perSession)} за занятие
           </p>
         )}
       </div>
 
       {/* Features */}
-      <ul className="mb-6 flex-1 space-y-3">
-        {plan.features.map((feature, index) => (
-          <li key={index} className="flex items-start gap-2 text-sm text-muted-foreground">
-            <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
+      <ul className="mb-8 flex-1 space-y-3">
+        {plan.features.map((feature, featureIndex) => (
+          <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
+            <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+              <Check className="h-3 w-3 text-primary" />
+            </div>
             {feature}
           </li>
         ))}
@@ -74,7 +81,7 @@ function PricingCard({ plan }: { plan: PricingPlan }) {
 
       {/* Validity */}
       <p className="mb-4 text-xs text-muted-foreground">
-        Срок действия: {plan.validDays} {plan.validDays === 30 ? 'дней' : plan.validDays === 14 ? 'дней' : 'дней'}
+        Срок действия: {plan.validDays} дней
       </p>
 
       {/* CTA */}
@@ -82,6 +89,7 @@ function PricingCard({ plan }: { plan: PricingPlan }) {
         variant={plan.isPopular || plan.isTrial ? 'default' : 'outline'} 
         size="default"
         className="w-full"
+        showArrow={false}
       >
         {plan.isTrial ? 'Записаться на пробное' : 'Выбрать'}
       </CTAButton>
@@ -102,13 +110,13 @@ export function PricingSection() {
       />
 
       {/* Type switcher */}
-      <div className="mx-auto mb-12 flex max-w-md rounded-lg bg-card p-1 shadow-sm">
+      <div className="mx-auto mb-12 flex max-w-md rounded-2xl bg-card p-1.5 shadow-sm border border-border/50">
         <button
           onClick={() => setActiveType('individual')}
           className={cn(
-            'flex-1 rounded-md px-4 py-2.5 text-sm font-medium transition-all',
+            'flex-1 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300',
             activeType === 'individual'
-              ? 'bg-primary text-primary-foreground shadow-sm'
+              ? 'bg-primary text-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'
           )}
         >
@@ -117,9 +125,9 @@ export function PricingSection() {
         <button
           onClick={() => setActiveType('group')}
           className={cn(
-            'flex-1 rounded-md px-4 py-2.5 text-sm font-medium transition-all',
+            'flex-1 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300',
             activeType === 'group'
-              ? 'bg-primary text-primary-foreground shadow-sm'
+              ? 'bg-primary text-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'
           )}
         >
@@ -129,13 +137,13 @@ export function PricingSection() {
 
       {/* Pricing cards */}
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {currentPricing.map((plan) => (
-          <PricingCard key={plan.id} plan={plan} />
+        {currentPricing.map((plan, index) => (
+          <PricingCard key={plan.id} plan={plan} index={index} />
         ))}
       </div>
 
       {/* Note */}
-      <p className="mt-8 text-center text-sm text-muted-foreground">
+      <p className="mt-10 text-center text-sm text-muted-foreground">
         Оплата производится наличными или переводом. Возможна рассрочка на абонементы.
       </p>
     </SectionWrapper>
