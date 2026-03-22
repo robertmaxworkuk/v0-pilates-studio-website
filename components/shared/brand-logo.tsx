@@ -8,7 +8,7 @@ interface BrandLogoProps {
 
 export function BrandLogo({ className, compact = false, light = false }: BrandLogoProps) {
   return (
-    <span className={cn('inline-flex items-center', compact ? 'gap-2' : 'gap-3', className)}>
+    <span className={cn('inline-flex items-center', compact ? 'gap-2' : 'gap-2.5', className)}>
       <span
         className={cn(
           'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[1.4rem] border shadow-lg transition-transform duration-300 group-hover:scale-[1.03]',
@@ -24,12 +24,12 @@ export function BrandLogo({ className, compact = false, light = false }: BrandLo
 
       <span
         className={cn(
-          'font-sans font-semibold tracking-[0.18em] uppercase leading-none',
-          compact ? 'text-[0.95rem]' : 'text-[1.05rem] md:text-[1.2rem]',
+          'inline-block font-serif font-semibold leading-none tracking-[0.04em]',
+          compact ? 'text-[1.05rem]' : 'text-[1.28rem] md:text-[1.42rem]',
           light ? 'text-white' : 'text-foreground'
         )}
       >
-        <span className="-ml-1 inline-block">ilatta</span>
+        Pilatta
       </span>
     </span>
   )
