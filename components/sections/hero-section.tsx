@@ -56,7 +56,7 @@ export function HeroSection() {
         <div ref={contentRef} className="w-full max-w-2xl py-2 md:py-32">
           <div className="rounded-[2rem] border border-border/60 bg-card/88 p-5 shadow-2xl backdrop-blur-xl sm:p-6 md:rounded-2xl md:border-border/50 md:bg-card/80 md:p-12">
             <div className="md:hidden">
-              <div className="relative overflow-hidden rounded-[1.5rem] border border-border/50 bg-muted shadow-lg">
+              <div className="relative overflow-hidden rounded-[1.75rem] border border-border/50 bg-muted shadow-lg">
                 <ImagePlaceholder
                   src="/images/hero.jpg"
                   alt="Pilatta студия пилатеса"
@@ -66,26 +66,52 @@ export function HeroSection() {
                   width={720}
                   height={960}
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background/75 via-transparent to-transparent" />
-                <div className="absolute inset-x-4 bottom-4 rounded-2xl border border-white/15 bg-background/75 px-4 py-3 backdrop-blur-md">
-                  <p className="text-sm font-medium text-foreground">Студия пилатеса в спокойной приватной атмосфере</p>
-                  <p className="mt-1 text-xs text-muted-foreground">Комфортный темп, бережная нагрузка и фокус на результате.</p>
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-background via-background/22 to-transparent" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-background/12 via-transparent to-background/18" />
+
+                <div className="absolute inset-x-4 top-4">
+                  <div className="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-background/72 px-4 py-2 shadow-lg backdrop-blur-md">
+                    <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
+                    <span className="truncate text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">
+                      Персональные тренировки
+                    </span>
+                  </div>
+                </div>
+
+                <div className="absolute inset-x-4 bottom-28 space-y-3">
+                  <h1 className="max-w-[11ch] font-serif text-[2rem] font-semibold leading-[1.02] tracking-tight text-white [text-shadow:0_10px_30px_rgba(0,0,0,0.45)]">
+                    Откройте силу <span className="text-primary [text-shadow:0_0_24px_rgba(0,0,0,0.35)]">осознанного</span> движения
+                  </h1>
+                  <div className="max-w-[22rem] rounded-2xl border border-white/12 bg-background/58 px-4 py-3 shadow-xl backdrop-blur-md">
+                    <p className="text-sm leading-6 text-white/92">
+                      Пилатес для здоровой спины, красивой осанки и бережной работы с телом в спокойной атмосфере студии.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-2 rounded-[1.4rem] border border-white/12 bg-background/72 p-2 shadow-2xl backdrop-blur-xl">
+                  {stats.map((stat) => (
+                    <div key={stat.label} className="rounded-[1rem] bg-background/70 px-2 py-3 text-center shadow-sm">
+                      <div className="text-xl font-serif font-semibold leading-none text-foreground">{stat.value}</div>
+                      <div className="mt-1 text-[11px] leading-4 text-muted-foreground">{stat.label}</div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
 
-            <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 md:mt-0 md:mb-6">
+            <div className="mt-5 hidden items-center gap-2 rounded-full bg-primary/10 px-4 py-2 md:mt-0 md:mb-6 md:inline-flex">
               <span className="h-2 w-2 animate-pulse rounded-full bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary sm:text-sm">
                 Персональные тренировки
               </span>
             </div>
 
-            <h1 className="mt-4 font-serif text-[2rem] font-semibold leading-[1.05] tracking-tight text-foreground text-balance sm:text-[2.5rem] md:mt-0 md:text-5xl lg:text-6xl">
+            <h1 className="mt-4 hidden font-serif text-[2rem] font-semibold leading-[1.05] tracking-tight text-foreground text-balance sm:text-[2.5rem] md:mt-0 md:block md:text-5xl lg:text-6xl">
               Откройте силу <span className="text-primary">осознанного</span> движения
             </h1>
 
-            <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground text-pretty sm:text-lg md:mt-6 md:text-xl">
+            <p className="mt-5 max-w-xl text-base leading-7 text-muted-foreground text-pretty sm:text-lg md:mt-6 md:text-xl">
               Пилатес с сертифицированным тренером для здоровья спины, красивой осанки и гармонии тела.
               Бережный подход, понятная программа и спокойная атмосфера студии с первого касания.
             </p>
@@ -116,9 +142,12 @@ export function HeroSection() {
               </a>
             </div>
 
-            <div className="mt-8 grid grid-cols-1 gap-3 border-t border-border/50 pt-6 sm:grid-cols-3 sm:gap-4 md:mt-10 md:gap-6 md:pt-8">
+            <div className="mt-8 hidden grid-cols-1 gap-3 border-t border-border/50 pt-6 sm:grid-cols-3 sm:gap-4 md:mt-10 md:grid md:gap-6 md:pt-8">
               {stats.map((stat) => (
-                <div key={stat.label} className="rounded-2xl bg-background/65 px-4 py-3 shadow-sm ring-1 ring-border/40 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:ring-0">
+                <div
+                  key={stat.label}
+                  className="rounded-2xl bg-background/65 px-4 py-3 shadow-sm ring-1 ring-border/40 md:bg-transparent md:px-0 md:py-0 md:shadow-none md:ring-0"
+                >
                   <div className="text-2xl font-serif font-semibold text-foreground md:text-3xl">{stat.value}</div>
                   <div className="mt-1 text-sm text-muted-foreground">{stat.label}</div>
                 </div>
