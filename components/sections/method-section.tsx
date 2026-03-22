@@ -151,8 +151,15 @@ export function MethodSection() {
         </div>
 
         {/* Principles grid */}
-        <div className="mb-4 flex items-center justify-between gap-3 sm:hidden">
-          <p className="text-sm font-medium text-foreground">6 ключевых принципов</p>
+        <div className="mb-4 flex items-center justify-between gap-3 px-1 sm:hidden">
+          <div>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/75">
+              Методика Pilatta
+            </p>
+            <p className="mt-1 text-base font-semibold text-foreground">
+              6 преимуществ методики
+            </p>
+          </div>
           <div className="min-h-5">
             {showSwipeHint && (
               <p className="flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
@@ -165,28 +172,28 @@ export function MethodSection() {
 
         <div
           ref={cardsRef}
-          className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 no-scrollbar overscroll-x-contain sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pb-0 lg:grid-cols-3"
+          className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-1 pt-2 pb-5 no-scrollbar overscroll-x-contain sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:pt-0 sm:pb-0 lg:grid-cols-3"
         >
           {principles.map((principle, index) => (
             <div
               key={principle.number}
               className={cn(
-                'group relative w-[calc(100vw-2rem)] shrink-0 snap-start rounded-2xl border border-border/50 bg-card p-5 transition-all duration-500 hover:border-primary/30 hover:shadow-xl sm:w-auto sm:min-w-0 sm:max-w-none sm:p-7 lg:p-8 lg:hover:-translate-y-1',
+                'group relative basis-full shrink-0 snap-start rounded-[1.75rem] border border-border/50 bg-card p-6 shadow-[0_18px_40px_-32px_rgba(41,25,15,0.32)] transition-all duration-500 hover:border-primary/30 hover:shadow-xl sm:basis-auto sm:rounded-2xl sm:p-7 lg:p-8 lg:hover:-translate-y-1',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}
             >
               {/* Number badge */}
-              <div className="absolute -left-2 -top-2 flex h-9 w-9 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/25 sm:-left-3 sm:-top-3 sm:h-10 sm:w-10">
+              <div className="absolute left-5 top-5 flex h-10 w-10 items-center justify-center rounded-xl bg-primary shadow-lg shadow-primary/25 sm:-left-3 sm:-top-3 sm:h-10 sm:w-10">
                 <span className="text-sm font-bold text-primary-foreground">
                   {principle.number}
                 </span>
               </div>
               
-              <h3 className="mt-2 font-serif text-lg font-semibold text-foreground sm:text-xl">
+              <h3 className="mt-14 font-serif text-[1.7rem] leading-none font-semibold text-foreground sm:mt-2 sm:text-xl">
                 {principle.title}
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground sm:text-base">
+              <p className="mt-4 min-h-[4.5rem] text-base leading-relaxed text-muted-foreground sm:min-h-0 sm:text-base">
                 {principle.description}
               </p>
               
