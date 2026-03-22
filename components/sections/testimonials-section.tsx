@@ -81,7 +81,7 @@ export function TestimonialsSection() {
               </div>
 
               {/* Text */}
-              <blockquote className="text-center">
+              <blockquote className="flex min-h-[15rem] items-center justify-center text-center md:min-h-[11rem] lg:min-h-[9rem]">
                 <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
                   "{currentTestimonial.text}"
                 </p>
