@@ -8,7 +8,7 @@ interface BrandLogoProps {
 
 export function BrandLogo({ className, compact = false, light = false }: BrandLogoProps) {
   return (
-    <span className={cn('inline-flex items-center', compact ? 'gap-2' : 'gap-3', className)}>
+    <span className={cn('inline-flex items-center', compact ? 'gap-1.5' : 'gap-2', className)}>
       <span
         className={cn(
           'relative inline-flex shrink-0 items-center justify-center overflow-hidden rounded-[1.4rem] border shadow-lg transition-transform duration-300 group-hover:scale-[1.03]',
@@ -22,14 +22,30 @@ export function BrandLogo({ className, compact = false, light = false }: BrandLo
         <span className="relative font-sans text-[1.05em] font-bold tracking-[-0.06em]">P</span>
       </span>
 
-      <span
-        className={cn(
-          'font-sans font-semibold tracking-[0.18em] uppercase leading-none',
-          compact ? 'text-[0.95rem]' : 'text-[1.05rem] md:text-[1.2rem]',
-          light ? 'text-white' : 'text-foreground'
-        )}
-      >
-        <span className="-ml-1 inline-block">ilatta</span>
+      <span className="relative inline-flex items-center">
+        <span
+          className={cn(
+            'pointer-events-none absolute top-1/2 h-px -translate-y-1/2 rounded-full opacity-70',
+            compact ? '-left-2.5 w-4' : '-left-3.5 w-6',
+            light
+              ? 'bg-gradient-to-r from-white/0 via-white/75 to-white/10'
+              : 'bg-gradient-to-r from-primary/0 via-primary/65 to-primary/5'
+          )}
+        />
+        <span
+          className={cn(
+            'inline-block leading-none tracking-[0.02em]',
+            compact ? '-ml-1 text-[1.05rem]' : '-ml-1.5 text-[1.3rem] md:text-[1.45rem]',
+            light ? 'text-white' : 'text-foreground'
+          )}
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontStyle: 'italic',
+            fontWeight: 600,
+          }}
+        >
+          ilatta
+        </span>
       </span>
     </span>
   )
