@@ -42,15 +42,10 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 pt-2">
+      <div className="mb-6 flex min-h-14 items-start pt-2">
         <h3 className="font-serif text-xl font-semibold text-foreground">
           {plan.name}
         </h3>
-        {plan.sessions > 1 && plan.sessions < 999 && (
-          <p className="text-sm text-muted-foreground mt-1">
-            {plan.sessions} занятий
-          </p>
-        )}
       </div>
 
       {/* Price */}
