@@ -139,6 +139,16 @@ export function TestimonialsSection() {
                 <p className="mt-3 text-base font-semibold text-foreground sm:mt-4 sm:text-lg">
                   {currentTestimonial.name}
                 </p>
+                <div className="mt-1 text-center sm:hidden">
+                  {(currentTestimonial.occupation || currentTestimonial.date) && (
+                    <p className="text-[13px] leading-snug text-muted-foreground">
+                      {currentTestimonial.occupation}
+                      {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
+                      {currentTestimonial.occupation && currentTestimonial.date && ' · '}
+                      {currentTestimonial.date}
+                    </p>
+                  )}
+                </div>
                 {currentTestimonial.occupation && (
                   <p className="hidden text-sm text-muted-foreground sm:block">
                     {currentTestimonial.occupation}
