@@ -34,15 +34,10 @@ export function BrandLogo({ className, compact = false, light = false }: BrandLo
         />
         <span
           className={cn(
-            'inline-block leading-none tracking-[0.02em]',
-            compact ? '-ml-1 text-[1.05rem]' : '-ml-1.5 text-[1.3rem] md:text-[1.45rem]',
+            'inline-block font-sans font-semibold leading-none tracking-[0.08em]',
+            compact ? '-ml-1 text-[0.98rem]' : '-ml-1.5 text-[1.12rem] md:text-[1.24rem]',
             light ? 'text-white' : 'text-foreground'
           )}
-          style={{
-            fontFamily: 'var(--font-serif)',
-            fontStyle: 'italic',
-            fontWeight: 600,
-          }}
         >
           ilatta
         </span>
