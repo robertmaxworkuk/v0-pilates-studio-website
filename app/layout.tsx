@@ -3,21 +3,28 @@ import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 
+const siteTitle = 'Pilatta — студия пилатеса в Москве'
+const siteDescription = 'Pilatta — студия пилатеса в Москве: персональные занятия, мини-группы, онлайн-тренировки и программы для беременных. Запишитесь на пробное занятие.'
+const siteUrl = 'https://v0-pilates-studio-website-pink.vercel.app'
+
 export const metadata: Metadata = {
-  title: 'Pilatta | Студия пилатеса в Москве',
-  description: 'Студия пилатеса Pilatta в Москве: персональные занятия, мини-группы, онлайн-тренировки и программы для беременных. Запишитесь на пробное занятие.',
+  metadataBase: new URL(siteUrl),
+  title: siteTitle,
+  description: siteDescription,
   keywords: ['пилатес', 'Pilatta', 'студия пилатеса', 'персональные тренировки', 'групповые занятия', 'Москва'],
   authors: [{ name: 'Pilatta' }],
   openGraph: {
-    title: 'Pilatta | Студия пилатеса',
-    description: 'Pilatta — студия пилатеса в Москве с персональными занятиями, мини-группами, онлайн-тренировками и программами для беременных.',
+    title: siteTitle,
+    description: siteDescription,
+    url: siteUrl,
+    siteName: 'Pilatta',
     type: 'website',
     locale: 'ru_RU',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pilatta | Студия пилатеса',
-    description: 'Pilatta — студия пилатеса в Москве с персональными занятиями, мини-группами, онлайн-тренировками и программами для беременных.',
+    title: siteTitle,
+    description: siteDescription,
   },
 }
 
