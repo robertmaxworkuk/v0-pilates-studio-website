@@ -42,13 +42,6 @@ export function HeroSection() {
         <div ref={contentRef} className="w-full max-w-2xl md:py-20">
           <div className="md:hidden">
             <div className="px-1">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-2">
-                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-                <span className="text-[11px] font-semibold uppercase tracking-[0.24em] text-primary">
-                  Pilatta Studio
-                </span>
-              </div>
-
               <h1 className="text-balance font-serif text-[2.35rem] font-semibold leading-[0.98] tracking-tight text-foreground">
                 Откройте силу{' '}
                 <span className="text-primary">осознанного</span>{' '}
@@ -75,7 +68,7 @@ export function HeroSection() {
                   <div className="inline-flex items-center gap-2 rounded-full bg-background/85 px-3 py-1.5 backdrop-blur-md">
                     <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
                     <span className="text-xs font-semibold uppercase tracking-[0.24em] text-primary">
-                      Pilatta Studio
+                      Персональные тренировки
                     </span>
                   </div>
                 </div>
