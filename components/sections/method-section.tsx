@@ -153,10 +153,7 @@ export function MethodSection() {
         {/* Principles grid */}
         <div className="mb-4 flex items-center justify-between gap-3 px-1 sm:hidden">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-primary/75">
-              Методика Pilatta
-            </p>
-            <p className="mt-1 text-base font-semibold text-foreground">
+            <p className="font-serif text-[1.1rem] font-semibold leading-tight tracking-tight text-foreground">
               6 ключевых принципов
             </p>
           </div>
