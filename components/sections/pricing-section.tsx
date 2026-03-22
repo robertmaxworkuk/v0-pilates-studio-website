@@ -12,19 +12,10 @@ import { cn } from '@/lib/utils'
 type PricingType = 'individual' | 'group'
 
 function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
-  const sessionsLabel = plan.sessions === 999 ? 'Безлимитный доступ' : `${plan.sessions} ${plan.sessions === 1 ? 'занятие' : 'занятий'}`
-  const priceDetails = plan.perSession
-    ? `${formatPrice(plan.perSession)} за занятие`
-    : plan.isTrial
-      ? 'Специальная цена первого визита'
-      : plan.sessions === 999
-        ? 'Неограниченное количество занятий'
-        : 'Разовое посещение'
-
   return (
     <div
       className={cn(
-        'relative grid h-full grid-rows-[auto_auto_1fr_auto_auto] rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
+        'relative flex h-full flex-col rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
         plan.isPopular 
           ? 'border-primary shadow-2xl shadow-primary/10 scale-[1.02] z-10' 
           : 'border-border/50 hover:border-primary/30 hover:shadow-xl'
@@ -51,32 +42,31 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 flex min-h-[7rem] flex-col justify-between gap-4 pt-2">
+      <div className="mb-6 min-h-[4.75rem] pt-2">
         <h3 className="font-serif text-xl font-semibold leading-tight text-foreground">
           {plan.name}
         </h3>
-        <span className="inline-flex w-fit items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
-          {sessionsLabel}
-        </span>
       </div>
 
       {/* Price */}
-      <div className="mb-6 flex min-h-[5.5rem] flex-col justify-between">
+      <div className="mb-6 min-h-[5.75rem]">
         <div className="flex items-baseline gap-1">
           <span className="font-serif text-4xl font-semibold text-foreground">
             {formatPrice(plan.price)}
           </span>
         </div>
-        <p className="mt-2 text-sm text-muted-foreground">
-          {priceDetails}
-        </p>
+        {plan.perSession && (
+          <p className="mt-2 text-sm text-muted-foreground">
+            {formatPrice(plan.perSession)} за занятие
+          </p>
+        )}
       </div>
 
       {/* Features */}
       <ul className="mb-8 flex-1 space-y-3">
         {plan.features.map((feature, featureIndex) => (
           <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
-            <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
               <Check className="h-3 w-3 text-primary" />
             </div>
             {feature}
