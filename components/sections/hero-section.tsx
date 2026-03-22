@@ -38,7 +38,7 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex max-w-7xl items-center px-4 pt-24 pb-12 sm:px-6 sm:pt-28 md:min-h-screen md:px-8 md:py-16">
+      <div className="relative z-10 mx-auto flex max-w-7xl items-center px-4 pt-24 pb-12 sm:px-6 sm:pt-28 md:min-h-screen md:max-w-[88rem] md:px-8 md:py-16 xl:max-w-[96rem]">
         <div ref={contentRef} className="w-full max-w-2xl md:py-20">
           <div className="md:hidden">
             <div className="px-1">
