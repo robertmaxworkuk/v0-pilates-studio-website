@@ -11,10 +11,43 @@ import { Textarea } from '@/components/ui/textarea'
 import { Phone, Mail, MapPin, Send, Check, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+const PHONE_MASK_LENGTH = 10
+
+function formatPhoneInput(value: string) {
+  const digits = value.replace(/\D/g, '')
+  const normalized = digits.startsWith('7') || digits.startsWith('8') ? digits.slice(1) : digits
+  const phoneDigits = normalized.slice(0, PHONE_MASK_LENGTH)
+
+  if (!phoneDigits) {
+    return ''
+  }
+
+  const parts = ['+7']
+
+  if (phoneDigits.length > 0) {
+    parts.push(` (${phoneDigits.slice(0, 3)}`)
+  }
+
+  if (phoneDigits.length >= 4) {
+    parts.push(`) ${phoneDigits.slice(3, 6)}`)
+  }
+
+  if (phoneDigits.length >= 7) {
+    parts.push(`-${phoneDigits.slice(6, 8)}`)
+  }
+
+  if (phoneDigits.length >= 9) {
+    parts.push(`-${phoneDigits.slice(8, 10)}`)
+  }
+
+  return parts.join('')
+}
+
 export function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [phoneValue, setPhoneValue] = useState('')
   const sectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -37,12 +70,17 @@ export function ContactSection() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    
+
     // Simulate form submission
     await new Promise((resolve) => setTimeout(resolve, 1000))
-    
+
     setIsLoading(false)
     setIsSubmitted(true)
+    setPhoneValue('')
+  }
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneValue(formatPhoneInput(e.target.value))
   }
 
   return (
@@ -55,66 +93,73 @@ export function ContactSection() {
 
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Contact info */}
-          <div 
+          <div
             className={cn(
               'transition-all duration-700',
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
+              isVisible ? 'translate-x-0 opacity-100' : '-translate-x-8 opacity-0'
             )}
           >
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 mb-6">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
               <span className="text-sm font-semibold text-primary">Контакты</span>
             </div>
-            
-            <h3 className="font-serif text-2xl font-semibold text-foreground mb-6">
+
+            <h3 className="mb-6 font-serif text-2xl font-semibold text-foreground">
               Свяжитесь с нами
             </h3>
 
             <div className="space-y-4">
               <a
                 href={`tel:${studioInfo.phone}`}
-                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-0.5"
+                aria-label={`Позвонить: ${formatPhone(studioInfo.phone)}`}
+                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl sm:p-5"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
-                  <Phone className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
+                  <Phone className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-muted-foreground">Телефон</p>
-                  <p className="font-semibold text-foreground text-lg">{formatPhone(studioInfo.phone)}</p>
+                  <p className="text-lg font-semibold text-foreground">{formatPhone(studioInfo.phone)}</p>
                 </div>
-                <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
+                <ArrowRight className="ml-auto h-5 w-5 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </a>
 
               <a
                 href={`mailto:${studioInfo.email}`}
-                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-0.5"
+                aria-label={`Написать на email: ${studioInfo.email}`}
+                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl sm:p-5"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
-                  <Mail className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
+                  <Mail className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-muted-foreground">Email</p>
-                  <p className="font-semibold text-foreground">{studioInfo.email}</p>
+                  <p className="break-all font-semibold text-foreground">{studioInfo.email}</p>
                 </div>
-                <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
+                <ArrowRight className="ml-auto h-5 w-5 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
               </a>
 
-              <div className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5">
-                <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5">
-                  <MapPin className="h-6 w-6 text-primary" />
+              <a
+                href={studioInfo.mapUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Открыть адрес в картах: ${studioInfo.address}`}
+                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl sm:p-5"
+              >
+                <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
+                  <MapPin className="h-6 w-6 text-primary transition-colors group-hover:text-primary-foreground" />
                 </div>
-                <div>
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-muted-foreground">Адрес</p>
                   <p className="font-semibold text-foreground">{studioInfo.address}</p>
                   <p className="text-sm text-muted-foreground">{studioInfo.metro}</p>
                 </div>
-              </div>
+                <ArrowRight className="ml-auto h-5 w-5 shrink-0 text-muted-foreground opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+              </a>
             </div>
 
             {/* Social links */}
             <div className="mt-8">
-              <p className="text-sm text-muted-foreground mb-4">
-                Также можете написать в мессенджер:
-              </p>
+              <p className="mb-4 text-sm text-muted-foreground">Также можете написать в мессенджер:</p>
               <div className="flex flex-wrap gap-3">
                 {studioInfo.socialLinks.map((link) => (
                   <a
@@ -132,10 +177,10 @@ export function ContactSection() {
           </div>
 
           {/* Form */}
-          <div 
+          <div
             className={cn(
-              'rounded-3xl bg-card border border-border/50 p-8 md:p-10 shadow-xl transition-all duration-700 delay-200',
-              isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              'rounded-3xl border border-border/50 bg-card p-6 shadow-xl transition-all duration-700 delay-200 sm:p-8 md:p-10',
+              isVisible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0'
             )}
           >
             {isSubmitted ? (
@@ -146,21 +191,17 @@ export function ContactSection() {
                 <h3 className="mt-6 font-serif text-2xl font-semibold text-foreground">
                   Заявка отправлена!
                 </h3>
-                <p className="mt-3 text-muted-foreground max-w-sm">
+                <p className="mt-3 max-w-sm text-muted-foreground">
                   Мы свяжемся с вами в ближайшее время для уточнения деталей.
                 </p>
-                <Button
-                  variant="outline"
-                  className="mt-8"
-                  onClick={() => setIsSubmitted(false)}
-                >
+                <Button variant="outline" className="mt-8" onClick={() => setIsSubmitted(false)}>
                   Отправить ещё одну заявку
                 </Button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-semibold text-foreground mb-2">
+                  <label htmlFor="name" className="mb-2 block text-sm font-semibold text-foreground">
                     Ваше имя
                   </label>
                   <Input
@@ -169,12 +210,12 @@ export function ContactSection() {
                     type="text"
                     required
                     placeholder="Как к вам обращаться?"
-                    className="bg-muted/50 border-border/50 h-12 rounded-xl focus:border-primary"
+                    className="h-12 rounded-xl border-border/50 bg-muted/50 focus:border-primary"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-semibold text-foreground mb-2">
+                  <label htmlFor="phone" className="mb-2 block text-sm font-semibold text-foreground">
                     Телефон
                   </label>
                   <Input
@@ -182,13 +223,20 @@ export function ContactSection() {
                     name="phone"
                     type="tel"
                     required
+                    inputMode="tel"
+                    autoComplete="tel-national"
+                    minLength={18}
+                    pattern="\+7 \\(\d{3}\\) \d{3}-\d{2}-\d{2}"
+                    title="Введите номер телефона полностью"
                     placeholder="+7 (___) ___-__-__"
-                    className="bg-muted/50 border-border/50 h-12 rounded-xl focus:border-primary"
+                    value={phoneValue}
+                    onChange={handlePhoneChange}
+                    className="h-12 rounded-xl border-border/50 bg-muted/50 focus:border-primary"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="program" className="block text-sm font-semibold text-foreground mb-2">
+                  <label htmlFor="program" className="mb-2 block text-sm font-semibold text-foreground">
                     Интересующая программа
                   </label>
                   <select
@@ -206,22 +254,22 @@ export function ContactSection() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-semibold text-foreground mb-2">
-                    Сообщение <span className="text-muted-foreground font-normal">(необязательно)</span>
+                  <label htmlFor="message" className="mb-2 block text-sm font-semibold text-foreground">
+                    Сообщение <span className="font-normal text-muted-foreground">(необязательно)</span>
                   </label>
                   <Textarea
                     id="message"
                     name="message"
                     rows={4}
                     placeholder="Расскажите о ваших целях или задайте вопросы"
-                    className="bg-muted/50 border-border/50 rounded-xl resize-none focus:border-primary"
+                    className="resize-none rounded-xl border-border/50 bg-muted/50 focus:border-primary"
                   />
                 </div>
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full h-14 text-base font-semibold rounded-xl"
+                  className="h-14 w-full rounded-xl text-base font-semibold"
                   disabled={isLoading}
                 >
                   {isLoading ? (
