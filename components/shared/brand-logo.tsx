@@ -19,19 +19,17 @@ export function BrandLogo({ className, compact = false, light = false }: BrandLo
         )}
       >
         <span className="absolute inset-x-1 top-1 h-1/2 rounded-full bg-white/20 blur-md" />
-        <span className="relative font-serif text-[1.15em] font-semibold tracking-[-0.08em]">P</span>
+        <span className="relative font-sans text-[1.05em] font-bold tracking-[-0.06em]">P</span>
       </span>
 
-      <span className="flex items-center">
-        <span
-          className={cn(
-            'font-serif font-semibold tracking-[0.02em]',
-            compact ? 'text-[1.15rem]' : 'text-[1.45rem] md:text-[1.9rem]',
-            light ? 'text-white' : 'text-foreground'
-          )}
-        >
-          <span className="-ml-1.5 inline-block italic tracking-[0.04em]">ilatta</span>
-        </span>
+      <span
+        className={cn(
+          'font-sans font-semibold tracking-[0.18em] uppercase leading-none',
+          compact ? 'text-[0.95rem]' : 'text-[1.05rem] md:text-[1.2rem]',
+          light ? 'text-white' : 'text-foreground'
+        )}
+      >
+        <span className="-ml-1 inline-block">ilatta</span>
       </span>
     </span>
   )

@@ -11,7 +11,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { CTAButton } from '@/components/shared/cta-button'
-import { ThemeToggle } from '@/components/shared/theme-toggle'
 import { BrandLogo } from '@/components/shared/brand-logo'
 
 interface NavItem {
@@ -46,12 +45,9 @@ export function MobileNav({ navItems }: MobileNavProps) {
       </SheetTrigger>
       <SheetContent side="right" className="w-full max-w-sm bg-background border-l border-border">
         <SheetHeader className="text-left">
-          <div className="flex items-center justify-between">
-            <SheetTitle>
-              <BrandLogo compact />
-            </SheetTitle>
-            <ThemeToggle />
-          </div>
+          <SheetTitle>
+            <BrandLogo compact />
+          </SheetTitle>
         </SheetHeader>
         <nav className="mt-8 flex flex-col gap-2">
           {navItems.map((item) => (

@@ -24,9 +24,9 @@ export default function Home() {
         <ProgramsSection />
         <PricingSection />
         <ScheduleSection />
+        <StudioSection />
         <TestimonialsSection />
         <FAQSection />
-        <StudioSection />
         <ContactSection />
       </main>
       <Footer />
