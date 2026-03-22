@@ -2,6 +2,7 @@
 
 import { studioInfo } from '@/lib/data/studio'
 import { formatPhone } from '@/lib/format'
+import { BrandLogo } from '@/components/shared/brand-logo'
 
 const navLinks = [
   { label: 'О тренере', href: '#about' },
@@ -22,11 +23,8 @@ export function Footer() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             {/* Brand */}
             <div className="lg:col-span-2">
-              <div className="flex items-center gap-2 mb-4">
-                <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center">
-                  <span className="font-serif text-xl font-bold text-primary-foreground">P</span>
-                </div>
-                <span className="font-serif text-2xl font-semibold">Pilatta</span>
+              <div className="mb-4">
+                <BrandLogo light />
               </div>
               <p className="max-w-md text-background/70 leading-relaxed">
                 Персональные и групповые занятия пилатесом для здоровья, 

@@ -64,6 +64,7 @@ export function SectionWrapper({
       className={cn(
         backgroundClasses[background],
         paddingClasses[padding],
+        'overflow-x-clip',
         className
       )}
     >

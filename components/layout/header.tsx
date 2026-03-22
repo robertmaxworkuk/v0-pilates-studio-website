@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 import { cn } from '@/lib/utils'
 import { CTAButton } from '@/components/shared/cta-button'
 import { ThemeToggle } from '@/components/shared/theme-toggle'
+import { BrandLogo } from '@/components/shared/brand-logo'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 
@@ -76,14 +77,10 @@ export function Header() {
           <a 
             href="#hero" 
             onClick={(e) => handleNavClick(e, '#hero')}
-            className="group flex items-center gap-2"
+            className="group flex items-center"
+            aria-label="Pilatta — на главную"
           >
-            <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center transition-transform group-hover:scale-105">
-              <span className="font-serif text-xl font-bold text-primary-foreground">P</span>
-            </div>
-            <span className="font-serif text-xl font-semibold text-foreground md:text-2xl">
-              Pilatta
-            </span>
+            <BrandLogo />
           </a>
 
           {/* Desktop Navigation */}

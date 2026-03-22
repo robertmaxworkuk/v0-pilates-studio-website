@@ -6,7 +6,7 @@ import { SectionHeading } from '@/components/shared/section-heading'
 import { ImagePlaceholder } from '@/components/shared/image-placeholder'
 import { CTAButton } from '@/components/shared/cta-button'
 import { programs } from '@/lib/data/programs'
-import { Clock, Users, Check, ArrowRight } from 'lucide-react'
+import { Clock, Users, Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export function ProgramsSection() {
@@ -98,9 +98,8 @@ export function ProgramsSection() {
               </ul>
 
               <div className="mt-8">
-                <CTAButton variant="outline" size="default" className="w-full group/btn" showArrow={false}>
-                  <span>Записаться</span>
-                  <ArrowRight className="h-4 w-4 ml-2 transition-transform group-hover/btn:translate-x-1" />
+                <CTAButton variant="outline" size="default" className="w-full justify-center whitespace-nowrap">
+                  Записаться
                 </CTAButton>
               </div>
             </div>
