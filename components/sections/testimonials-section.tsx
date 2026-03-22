@@ -12,7 +12,6 @@ export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
   const [quoteMinHeight, setQuoteMinHeight] = useState(0)
-  const [isDesktop, setIsDesktop] = useState(false)
   const sectionRef = useRef<HTMLDivElement>(null)
   const measureRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
@@ -35,14 +34,6 @@ export function TestimonialsSection() {
 
   useEffect(() => {
     const updateLayout = () => {
-      const desktop = window.innerWidth >= 768
-      setIsDesktop(desktop)
-
-      if (!desktop) {
-        setQuoteMinHeight(0)
-        return
-      }
-
       const heights = measureRefs.current
         .map((element) => element?.getBoundingClientRect().height ?? 0)
         .filter(Boolean)
@@ -97,7 +88,7 @@ export function TestimonialsSection() {
                   ref={(element) => {
                     measureRefs.current[index] = element
                   }}
-                  className="font-serif text-lg leading-relaxed text-foreground sm:text-xl md:text-2xl"
+                  className="font-serif text-base leading-7 text-foreground sm:text-lg sm:leading-8 md:text-2xl md:leading-relaxed"
                 >
                   "{testimonial.text}"
                 </p>
@@ -131,7 +122,7 @@ export function TestimonialsSection() {
               {/* Text */}
               <blockquote
                 className="flex items-center justify-center text-center"
-                style={isDesktop && quoteMinHeight > 0 ? { minHeight: `${quoteMinHeight}px` } : undefined}
+                style={quoteMinHeight > 0 ? { minHeight: `${quoteMinHeight}px` } : undefined}
               >
                 <p className="font-serif text-base leading-7 text-foreground sm:text-lg sm:leading-8 md:text-2xl md:leading-relaxed">
                   "{currentTestimonial.text}"
@@ -139,26 +130,34 @@ export function TestimonialsSection() {
               </blockquote>
 
               {/* Author */}
-              <div className="mt-6 flex flex-col items-center sm:mt-8 md:mt-10">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20 ring-4 ring-background sm:h-14 sm:w-14 md:h-16 md:w-16">
-                  <span className="font-serif text-lg font-semibold text-primary sm:text-xl">
+              <div className="mt-5 flex flex-col items-center sm:mt-7 md:mt-10">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20 ring-4 ring-background sm:h-12 sm:w-12 md:h-16 md:w-16">
+                  <span className="font-serif text-base font-semibold text-primary sm:text-lg md:text-xl">
                     {currentTestimonial.name.charAt(0)}
                   </span>
                 </div>
-                <p className="mt-3 text-base font-semibold text-foreground sm:mt-4 sm:text-lg">
-                  {currentTestimonial.name}
+                <p className="mt-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap px-2 text-center text-xs text-muted-foreground sm:mt-4 sm:text-sm">
+                  <span className="font-semibold text-foreground">{currentTestimonial.name}</span>
+                  {(currentTestimonial.occupation || currentTestimonial.age || currentTestimonial.date) && (
+                    <span className="mx-2 text-muted-foreground/40">•</span>
+                  )}
+                  {(currentTestimonial.occupation || currentTestimonial.age) && (
+                    <span>
+                      {currentTestimonial.occupation}
+                      {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
+                    </span>
+                  )}
+                  {currentTestimonial.date && (
+                    <>
+                      {(currentTestimonial.occupation || currentTestimonial.age) && (
+                        <span className="mx-2 text-muted-foreground/40">•</span>
+                      )}
+                      <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground sm:px-2.5 sm:py-1 sm:text-xs">
+                        {currentTestimonial.date}
+                      </span>
+                    </>
+                  )}
                 </p>
-                {currentTestimonial.occupation && (
-                  <p className="text-xs text-muted-foreground sm:text-sm">
-                    {currentTestimonial.occupation}
-                    {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
-                  </p>
-                )}
-                {currentTestimonial.date && (
-                  <p className="mt-1 text-[11px] text-muted-foreground/70 sm:text-xs">
-                    {currentTestimonial.date}
-                  </p>
-                )}
               </div>
             </div>
 
