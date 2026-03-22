@@ -48,12 +48,12 @@ export function AboutSection() {
               fill
             />
             {/* Decorative elements */}
-            <div className="absolute -bottom-6 -right-6 -z-10 h-full w-full rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20" />
+            <div className="absolute -bottom-4 right-0 -z-10 h-full w-[92%] rounded-2xl bg-gradient-to-br from-primary/20 to-accent/20 md:-bottom-6 md:-right-6 md:w-full" />
             <div className="absolute -top-4 -left-4 w-24 h-24 rounded-full bg-primary/10 blur-2xl" />
           </div>
           
           {/* Floating card */}
-          <div className="absolute -bottom-6 -right-6 md:bottom-8 md:right-[-3rem] bg-card rounded-2xl shadow-xl p-4 md:p-6 border border-border/50">
+          <div className="absolute bottom-4 right-4 bg-card rounded-2xl shadow-xl p-4 md:bottom-8 md:right-[-3rem] md:p-6 border border-border/50">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <Award className="h-6 w-6 text-primary" />
