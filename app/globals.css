@@ -120,6 +120,9 @@
   html, body {
     @apply overflow-x-clip;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground overflow-x-clip;
     font-feature-settings: 'liga' 1, 'kern' 1;
@@ -129,5 +132,18 @@
 @layer utilities {
   .text-brand-balance {
     text-wrap: balance;
+  }
+
+  .mobile-snap-row {
+    @apply -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:grid sm:snap-none sm:overflow-visible sm:px-0 sm:pb-0;
+    scrollbar-width: none;
+  }
+
+  .mobile-snap-row::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mobile-snap-card {
+    @apply w-[85vw] max-w-sm shrink-0 snap-center sm:w-auto sm:max-w-none sm:shrink sm:snap-start;
   }
 }

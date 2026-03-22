@@ -72,16 +72,16 @@ export function MethodSection() {
         {/* Philosophy quote */}
         <div 
           className={cn(
-            'mx-auto mb-16 max-w-3xl relative transition-all duration-700',
+            'relative mx-auto mb-10 max-w-3xl transition-all duration-700 md:mb-16',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
         >
-          <div className="absolute -top-6 left-8 text-primary/20">
+          <div className="absolute -top-4 left-4 text-primary/20 md:-top-6 md:left-8">
             <Quote className="h-16 w-16" />
           </div>
-          <div className="rounded-2xl bg-card border border-border/50 p-8 md:p-12 shadow-lg relative">
+          <div className="relative rounded-2xl border border-border/50 bg-card p-5 shadow-lg md:p-12">
             <blockquote className="text-center">
-              <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
+              <p className="font-serif text-lg leading-relaxed text-foreground md:text-2xl">
                 {trainer.philosophy}
               </p>
               <footer className="mt-6 flex items-center justify-center gap-3">
@@ -94,12 +94,12 @@ export function MethodSection() {
         </div>
 
         {/* Principles grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mobile-snap-row lg:grid lg:grid-cols-3">
           {principles.map((principle, index) => (
             <div
               key={principle.number}
               className={cn(
-                'group relative rounded-2xl border border-border/50 bg-card p-8 transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1',
+                'mobile-snap-card group relative rounded-2xl border border-border/50 bg-card p-6 transition-all duration-500 hover:border-primary/30 hover:shadow-xl hover:-translate-y-1 md:p-8',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
               )}
               style={{ transitionDelay: isVisible ? `${index * 100}ms` : '0ms' }}

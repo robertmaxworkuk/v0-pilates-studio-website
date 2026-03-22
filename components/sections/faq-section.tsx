@@ -36,7 +36,7 @@ export function FAQSection() {
         </Accordion>
 
         {/* CTA */}
-        <div className="mt-12 rounded-lg bg-card p-8 text-center shadow-sm">
+        <div className="mt-10 rounded-2xl bg-card p-6 text-center shadow-sm md:mt-12 md:p-8">
           <h3 className="font-serif text-xl font-medium text-foreground">
             Остались вопросы?
           </h3>

@@ -31,7 +31,7 @@ export function AboutSection() {
 
   return (
     <SectionWrapper id="about" background="default" animate={false}>
-      <div ref={sectionRef} className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
+      <div ref={sectionRef} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-20">
         {/* Image */}
         <div 
           className={cn(
@@ -39,7 +39,7 @@ export function AboutSection() {
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
           )}
         >
-          <div className="relative">
+          <div className="relative mx-auto max-w-sm lg:max-w-none">
             <ImagePlaceholder
               src={trainer.photoUrl}
               alt={`Тренер ${trainer.name}`}
@@ -53,7 +53,7 @@ export function AboutSection() {
           </div>
           
           {/* Floating card */}
-          <div className="absolute bottom-4 right-4 bg-card rounded-2xl shadow-xl p-4 md:bottom-8 md:right-[-3rem] md:p-6 border border-border/50">
+          <div className="absolute bottom-3 right-3 rounded-2xl border border-border/50 bg-card p-3 shadow-xl md:bottom-8 md:right-[-3rem] md:p-6">
             <div className="flex items-center gap-3">
               <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
                 <Award className="h-6 w-6 text-primary" />
@@ -73,7 +73,7 @@ export function AboutSection() {
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
           )}
         >
-          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 mb-6">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 md:mb-6">
             <span className="text-sm font-semibold text-primary">О тренере</span>
           </div>
           
@@ -81,27 +81,27 @@ export function AboutSection() {
             Привет, я {trainer.name}
           </h2>
           
-          <p className="mt-2 text-xl text-muted-foreground">
+          <p className="mt-2 text-lg text-muted-foreground md:text-xl">
             Ваш тренер по пилатесу
           </p>
 
-          <p className="mt-6 text-lg text-muted-foreground leading-relaxed">
+          <p className="mt-5 text-base leading-relaxed text-muted-foreground md:mt-6 md:text-lg">
             {trainer.bio}
           </p>
 
           {/* Stats */}
-          <div className="mt-8 grid grid-cols-3 gap-4">
-            <div className="text-center p-4 rounded-xl bg-muted/50">
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:mt-8 sm:grid-cols-3 sm:gap-4">
+            <div className="rounded-xl bg-muted/50 p-4 text-center">
               <Clock className="h-5 w-5 text-primary mx-auto mb-2" />
               <p className="text-xs text-muted-foreground">Опыт</p>
               <p className="font-semibold text-foreground">{trainer.experience}</p>
             </div>
-            <div className="text-center p-4 rounded-xl bg-muted/50">
+            <div className="rounded-xl bg-muted/50 p-4 text-center">
               <Award className="h-5 w-5 text-primary mx-auto mb-2" />
               <p className="text-xs text-muted-foreground">Тренер</p>
               <p className="font-semibold text-foreground">{trainer.trainerExperience}</p>
             </div>
-            <div className="text-center p-4 rounded-xl bg-muted/50">
+            <div className="rounded-xl bg-muted/50 p-4 text-center">
               <Users className="h-5 w-5 text-primary mx-auto mb-2" />
               <p className="text-xs text-muted-foreground">Клиенты</p>
               <p className="font-semibold text-foreground">500+</p>

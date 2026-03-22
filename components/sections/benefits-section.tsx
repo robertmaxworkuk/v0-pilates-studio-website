@@ -51,12 +51,12 @@ export function BenefitsSection() {
         subtitle="Метод, который трансформирует тело и улучшает качество жизни"
       />
 
-      <div ref={sectionRef} className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div ref={sectionRef} className="mobile-snap-row lg:grid lg:grid-cols-3">
         {benefits.map((benefit, index) => (
           <div
             key={benefit.id}
             className={cn(
-              'group relative flex flex-col rounded-2xl bg-card p-8 shadow-sm border border-border/50 transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 hover:-translate-y-1',
+              'mobile-snap-card group relative flex flex-col rounded-2xl border border-border/50 bg-card p-6 shadow-sm transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 md:p-8',
               isVisible
                 ? 'opacity-100 translate-y-0'
                 : 'opacity-0 translate-y-8'
@@ -69,13 +69,13 @@ export function BenefitsSection() {
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             
             <div className="relative z-10">
-              <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary transition-all duration-300 group-hover:scale-110 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary transition-all duration-300 group-hover:scale-110 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground md:mb-5 md:h-14 md:w-14">
                 {iconMap[benefit.icon] || <Sparkles className="h-6 w-6" />}
               </div>
-              <h3 className="font-serif text-xl font-semibold text-foreground">
+              <h3 className="font-serif text-lg font-semibold text-foreground md:text-xl">
                 {benefit.title}
               </h3>
-              <p className="mt-3 text-muted-foreground leading-relaxed">
+              <p className="mt-3 text-sm leading-relaxed text-muted-foreground md:text-base">
                 {benefit.description}
               </p>
             </div>

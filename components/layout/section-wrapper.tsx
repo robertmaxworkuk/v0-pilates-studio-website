@@ -52,8 +52,8 @@ export function SectionWrapper({
   }
 
   const paddingClasses = {
-    default: 'py-16 md:py-24',
-    large: 'py-20 md:py-32',
+    default: 'py-12 md:py-24',
+    large: 'py-16 md:py-32',
     none: '',
   }
 

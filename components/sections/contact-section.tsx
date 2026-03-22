@@ -53,7 +53,7 @@ export function ContactSection() {
           subtitle="Оставьте заявку, и мы свяжемся с вами в ближайшее время"
         />
 
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-16">
           {/* Contact info */}
           <div 
             className={cn(
@@ -61,18 +61,18 @@ export function ContactSection() {
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
             )}
           >
-            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 mb-6">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 md:mb-6">
               <span className="text-sm font-semibold text-primary">Контакты</span>
             </div>
             
-            <h3 className="font-serif text-2xl font-semibold text-foreground mb-6">
+            <h3 className="mb-5 font-serif text-2xl font-semibold text-foreground md:mb-6">
               Свяжитесь с нами
             </h3>
 
             <div className="space-y-4">
               <a
                 href={`tel:${studioInfo.phone}`}
-                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-0.5"
+                className="group flex items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl md:gap-4 md:p-5"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
                   <Phone className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
@@ -86,7 +86,7 @@ export function ContactSection() {
 
               <a
                 href={`mailto:${studioInfo.email}`}
-                className="group flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5 transition-all duration-300 hover:border-primary/30 hover:shadow-xl hover:-translate-y-0.5"
+                className="group flex items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-xl md:gap-4 md:p-5"
               >
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 transition-all duration-300 group-hover:from-primary group-hover:to-primary/80">
                   <Mail className="h-6 w-6 text-primary group-hover:text-primary-foreground transition-colors" />
@@ -98,7 +98,7 @@ export function ContactSection() {
                 <ArrowRight className="ml-auto h-5 w-5 text-muted-foreground opacity-0 group-hover:opacity-100 transition-all group-hover:translate-x-1" />
               </a>
 
-              <div className="flex items-center gap-4 rounded-2xl border border-border/50 bg-card p-5">
+              <div className="flex items-center gap-3 rounded-2xl border border-border/50 bg-card p-4 md:gap-4 md:p-5">
                 <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5">
                   <MapPin className="h-6 w-6 text-primary" />
                 </div>
@@ -134,7 +134,7 @@ export function ContactSection() {
           {/* Form */}
           <div 
             className={cn(
-              'rounded-3xl bg-card border border-border/50 p-8 md:p-10 shadow-xl transition-all duration-700 delay-200',
+              'rounded-3xl border border-border/50 bg-card p-5 shadow-xl transition-all duration-700 delay-200 md:p-10',
               isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
             )}
           >

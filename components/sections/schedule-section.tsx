@@ -65,7 +65,7 @@ export function ScheduleSection() {
       />
 
       {/* Day selector */}
-      <div className="mb-8 flex flex-wrap justify-center gap-2">
+      <div className="mobile-snap-row mb-8 justify-start sm:flex sm:flex-wrap sm:justify-center">
         {weekDays.slice(0, 6).map((day) => {
           const hasSlots = schedule.some((slot) => slot.day === day.full)
           
@@ -75,7 +75,7 @@ export function ScheduleSection() {
               onClick={() => setSelectedDay(day.full)}
               disabled={!hasSlots}
               className={cn(
-                'rounded-lg px-4 py-2 text-sm font-medium transition-all',
+                'mobile-snap-card w-auto rounded-full px-4 py-2 text-sm font-medium transition-all sm:w-auto sm:max-w-none sm:shrink-0',
                 selectedDay === day.full
                   ? 'bg-primary text-primary-foreground'
                   : hasSlots
@@ -108,7 +108,7 @@ export function ScheduleSection() {
       </div>
 
       {/* Legend */}
-      <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-muted-foreground">
+      <div className="mt-8 flex flex-col items-center gap-3 text-sm text-muted-foreground sm:flex-row sm:flex-wrap sm:justify-center sm:gap-6">
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-primary/20" />
           Групповое занятие

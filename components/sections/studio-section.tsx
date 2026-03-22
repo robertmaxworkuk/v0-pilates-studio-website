@@ -42,7 +42,7 @@ export function StudioSection() {
 
         {/* Info */}
         <div className="flex flex-col justify-center">
-          <p className="text-lg text-muted-foreground leading-relaxed whitespace-pre-line">
+          <p className="text-base leading-relaxed text-muted-foreground whitespace-pre-line md:text-lg">
             {studioInfo.description}
           </p>
 
@@ -59,7 +59,7 @@ export function StudioSection() {
           </div>
 
           {/* Working hours */}
-          <div className="mt-8 rounded-lg bg-card p-6 shadow-sm">
+          <div className="mt-8 rounded-2xl bg-card p-5 shadow-sm md:p-6">
             <h3 className="font-medium text-foreground mb-4">Часы работы</h3>
             <ul className="space-y-2">
               {studioInfo.workingHours.map((item) => (

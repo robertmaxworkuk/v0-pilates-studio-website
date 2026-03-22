@@ -15,7 +15,7 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
+        'mobile-snap-card relative flex flex-col rounded-2xl border bg-card p-5 transition-all duration-500 hover:-translate-y-1 md:p-8',
         plan.isPopular 
           ? 'border-primary shadow-2xl shadow-primary/10 scale-[1.02] z-10' 
           : 'border-border/50 hover:border-primary/30 hover:shadow-xl'
@@ -42,16 +42,16 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 flex min-h-14 items-start pt-2">
-        <h3 className="font-serif text-xl font-semibold text-foreground">
+      <div className="mb-5 flex min-h-14 items-start pt-2">
+        <h3 className="font-serif text-lg font-semibold text-foreground md:text-xl">
           {plan.name}
         </h3>
       </div>
 
       {/* Price */}
-      <div className="mb-6">
+      <div className="mb-5">
         <div className="flex items-baseline gap-1">
-          <span className="font-serif text-4xl font-semibold text-foreground">
+          <span className="font-serif text-3xl font-semibold text-foreground md:text-4xl">
             {formatPrice(plan.price)}
           </span>
         </div>
@@ -63,7 +63,7 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
       </div>
 
       {/* Features */}
-      <ul className="mb-8 flex-1 space-y-3">
+      <ul className="mb-6 flex-1 space-y-3">
         {plan.features.map((feature, featureIndex) => (
           <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
             <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
@@ -131,7 +131,7 @@ export function PricingSection() {
       </div>
 
       {/* Pricing cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mobile-snap-row lg:grid lg:grid-cols-4">
         {currentPricing.map((plan, index) => (
           <PricingCard key={plan.id} plan={plan} index={index} />
         ))}
