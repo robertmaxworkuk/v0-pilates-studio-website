@@ -33,7 +33,7 @@ export function TestimonialsSection() {
   }, [])
 
   useEffect(() => {
-    const measureQuoteHeight = () => {
+    const updateLayout = () => {
       const heights = measureRefs.current
         .map((element) => element?.getBoundingClientRect().height ?? 0)
         .filter(Boolean)
@@ -43,12 +43,12 @@ export function TestimonialsSection() {
       }
     }
 
-    const animationFrame = window.requestAnimationFrame(measureQuoteHeight)
-    window.addEventListener('resize', measureQuoteHeight)
+    const animationFrame = window.requestAnimationFrame(updateLayout)
+    window.addEventListener('resize', updateLayout)
 
     return () => {
       window.cancelAnimationFrame(animationFrame)
-      window.removeEventListener('resize', measureQuoteHeight)
+      window.removeEventListener('resize', updateLayout)
     }
   }, [])
 
@@ -77,10 +77,10 @@ export function TestimonialsSection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
         >
-          <div className="relative rounded-3xl bg-card border border-border/50 p-8 md:p-12 shadow-xl">
+          <div className="relative rounded-3xl border border-border/50 bg-card p-5 shadow-xl sm:p-6 md:p-12">
             <div
               aria-hidden="true"
-              className="pointer-events-none absolute left-8 right-8 top-24 opacity-0 md:left-12 md:right-12 md:top-24"
+              className="pointer-events-none absolute left-5 right-5 top-20 opacity-0 sm:left-6 sm:right-6 md:left-12 md:right-12 md:top-24"
             >
               {testimonials.map((testimonial, index) => (
                 <p
@@ -88,7 +88,7 @@ export function TestimonialsSection() {
                   ref={(element) => {
                     measureRefs.current[index] = element
                   }}
-                  className="font-serif text-xl leading-relaxed text-foreground md:text-2xl"
+                  className="font-serif text-base leading-7 text-foreground sm:text-lg sm:leading-8 md:text-2xl md:leading-relaxed"
                 >
                   "{testimonial.text}"
                 </p>
@@ -96,21 +96,21 @@ export function TestimonialsSection() {
             </div>
 
             {/* Quote icon */}
-            <div className="absolute left-8 top-8 md:left-12 md:top-12">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Quote className="h-8 w-8 text-primary" />
+            <div className="absolute left-5 top-5 sm:left-6 sm:top-6 md:left-12 md:top-12">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 sm:h-14 sm:w-14 md:h-16 md:w-16">
+                <Quote className="h-6 w-6 text-primary sm:h-7 sm:w-7 md:h-8 md:w-8" />
               </div>
             </div>
 
             {/* Content */}
-            <div className="relative pt-16 md:pt-12">
+            <div className="relative pt-12 sm:pt-14 md:pt-12">
               {/* Stars */}
-              <div className="mb-6 flex justify-center gap-1">
+              <div className="mb-4 flex justify-center gap-1 sm:mb-5 md:mb-6">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      'h-6 w-6 transition-all duration-300',
+                      'h-5 w-5 transition-all duration-300 sm:h-5 sm:w-5 md:h-6 md:w-6',
                       i < currentTestimonial.rating
                         ? 'fill-primary text-primary'
                         : 'text-muted-foreground/30'
@@ -124,58 +124,65 @@ export function TestimonialsSection() {
                 className="flex items-center justify-center text-center"
                 style={quoteMinHeight > 0 ? { minHeight: `${quoteMinHeight}px` } : undefined}
               >
-                <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
+                <p className="font-serif text-base leading-7 text-foreground sm:text-lg sm:leading-8 md:text-2xl md:leading-relaxed">
                   "{currentTestimonial.text}"
                 </p>
               </blockquote>
 
               {/* Author */}
-              <div className="mt-10 flex flex-col items-center">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center ring-4 ring-background">
-                  <span className="font-serif text-xl font-semibold text-primary">
+              <div className="mt-5 flex flex-col items-center sm:mt-7 md:mt-10">
+                <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20 ring-4 ring-background sm:h-12 sm:w-12 md:h-16 md:w-16">
+                  <span className="font-serif text-base font-semibold text-primary sm:text-lg md:text-xl">
                     {currentTestimonial.name.charAt(0)}
                   </span>
                 </div>
-                <p className="mt-4 font-semibold text-foreground text-lg">
+                <p className="mt-3 text-center text-sm font-semibold text-foreground sm:mt-4 sm:text-base">
                   {currentTestimonial.name}
                 </p>
-                {currentTestimonial.occupation && (
-                  <p className="text-sm text-muted-foreground">
-                    {currentTestimonial.occupation}
-                    {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
-                  </p>
-                )}
-                {currentTestimonial.date && (
-                  <p className="mt-1 text-xs text-muted-foreground/70">
-                    {currentTestimonial.date}
-                  </p>
-                )}
+                <p className="mt-1 flex max-w-full items-center justify-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap px-2 text-center text-xs text-muted-foreground sm:text-sm">
+                  {(currentTestimonial.occupation || currentTestimonial.age) && (
+                    <span className="truncate">
+                      {currentTestimonial.occupation}
+                      {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
+                    </span>
+                  )}
+                  {currentTestimonial.date && (
+                    <>
+                      {(currentTestimonial.occupation || currentTestimonial.age) && (
+                        <span className="text-muted-foreground/40">•</span>
+                      )}
+                      <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground sm:px-2.5 sm:py-1 sm:text-xs">
+                        {currentTestimonial.date}
+                      </span>
+                    </>
+                  )}
+                </p>
               </div>
             </div>
 
             {/* Navigation */}
-            <div className="mt-10 flex items-center justify-center gap-6">
+            <div className="mt-6 flex items-center justify-center gap-3 sm:mt-8 sm:gap-4 md:mt-10 md:gap-6">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={prevTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-10 w-10 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground sm:h-11 sm:w-11 md:h-12 md:w-12"
               >
-                <ChevronLeft className="h-5 w-5" />
+                <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="sr-only">Предыдущий отзыв</span>
               </Button>
 
               {/* Dots */}
-              <div className="flex gap-2">
+              <div className="flex gap-1.5 sm:gap-2">
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentIndex(index)}
                     className={cn(
-                      'h-2.5 rounded-full transition-all duration-300',
+                      'h-2 rounded-full transition-all duration-300 sm:h-2.5',
                       index === currentIndex
-                        ? 'w-8 bg-primary'
-                        : 'w-2.5 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                        ? 'w-6 bg-primary sm:w-8'
+                        : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50 sm:w-2.5'
                     )}
                   >
                     <span className="sr-only">Отзыв {index + 1}</span>
@@ -187,9 +194,9 @@ export function TestimonialsSection() {
                 variant="outline"
                 size="icon"
                 onClick={nextTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-10 w-10 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground sm:h-11 sm:w-11 md:h-12 md:w-12"
               >
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
                 <span className="sr-only">Следующий отзыв</span>
               </Button>
             </div>
@@ -197,7 +204,7 @@ export function TestimonialsSection() {
         </div>
 
         {/* All testimonials grid (smaller) */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.slice(0, 3).map((testimonial, index) => (
             <button
               key={testimonial.id}
