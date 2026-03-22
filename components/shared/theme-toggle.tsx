@@ -3,37 +3,35 @@
 import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { flushSync } from 'react-dom'
 import { Button } from '@/components/ui/button'
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
-  const transitionTimeoutRef = React.useRef<number | null>(null)
 
   React.useEffect(() => {
     setMounted(true)
-
-    return () => {
-      if (transitionTimeoutRef.current) {
-        window.clearTimeout(transitionTimeoutRef.current)
-      }
-    }
   }, [])
 
   const toggleTheme = () => {
-    const root = document.documentElement
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    const startViewTransition = (
+      document as Document & {
+        startViewTransition?: (callback: () => void | Promise<void>) => void
+      }
+    ).startViewTransition
 
-    root.classList.add('theme-transitioning')
-
-    if (transitionTimeoutRef.current) {
-      window.clearTimeout(transitionTimeoutRef.current)
+    if (!startViewTransition) {
+      setTheme(nextTheme)
+      return
     }
 
-    transitionTimeoutRef.current = window.setTimeout(() => {
-      root.classList.remove('theme-transitioning')
-    }, 350)
-
-    setTheme(theme === 'light' ? 'dark' : 'light')
+    startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme)
+      })
+    })
   }
 
   if (!mounted) {
