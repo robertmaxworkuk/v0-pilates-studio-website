@@ -34,71 +34,72 @@ export function ProgramsSection() {
     <SectionWrapper id="programs" animate={false}>
       <SectionHeading
         title="Программы тренировок"
-        subtitle="Выберите формат, который подходит именно вам"
+        subtitle="На мобильном — короткие, наглядные карточки с быстрым выбором формата"
       />
 
-      <div ref={sectionRef} className="grid gap-8 md:grid-cols-2">
+      <div
+        ref={sectionRef}
+        className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:gap-8 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-2"
+      >
         {programs.map((program, index) => (
           <div
             key={program.id}
             className={cn(
-              'group overflow-hidden rounded-2xl border border-border/50 bg-card transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:-translate-y-1',
+              'group flex min-w-[85%] snap-start flex-col overflow-hidden rounded-[1.75rem] border border-border/50 bg-card transition-all duration-500 hover:border-primary/30 hover:shadow-2xl hover:-translate-y-1 md:min-w-0',
               isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
             )}
             style={{ transitionDelay: isVisible ? `${index * 150}ms` : '0ms' }}
           >
-            {/* Image */}
-            <div className="relative h-56 overflow-hidden">
+            <div className="relative h-44 overflow-hidden md:h-56">
               <ImagePlaceholder
                 src={program.imageUrl}
                 alt={program.title}
                 className="h-full w-full transition-transform duration-700 group-hover:scale-110"
                 fill
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-card via-transparent to-transparent" />
-              
-              {/* Level badge */}
-              <div className="absolute top-4 right-4">
-                <span className="rounded-full bg-card/90 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold text-foreground">
+              <div className="absolute inset-0 bg-gradient-to-t from-card via-card/20 to-transparent" />
+
+              <div className="absolute left-4 top-4 right-4 flex items-start justify-between gap-3">
+                <span className="max-w-[65%] rounded-full bg-card/90 px-3 py-1.5 text-xs font-semibold text-foreground backdrop-blur-sm">
                   {program.level}
+                </span>
+                <span className="rounded-full bg-background/90 px-3 py-1.5 text-xs font-semibold text-primary backdrop-blur-sm">
+                  {program.duration}
                 </span>
               </div>
             </div>
 
-            {/* Content */}
-            <div className="p-6 md:p-8">
-              <h3 className="font-serif text-2xl font-semibold text-foreground">
+            <div className="flex flex-1 flex-col p-5 md:p-8">
+              <h3 className="font-serif text-xl font-semibold text-foreground md:text-2xl">
                 {program.title}
               </h3>
 
-              {/* Meta */}
-              <div className="mt-4 flex flex-wrap gap-4 text-sm text-muted-foreground">
-                <span className="flex items-center gap-2 bg-muted/50 rounded-full px-3 py-1">
-                  <Clock className="h-4 w-4 text-primary" />
+              <div className="mt-3 flex flex-wrap gap-2 text-xs text-muted-foreground md:mt-4 md:text-sm">
+                <span className="flex items-center gap-2 rounded-full bg-muted/60 px-3 py-1.5">
+                  <Clock className="h-3.5 w-3.5 text-primary md:h-4 md:w-4" />
                   {program.duration}
                 </span>
-                <span className="flex items-center gap-2 bg-muted/50 rounded-full px-3 py-1">
-                  <Users className="h-4 w-4 text-primary" />
+                <span className="flex items-center gap-2 rounded-full bg-muted/60 px-3 py-1.5">
+                  <Users className="h-3.5 w-3.5 text-primary md:h-4 md:w-4" />
                   {program.level}
                 </span>
               </div>
 
-              <p className="mt-4 text-muted-foreground leading-relaxed">
+              <p className="mt-4 line-clamp-4 text-sm leading-relaxed text-muted-foreground md:text-base">
                 {program.description}
               </p>
 
-              {/* Features */}
-              <ul className="mt-6 space-y-2">
-                {program.features.slice(0, 3).map((feature, featureIndex) => (
+              <ul className="mt-5 space-y-2 md:mt-6">
+                {program.features.slice(0, 2).map((feature, featureIndex) => (
                   <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
                     <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" />
-                    {feature}
+                    <span>{feature}</span>
                   </li>
                 ))}
               </ul>
 
-              <div className="mt-8">
-                <CTAButton variant="outline" size="default" className="w-full justify-center whitespace-nowrap">
+              <div className="mt-6 md:mt-8">
+                <CTAButton variant="outline" size="default" className="h-11 w-full justify-center whitespace-nowrap rounded-2xl">
                   Записаться
                 </CTAButton>
               </div>

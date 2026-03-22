@@ -11,12 +11,13 @@ import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { StudioSection } from '@/components/sections/studio-section'
 import { ContactSection } from '@/components/sections/contact-section'
+import { MobileStickyCTA } from '@/components/shared/mobile-sticky-cta'
 
 export default function Home() {
   return (
     <>
       <Header />
-      <main>
+      <main className="pb-24 md:pb-0">
         <HeroSection />
         <AboutSection />
         <MethodSection />
@@ -30,6 +31,7 @@ export default function Home() {
         <ContactSection />
       </main>
       <Footer />
+      <MobileStickyCTA />
     </>
   )
 }

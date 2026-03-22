@@ -45,33 +45,29 @@ export function TestimonialsSection() {
       <div ref={sectionRef}>
         <SectionHeading
           title="Отзывы клиентов"
-          subtitle="Истории тех, кто уже тренируется в Pilatta"
+          subtitle="Один главный отзыв на экране и компактный мобильный навигатор вместо перегруженной сетки"
         />
 
-        {/* Featured testimonial */}
-        <div 
+        <div
           className={cn(
             'mx-auto max-w-4xl transition-all duration-700',
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
         >
-          <div className="relative rounded-3xl bg-card border border-border/50 p-8 md:p-12 shadow-xl">
-            {/* Quote icon */}
-            <div className="absolute left-8 top-8 md:left-12 md:top-12">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Quote className="h-8 w-8 text-primary" />
+          <div className="relative rounded-[2rem] border border-border/50 bg-card p-5 shadow-xl md:p-12">
+            <div className="absolute left-5 top-5 md:left-12 md:top-12">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 md:h-16 md:w-16">
+                <Quote className="h-6 w-6 text-primary md:h-8 md:w-8" />
               </div>
             </div>
 
-            {/* Content */}
-            <div className="relative pt-16 md:pt-12">
-              {/* Stars */}
-              <div className="mb-6 flex justify-center gap-1">
+            <div className="relative pt-12 md:pt-12">
+              <div className="mb-5 flex justify-center gap-1 md:mb-6">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      'h-6 w-6 transition-all duration-300',
+                      'h-5 w-5 transition-all duration-300 md:h-6 md:w-6',
                       i < currentTestimonial.rating
                         ? 'fill-primary text-primary'
                         : 'text-muted-foreground/30'
@@ -80,25 +76,23 @@ export function TestimonialsSection() {
                 ))}
               </div>
 
-              {/* Text */}
               <blockquote className="text-center">
-                <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
+                <p className="font-serif text-lg leading-relaxed text-foreground md:text-2xl">
                   "{currentTestimonial.text}"
                 </p>
               </blockquote>
 
-              {/* Author */}
-              <div className="mt-10 flex flex-col items-center">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center ring-4 ring-background">
-                  <span className="font-serif text-xl font-semibold text-primary">
+              <div className="mt-8 flex flex-col items-center md:mt-10">
+                <div className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20 ring-4 ring-background md:h-16 md:w-16">
+                  <span className="font-serif text-lg font-semibold text-primary md:text-xl">
                     {currentTestimonial.name.charAt(0)}
                   </span>
                 </div>
-                <p className="mt-4 font-semibold text-foreground text-lg">
+                <p className="mt-4 text-base font-semibold text-foreground md:text-lg">
                   {currentTestimonial.name}
                 </p>
                 {currentTestimonial.occupation && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-center text-sm text-muted-foreground">
                     {currentTestimonial.occupation}
                     {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
                   </p>
@@ -111,19 +105,17 @@ export function TestimonialsSection() {
               </div>
             </div>
 
-            {/* Navigation */}
-            <div className="mt-10 flex items-center justify-center gap-6">
+            <div className="mt-8 flex items-center justify-center gap-3 md:mt-10 md:gap-6">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={prevTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-11 w-11 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground md:h-12 md:w-12"
               >
                 <ChevronLeft className="h-5 w-5" />
                 <span className="sr-only">Предыдущий отзыв</span>
               </Button>
 
-              {/* Dots */}
               <div className="flex gap-2">
                 {testimonials.map((_, index) => (
                   <button
@@ -132,7 +124,7 @@ export function TestimonialsSection() {
                     className={cn(
                       'h-2.5 rounded-full transition-all duration-300',
                       index === currentIndex
-                        ? 'w-8 bg-primary'
+                        ? 'w-7 bg-primary'
                         : 'w-2.5 bg-muted-foreground/30 hover:bg-muted-foreground/50'
                     )}
                   >
@@ -145,7 +137,7 @@ export function TestimonialsSection() {
                 variant="outline"
                 size="icon"
                 onClick={nextTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-11 w-11 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground md:h-12 md:w-12"
               >
                 <ChevronRight className="h-5 w-5" />
                 <span className="sr-only">Следующий отзыв</span>
@@ -154,14 +146,13 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        {/* All testimonials grid (smaller) */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-6 flex gap-3 overflow-x-auto pb-2 md:mt-12 md:grid md:gap-4 md:overflow-visible md:pb-0 lg:grid-cols-3">
           {testimonials.slice(0, 3).map((testimonial, index) => (
             <button
               key={testimonial.id}
               onClick={() => setCurrentIndex(index)}
               className={cn(
-                'text-left rounded-2xl border p-6 transition-all duration-300',
+                'min-w-[78%] rounded-[1.5rem] border p-4 text-left transition-all duration-300 md:min-w-0 md:p-6',
                 isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8',
                 index === currentIndex
                   ? 'border-primary bg-primary/5 shadow-lg'
@@ -169,8 +160,8 @@ export function TestimonialsSection() {
               )}
               style={{ transitionDelay: isVisible ? `${300 + index * 100}ms` : '0ms' }}
             >
-              <div className="flex items-center gap-4">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20">
                   <span className="text-sm font-semibold text-primary">
                     {testimonial.name.charAt(0)}
                   </span>
@@ -194,7 +185,7 @@ export function TestimonialsSection() {
                   </div>
                 </div>
               </div>
-              <p className="mt-4 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+              <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-muted-foreground md:mt-4">
                 {testimonial.text}
               </p>
             </button>

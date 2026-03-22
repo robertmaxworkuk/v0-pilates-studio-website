@@ -120,6 +120,9 @@
   html, body {
     @apply overflow-x-clip;
   }
+  html {
+    scroll-behavior: smooth;
+  }
   body {
     @apply bg-background text-foreground overflow-x-clip;
     font-feature-settings: 'liga' 1, 'kern' 1;
@@ -129,5 +132,14 @@
 @layer utilities {
   .text-brand-balance {
     text-wrap: balance;
+  }
+
+  .scrollbar-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hidden::-webkit-scrollbar {
+    display: none;
   }
 }

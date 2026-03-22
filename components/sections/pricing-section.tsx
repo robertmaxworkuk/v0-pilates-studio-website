@@ -15,14 +15,13 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
-        plan.isPopular 
-          ? 'border-primary shadow-2xl shadow-primary/10 scale-[1.02] z-10' 
+        'relative flex min-w-[84%] snap-start flex-col rounded-[1.75rem] border bg-card p-5 transition-all duration-500 hover:-translate-y-1 md:min-w-0 md:p-8',
+        plan.isPopular
+          ? 'border-primary shadow-2xl shadow-primary/10 md:scale-[1.02] z-10'
           : 'border-border/50 hover:border-primary/30 hover:shadow-xl'
       )}
       style={{ animationDelay: `${index * 100}ms` }}
     >
-      {/* Popular badge */}
       {plan.isPopular && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold text-primary-foreground shadow-lg shadow-primary/25">
@@ -32,7 +31,6 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      {/* Trial badge */}
       {plan.isTrial && (
         <div className="absolute -top-4 left-1/2 -translate-x-1/2">
           <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-4 py-1.5 text-xs font-semibold text-accent-foreground">
@@ -42,16 +40,15 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 flex min-h-14 items-start pt-2">
-        <h3 className="font-serif text-xl font-semibold text-foreground">
+      <div className="mb-5 flex min-h-12 items-start pt-2 md:mb-6 md:min-h-14">
+        <h3 className="font-serif text-lg font-semibold text-foreground md:text-xl">
           {plan.name}
         </h3>
       </div>
 
-      {/* Price */}
-      <div className="mb-6">
+      <div className="mb-5 md:mb-6">
         <div className="flex items-baseline gap-1">
-          <span className="font-serif text-4xl font-semibold text-foreground">
+          <span className="font-serif text-3xl font-semibold text-foreground md:text-4xl">
             {formatPrice(plan.price)}
           </span>
         </div>
@@ -62,11 +59,10 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         )}
       </div>
 
-      {/* Features */}
-      <ul className="mb-8 flex-1 space-y-3">
+      <ul className="mb-6 flex-1 space-y-2.5 md:mb-8 md:space-y-3">
         {plan.features.map((feature, featureIndex) => (
           <li key={featureIndex} className="flex items-start gap-3 text-sm text-muted-foreground">
-            <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+            <div className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-primary/10">
               <Check className="h-3 w-3 text-primary" />
             </div>
             {feature}
@@ -74,16 +70,14 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         ))}
       </ul>
 
-      {/* Validity */}
       <p className="mb-4 text-xs text-muted-foreground">
         Срок действия: {plan.validDays} дней
       </p>
 
-      {/* CTA */}
-      <CTAButton 
-        variant={plan.isPopular || plan.isTrial ? 'default' : 'outline'} 
+      <CTAButton
+        variant={plan.isPopular || plan.isTrial ? 'default' : 'outline'}
         size="default"
-        className="w-full"
+        className="h-11 w-full rounded-2xl"
         showArrow={false}
       >
         {plan.isTrial ? 'Записаться на пробное' : 'Выбрать'}
@@ -101,15 +95,14 @@ export function PricingSection() {
     <SectionWrapper id="pricing" background="muted">
       <SectionHeading
         title="Стоимость занятий"
-        subtitle="Прозрачные цены, гибкие абонементы"
+        subtitle="Тарифы упакованы в мобильную карусель — не нужно листать длинную стену карточек"
       />
 
-      {/* Type switcher */}
-      <div className="mx-auto mb-12 flex max-w-md rounded-2xl bg-card p-1.5 shadow-sm border border-border/50">
+      <div className="mx-auto mb-8 flex max-w-md rounded-[1.25rem] bg-card p-1.5 shadow-sm border border-border/50 md:mb-12 md:rounded-2xl">
         <button
           onClick={() => setActiveType('individual')}
           className={cn(
-            'flex-1 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300',
+            'flex-1 rounded-[0.9rem] px-4 py-3 text-sm font-semibold transition-all duration-300 md:px-6 md:rounded-xl',
             activeType === 'individual'
               ? 'bg-primary text-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'
@@ -120,7 +113,7 @@ export function PricingSection() {
         <button
           onClick={() => setActiveType('group')}
           className={cn(
-            'flex-1 rounded-xl px-6 py-3 text-sm font-semibold transition-all duration-300',
+            'flex-1 rounded-[0.9rem] px-4 py-3 text-sm font-semibold transition-all duration-300 md:px-6 md:rounded-xl',
             activeType === 'group'
               ? 'bg-primary text-primary-foreground shadow-md'
               : 'text-muted-foreground hover:text-foreground'
@@ -130,15 +123,13 @@ export function PricingSection() {
         </button>
       </div>
 
-      {/* Pricing cards */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 md:mx-0 md:grid md:gap-6 md:overflow-visible md:px-0 md:pb-0 lg:grid-cols-4">
         {currentPricing.map((plan, index) => (
           <PricingCard key={plan.id} plan={plan} index={index} />
         ))}
       </div>
 
-      {/* Note */}
-      <p className="mt-10 text-center text-sm text-muted-foreground">
+      <p className="mt-8 text-center text-sm text-muted-foreground md:mt-10">
         Оплата производится наличными или переводом. Возможна рассрочка на абонементы.
       </p>
     </SectionWrapper>
