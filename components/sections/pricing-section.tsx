@@ -12,10 +12,13 @@ import { cn } from '@/lib/utils'
 type PricingType = 'individual' | 'group'
 
 function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
+  const sessionsLabel = plan.sessions > 1 && plan.sessions < 999 ? `${plan.sessions} занятий` : ' '
+  const perSessionLabel = plan.perSession ? `${formatPrice(plan.perSession)} за занятие` : ' '
+
   return (
     <div
       className={cn(
-        'relative flex flex-col rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
+        'relative grid h-full grid-rows-[auto_auto_1fr_auto_auto] rounded-2xl border bg-card p-6 md:p-8 transition-all duration-500 hover:-translate-y-1',
         plan.isPopular 
           ? 'border-primary shadow-2xl shadow-primary/10 scale-[1.02] z-10' 
           : 'border-border/50 hover:border-primary/30 hover:shadow-xl'
@@ -46,11 +49,9 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         <h3 className="font-serif text-xl font-semibold text-foreground">
           {plan.name}
         </h3>
-        {plan.sessions > 1 && plan.sessions < 999 && (
-          <p className="text-sm text-muted-foreground mt-1">
-            {plan.sessions} занятий
-          </p>
-        )}
+        <p className="mt-1 text-sm text-muted-foreground">
+          {sessionsLabel}
+        </p>
       </div>
 
       {/* Price */}
@@ -60,11 +61,9 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
             {formatPrice(plan.price)}
           </span>
         </div>
-        {plan.perSession && (
-          <p className="mt-2 text-sm text-muted-foreground">
-            {formatPrice(plan.perSession)} за занятие
-          </p>
-        )}
+        <p className="mt-2 text-sm text-muted-foreground">
+          {perSessionLabel}
+        </p>
       </div>
 
       {/* Features */}
