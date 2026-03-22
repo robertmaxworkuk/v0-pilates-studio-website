@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
+import { flushSync } from 'react-dom'
 import { Button } from '@/components/ui/button'
 
 export function ThemeToggle() {
@@ -12,6 +13,26 @@ export function ThemeToggle() {
   React.useEffect(() => {
     setMounted(true)
   }, [])
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    const startViewTransition = (
+      document as Document & {
+        startViewTransition?: (callback: () => void | Promise<void>) => void
+      }
+    ).startViewTransition
+
+    if (!startViewTransition) {
+      setTheme(nextTheme)
+      return
+    }
+
+    startViewTransition(() => {
+      flushSync(() => {
+        setTheme(nextTheme)
+      })
+    })
+  }
 
   if (!mounted) {
     return (
@@ -26,7 +47,7 @@ export function ThemeToggle() {
       variant="ghost"
       size="icon"
       className="h-9 w-9"
-      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      onClick={toggleTheme}
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
       <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />

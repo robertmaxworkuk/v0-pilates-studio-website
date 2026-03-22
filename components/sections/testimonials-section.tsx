@@ -11,7 +11,9 @@ import { cn } from '@/lib/utils'
 export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const [quoteMinHeight, setQuoteMinHeight] = useState(0)
   const sectionRef = useRef<HTMLDivElement>(null)
+  const measureRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,6 +30,26 @@ export function TestimonialsSection() {
     }
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const measureQuoteHeight = () => {
+      const heights = measureRefs.current
+        .map((element) => element?.getBoundingClientRect().height ?? 0)
+        .filter(Boolean)
+
+      if (heights.length > 0) {
+        setQuoteMinHeight(Math.ceil(Math.max(...heights)))
+      }
+    }
+
+    const animationFrame = window.requestAnimationFrame(measureQuoteHeight)
+    window.addEventListener('resize', measureQuoteHeight)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener('resize', measureQuoteHeight)
+    }
   }, [])
 
   const nextTestimonial = () => {
@@ -55,23 +77,40 @@ export function TestimonialsSection() {
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           )}
         >
-          <div className="relative rounded-3xl bg-card border border-border/50 p-8 md:p-12 shadow-xl">
+          <div className="relative rounded-[2rem] border border-border/50 bg-card p-5 shadow-xl sm:p-6 md:rounded-3xl md:p-12">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-5 right-5 top-16 opacity-0 sm:left-6 sm:right-6 sm:top-20 md:left-12 md:right-12 md:top-24"
+            >
+              {testimonials.map((testimonial, index) => (
+                <p
+                  key={testimonial.id}
+                  ref={(element) => {
+                    measureRefs.current[index] = element
+                  }}
+                  className="font-serif text-lg leading-relaxed text-foreground sm:text-xl md:text-2xl"
+                >
+                  "{testimonial.text}"
+                </p>
+              ))}
+            </div>
+
             {/* Quote icon */}
-            <div className="absolute left-8 top-8 md:left-12 md:top-12">
-              <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
-                <Quote className="h-8 w-8 text-primary" />
+            <div className="absolute left-5 top-5 sm:left-6 sm:top-6 md:left-12 md:top-12">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 sm:h-12 sm:w-12 md:h-16 md:w-16">
+                <Quote className="h-5 w-5 text-primary sm:h-6 sm:w-6 md:h-8 md:w-8" />
               </div>
             </div>
 
             {/* Content */}
-            <div className="relative pt-16 md:pt-12">
+            <div className="relative pt-10 sm:pt-12 md:pt-12">
               {/* Stars */}
-              <div className="mb-6 flex justify-center gap-1">
+              <div className="mb-4 flex justify-center gap-1 sm:mb-5 md:mb-6">
                 {[...Array(5)].map((_, i) => (
                   <Star
                     key={i}
                     className={cn(
-                      'h-6 w-6 transition-all duration-300',
+                      'h-5 w-5 transition-all duration-300 md:h-6 md:w-6',
                       i < currentTestimonial.rating
                         ? 'fill-primary text-primary'
                         : 'text-muted-foreground/30'
@@ -81,30 +120,33 @@ export function TestimonialsSection() {
               </div>
 
               {/* Text */}
-              <blockquote className="text-center">
-                <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
+              <blockquote
+                className="flex items-center justify-center text-center"
+                style={quoteMinHeight > 0 ? { minHeight: `${quoteMinHeight}px` } : undefined}
+              >
+                <p className="font-serif text-lg leading-relaxed text-foreground sm:text-xl md:text-2xl">
                   "{currentTestimonial.text}"
                 </p>
               </blockquote>
 
               {/* Author */}
-              <div className="mt-10 flex flex-col items-center">
-                <div className="h-16 w-16 rounded-full bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center ring-4 ring-background">
-                  <span className="font-serif text-xl font-semibold text-primary">
+              <div className="mt-6 flex flex-col items-center sm:mt-8 md:mt-10">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary/20 to-accent/20 ring-4 ring-background sm:h-14 sm:w-14 md:h-16 md:w-16">
+                  <span className="font-serif text-lg font-semibold text-primary sm:text-xl">
                     {currentTestimonial.name.charAt(0)}
                   </span>
                 </div>
-                <p className="mt-4 font-semibold text-foreground text-lg">
+                <p className="mt-3 text-base font-semibold text-foreground sm:mt-4 sm:text-lg">
                   {currentTestimonial.name}
                 </p>
                 {currentTestimonial.occupation && (
-                  <p className="text-sm text-muted-foreground">
+                  <p className="hidden text-sm text-muted-foreground sm:block">
                     {currentTestimonial.occupation}
                     {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
                   </p>
                 )}
                 {currentTestimonial.date && (
-                  <p className="mt-1 text-xs text-muted-foreground/70">
+                  <p className="mt-1 hidden text-xs text-muted-foreground/70 sm:block">
                     {currentTestimonial.date}
                   </p>
                 )}
@@ -112,12 +154,12 @@ export function TestimonialsSection() {
             </div>
 
             {/* Navigation */}
-            <div className="mt-10 flex items-center justify-center gap-6">
+            <div className="mt-6 flex items-center justify-center gap-3 sm:mt-8 sm:gap-4 md:mt-10 md:gap-6">
               <Button
                 variant="outline"
                 size="icon"
                 onClick={prevTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-10 w-10 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground md:h-12 md:w-12"
               >
                 <ChevronLeft className="h-5 w-5" />
                 <span className="sr-only">Предыдущий отзыв</span>
@@ -130,10 +172,10 @@ export function TestimonialsSection() {
                     key={index}
                     onClick={() => setCurrentIndex(index)}
                     className={cn(
-                      'h-2.5 rounded-full transition-all duration-300',
+                      'h-2 rounded-full transition-all duration-300 md:h-2.5',
                       index === currentIndex
-                        ? 'w-8 bg-primary'
-                        : 'w-2.5 bg-muted-foreground/30 hover:bg-muted-foreground/50'
+                        ? 'w-6 bg-primary md:w-8'
+                        : 'w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50 md:w-2.5'
                     )}
                   >
                     <span className="sr-only">Отзыв {index + 1}</span>
@@ -145,7 +187,7 @@ export function TestimonialsSection() {
                 variant="outline"
                 size="icon"
                 onClick={nextTestimonial}
-                className="h-12 w-12 rounded-full border-border/50 hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300"
+                className="h-10 w-10 rounded-full border-border/50 transition-all duration-300 hover:border-primary hover:bg-primary hover:text-primary-foreground md:h-12 md:w-12"
               >
                 <ChevronRight className="h-5 w-5" />
                 <span className="sr-only">Следующий отзыв</span>
@@ -155,7 +197,7 @@ export function TestimonialsSection() {
         </div>
 
         {/* All testimonials grid (smaller) */}
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-12 hidden gap-4 sm:grid sm:grid-cols-2 lg:grid-cols-3">
           {testimonials.slice(0, 3).map((testimonial, index) => (
             <button
               key={testimonial.id}
