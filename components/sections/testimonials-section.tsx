@@ -11,7 +11,9 @@ import { cn } from '@/lib/utils'
 export function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isVisible, setIsVisible] = useState(false)
+  const [quoteMinHeight, setQuoteMinHeight] = useState(0)
   const sectionRef = useRef<HTMLDivElement>(null)
+  const measureRefs = useRef<(HTMLParagraphElement | null)[]>([])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,6 +30,26 @@ export function TestimonialsSection() {
     }
 
     return () => observer.disconnect()
+  }, [])
+
+  useEffect(() => {
+    const measureQuoteHeight = () => {
+      const heights = measureRefs.current
+        .map((element) => element?.getBoundingClientRect().height ?? 0)
+        .filter(Boolean)
+
+      if (heights.length > 0) {
+        setQuoteMinHeight(Math.ceil(Math.max(...heights)))
+      }
+    }
+
+    const animationFrame = window.requestAnimationFrame(measureQuoteHeight)
+    window.addEventListener('resize', measureQuoteHeight)
+
+    return () => {
+      window.cancelAnimationFrame(animationFrame)
+      window.removeEventListener('resize', measureQuoteHeight)
+    }
   }, [])
 
   const nextTestimonial = () => {
@@ -56,6 +78,23 @@ export function TestimonialsSection() {
           )}
         >
           <div className="relative rounded-3xl bg-card border border-border/50 p-8 md:p-12 shadow-xl">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute left-8 right-8 top-24 opacity-0 md:left-12 md:right-12 md:top-24"
+            >
+              {testimonials.map((testimonial, index) => (
+                <p
+                  key={testimonial.id}
+                  ref={(element) => {
+                    measureRefs.current[index] = element
+                  }}
+                  className="font-serif text-xl leading-relaxed text-foreground md:text-2xl"
+                >
+                  "{testimonial.text}"
+                </p>
+              ))}
+            </div>
+
             {/* Quote icon */}
             <div className="absolute left-8 top-8 md:left-12 md:top-12">
               <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center">
@@ -81,7 +120,10 @@ export function TestimonialsSection() {
               </div>
 
               {/* Text */}
-              <blockquote className="text-center">
+              <blockquote
+                className="flex items-center justify-center text-center"
+                style={quoteMinHeight > 0 ? { minHeight: `${quoteMinHeight}px` } : undefined}
+              >
                 <p className="font-serif text-xl text-foreground md:text-2xl leading-relaxed">
                   "{currentTestimonial.text}"
                 </p>
