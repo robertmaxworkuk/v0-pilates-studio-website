@@ -157,7 +157,7 @@ export function MethodSection() {
               Методика Pilatta
             </p>
             <p className="mt-1 text-base font-semibold text-foreground">
-              6 преимуществ методики
+              6 ключевых принципов
             </p>
           </div>
           <div className="min-h-5">
