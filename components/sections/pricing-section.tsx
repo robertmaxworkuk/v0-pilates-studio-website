@@ -45,8 +45,8 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 pt-2">
-        <h3 className="font-serif text-xl font-semibold text-foreground">
+      <div className="mb-6 flex min-h-[7.5rem] flex-col pt-2">
+        <h3 className="min-h-[4.5rem] font-serif text-xl font-semibold text-foreground">
           {plan.name}
         </h3>
         <p className="mt-1 text-sm text-muted-foreground">
@@ -55,7 +55,7 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
       </div>
 
       {/* Price */}
-      <div className="mb-6">
+      <div className="mb-6 flex min-h-[5.5rem] flex-col">
         <div className="flex items-baseline gap-1">
           <span className="font-serif text-4xl font-semibold text-foreground">
             {formatPrice(plan.price)}
