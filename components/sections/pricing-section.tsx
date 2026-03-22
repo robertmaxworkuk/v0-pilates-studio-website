@@ -12,8 +12,14 @@ import { cn } from '@/lib/utils'
 type PricingType = 'individual' | 'group'
 
 function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
-  const sessionsLabel = plan.sessions > 1 && plan.sessions < 999 ? `${plan.sessions} занятий` : ' '
-  const perSessionLabel = plan.perSession ? `${formatPrice(plan.perSession)} за занятие` : ' '
+  const sessionsLabel = plan.sessions === 999 ? 'Безлимитный доступ' : `${plan.sessions} ${plan.sessions === 1 ? 'занятие' : 'занятий'}`
+  const priceDetails = plan.perSession
+    ? `${formatPrice(plan.perSession)} за занятие`
+    : plan.isTrial
+      ? 'Специальная цена первого визита'
+      : plan.sessions === 999
+        ? 'Неограниченное количество занятий'
+        : 'Разовое посещение'
 
   return (
     <div
@@ -45,24 +51,24 @@ function PricingCard({ plan, index }: { plan: PricingPlan; index: number }) {
         </div>
       )}
 
-      <div className="mb-6 flex min-h-[7.5rem] flex-col pt-2">
-        <h3 className="min-h-[4.5rem] font-serif text-xl font-semibold text-foreground">
+      <div className="mb-6 flex min-h-[7rem] flex-col justify-between gap-4 pt-2">
+        <h3 className="font-serif text-xl font-semibold leading-tight text-foreground">
           {plan.name}
         </h3>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <span className="inline-flex w-fit items-center rounded-full bg-muted px-3 py-1 text-xs font-medium text-muted-foreground">
           {sessionsLabel}
-        </p>
+        </span>
       </div>
 
       {/* Price */}
-      <div className="mb-6 flex min-h-[5.5rem] flex-col">
+      <div className="mb-6 flex min-h-[5.5rem] flex-col justify-between">
         <div className="flex items-baseline gap-1">
           <span className="font-serif text-4xl font-semibold text-foreground">
             {formatPrice(plan.price)}
           </span>
         </div>
         <p className="mt-2 text-sm text-muted-foreground">
-          {perSessionLabel}
+          {priceDetails}
         </p>
       </div>
 
