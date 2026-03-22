@@ -136,13 +136,12 @@ export function TestimonialsSection() {
                     {currentTestimonial.name.charAt(0)}
                   </span>
                 </div>
-                <p className="mt-3 max-w-full overflow-hidden text-ellipsis whitespace-nowrap px-2 text-center text-xs text-muted-foreground sm:mt-4 sm:text-sm">
-                  <span className="font-semibold text-foreground">{currentTestimonial.name}</span>
-                  {(currentTestimonial.occupation || currentTestimonial.age || currentTestimonial.date) && (
-                    <span className="mx-2 text-muted-foreground/40">•</span>
-                  )}
+                <p className="mt-3 text-center text-sm font-semibold text-foreground sm:mt-4 sm:text-base">
+                  {currentTestimonial.name}
+                </p>
+                <p className="mt-1 flex max-w-full items-center justify-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap px-2 text-center text-xs text-muted-foreground sm:text-sm">
                   {(currentTestimonial.occupation || currentTestimonial.age) && (
-                    <span>
+                    <span className="truncate">
                       {currentTestimonial.occupation}
                       {currentTestimonial.age && `, ${currentTestimonial.age} лет`}
                     </span>
@@ -150,7 +149,7 @@ export function TestimonialsSection() {
                   {currentTestimonial.date && (
                     <>
                       {(currentTestimonial.occupation || currentTestimonial.age) && (
-                        <span className="mx-2 text-muted-foreground/40">•</span>
+                        <span className="text-muted-foreground/40">•</span>
                       )}
                       <span className="inline-flex rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground sm:px-2.5 sm:py-1 sm:text-xs">
                         {currentTestimonial.date}
