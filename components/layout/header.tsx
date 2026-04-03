@@ -67,12 +67,12 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-background/80 backdrop-blur-xl shadow-sm border-b border-border/50'
-          : 'bg-transparent'
+          ? 'bg-background/70 backdrop-blur-2xl shadow-sm border-b border-border/50'
+          : 'bg-gradient-to-b from-background/80 to-transparent'
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between md:h-20">
+        <div className={cn("flex items-center justify-between transition-all duration-500", isScrolled ? "h-14 md:h-16" : "h-16 md:h-24")}>
           {/* Logo */}
           <a 
             href="#hero" 

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import { SectionWrapper } from '@/components/layout/section-wrapper'
 import { SectionHeading } from '@/components/shared/section-heading'
 import { benefits } from '@/lib/data/studio'
@@ -24,25 +24,6 @@ const iconMap: Record<string, React.ReactNode> = {
 }
 
 export function BenefitsSection() {
-  const [isVisible, setIsVisible] = useState(false)
-  const sectionRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [])
 
   return (
     <SectionWrapper id="benefits" background="muted">
@@ -51,37 +32,53 @@ export function BenefitsSection() {
         subtitle="Метод, который трансформирует тело и улучшает качество жизни"
       />
 
-      <div ref={sectionRef} className="grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3 lg:gap-6">
+      <motion.div 
+        className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-5 lg:grid-cols-3 lg:gap-6"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={{
+          hidden: { opacity: 0 },
+          visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.1 },
+          },
+        }}
+      >
         {benefits.map((benefit, index) => (
-          <div
+          <motion.div
             key={benefit.id}
-            className={cn(
-              'group relative flex h-full flex-col rounded-[1.5rem] border border-border/50 bg-card p-5 shadow-sm transition-all duration-500 hover:shadow-xl hover:shadow-primary/5 sm:rounded-2xl sm:p-6 lg:p-8 lg:hover:-translate-y-1',
-              isVisible
-                ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8'
-            )}
-            style={{
-              transitionDelay: isVisible ? `${index * 100}ms` : '0ms'
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] }
+              }
             }}
+            className={cn(
+              'group relative flex h-full flex-col rounded-[1.5rem] border border-border/50 bg-card p-6 shadow-sm transition-all duration-300 hover:shadow-xl hover:shadow-primary/5 sm:rounded-2xl lg:p-8',
+              /* Настройка Bento Grid: чередование размеров карточек на десктопе */
+              index === 0 || index === 3 ? 'sm:col-span-2 lg:col-span-2' : 'col-span-1'
+            )}
           >
             {/* Hover gradient */}
-            <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="absolute inset-0 rounded-[1.5rem] bg-gradient-to-br from-primary/5 via-transparent to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 sm:rounded-2xl" />
             
-            <div className="relative z-10">
-              <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary transition-all duration-300 group-hover:scale-110 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground sm:mb-5 sm:h-12 sm:w-12 lg:h-14 lg:w-14">
+            <div className="relative z-10 flex flex-col h-full">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary/20 to-primary/5 text-primary transition-all duration-300 group-hover:scale-110 group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground sm:mb-5 lg:h-14 lg:w-14">
                 {iconMap[benefit.icon] || <Sparkles className="h-6 w-6" />}
               </div>
-              <h3 className="font-serif text-lg font-semibold leading-tight text-foreground sm:text-xl">
+              <h3 className="font-serif text-lg font-semibold leading-tight text-foreground sm:text-xl lg:text-2xl">
                 {benefit.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:mt-3 sm:text-base">
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:text-base flex-grow">
                 {benefit.description}
               </p>
             </div>
-          </div>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
     </SectionWrapper>
   )
 }

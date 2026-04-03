@@ -39,7 +39,7 @@ export function CTAButton({
       onClick={handleClick}
       className={cn(
         'group font-semibold transition-all duration-300 gap-2',
-        variant === 'default' && 'hover:shadow-lg hover:shadow-primary/25 hover:scale-[1.02]',
+        variant === 'default' && 'hover:shadow-lg hover:shadow-primary/25 lg:hover:scale-[1.02] active:scale-95 transition-all',
         className
       )}
     >

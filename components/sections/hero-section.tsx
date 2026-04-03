@@ -1,26 +1,32 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useRef } from 'react'
+import { motion } from 'framer-motion'
 import { CTAButton } from '@/components/shared/cta-button'
 import { ImagePlaceholder } from '@/components/shared/image-placeholder'
 import { ArrowDown } from 'lucide-react'
 
-export function HeroSection() {
-  const contentRef = useRef<HTMLDivElement>(null)
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.1,
+    },
+  },
+}
 
-  useEffect(() => {
-    const content = contentRef.current
-    if (content) {
-      content.style.opacity = '0'
-      content.style.transform = 'translateY(30px)'
-      
-      setTimeout(() => {
-        content.style.transition = 'opacity 0.8s ease-out, transform 0.8s ease-out'
-        content.style.opacity = '1'
-        content.style.transform = 'translateY(0)'
-      }, 200)
-    }
-  }, [])
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] as const }
+  },
+}
+
+export function HeroSection() {
 
   return (
     <section id="hero" className="relative overflow-hidden bg-background">
@@ -39,21 +45,34 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="relative z-10 mx-auto flex max-w-7xl items-center px-4 pt-24 pb-12 sm:px-6 sm:pt-28 md:min-h-screen md:max-w-[88rem] md:px-8 md:py-16 xl:max-w-[96rem]">
-        <div ref={contentRef} className="w-full max-w-2xl md:py-20">
+        <motion.div 
+          className="w-full max-w-2xl md:py-20"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="md:hidden">
-            <div className="px-1">
-              <h1 className="text-balance font-serif text-[2.35rem] font-semibold leading-[0.98] tracking-tight text-foreground">
+            <motion.div variants={itemVariants} className="px-1">
+              <h1 className="text-balance font-serif text-[2.35rem] font-semibold leading-[0.98] tracking-tight text-foreground sm:text-[2.75rem]">
                 Откройте силу{' '}
-                <span className="text-primary">осознанного</span>{' '}
+                <span className="text-primary relative inline-block">
+                  осознанного
+                  <motion.span 
+                    className="absolute -bottom-1 left-0 h-[2px] w-full bg-primary/30" 
+                    initial={{ scaleX: 0 }} 
+                    animate={{ scaleX: 1 }} 
+                    transition={{ delay: 0.8, duration: 0.8 }}
+                  />
+                </span>{' '}
                 движения
               </h1>
 
-              <p className="mt-4 max-w-md text-base leading-relaxed text-muted-foreground text-pretty">
+              <p className="mt-5 max-w-md text-base leading-relaxed text-muted-foreground text-pretty">
                 Пилатес с сертифицированным тренером для здоровья спины, красивой осанки и гармонии тела.
               </p>
-            </div>
+            </motion.div>
 
-            <div className="mt-6 overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-2xl shadow-primary/10">
+            <motion.div variants={itemVariants} className="mt-8 overflow-hidden rounded-[2rem] border border-border/70 bg-card shadow-2xl shadow-primary/10">
               <div className="relative">
                 <ImagePlaceholder
                   src="/images/hero.jpg"
@@ -109,12 +128,16 @@ export function HeroSection() {
                   </a>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
 
           {/* Desktop text card */}
-          <div className="hidden rounded-2xl border border-border/50 bg-card/80 p-8 shadow-2xl backdrop-blur-md sm:p-10 md:block md:p-12">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
+          <motion.div 
+            variants={itemVariants} 
+            className="hidden rounded-3xl border border-border/40 bg-background/80 p-8 shadow-2xl backdrop-blur-xl sm:p-10 md:block md:p-12 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 -m-20 w-64 h-64 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2 border border-primary/20">
               <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
               <span className="text-sm font-semibold uppercase tracking-wider text-primary">
                 Персональные тренировки
@@ -160,8 +183,8 @@ export function HeroSection() {
                 <div className="mt-1 text-sm text-muted-foreground">программ</div>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   )
