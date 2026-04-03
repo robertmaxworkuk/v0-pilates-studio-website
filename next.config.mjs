@@ -14,12 +14,18 @@ export default withSentryConfig(nextConfig, {
   org: "robertmaxwork",
   project: "v0-pilates-studio-website",
 
-  // Source map upload (needs SENTRY_AUTH_TOKEN — add later)
-  authToken: process.env.SENTRY_AUTH_TOKEN,
+  // Only print logs for uploading source maps in CI
+  silent: !process.env.CI,
 
-  // Upload wider set of client source files
+  // Upload a larger set of source maps for prettier stack traces
   widenClientFileUpload: true,
 
-  // Suppress non-CI build output
-  silent: !process.env.CI,
+  // tunnelRoute: "/monitoring", // uncomment to bypass ad-blockers
+
+  webpack: {
+    automaticVercelMonitors: true,
+    treeshake: {
+      removeDebugLogging: true,
+    },
+  },
 });

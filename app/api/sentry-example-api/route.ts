@@ -1,13 +1,16 @@
-import { NextResponse } from "next/server";
 import * as Sentry from "@sentry/nextjs";
+export const dynamic = "force-dynamic";
 
-export async function GET() {
-  try {
-    throw new Error(
-      "Sentry Test Error — server-side API route (delete me after test)"
-    );
-  } catch (error) {
-    Sentry.captureException(error);
-    return NextResponse.json({ error: "Test error captured" }, { status: 500 });
+class SentryExampleAPIError extends Error {
+  constructor(message: string | undefined) {
+    super(message);
+    this.name = "SentryExampleAPIError";
   }
+}
+
+export function GET() {
+  Sentry.logger.info("Sentry example API called");
+  throw new SentryExampleAPIError(
+    "This error is raised on the backend called by the example page.",
+  );
 }

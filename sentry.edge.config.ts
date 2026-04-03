@@ -1,10 +1,14 @@
+// This file configures the initialization of Sentry for edge features.
+// https://docs.sentry.io/platforms/javascript/guides/nextjs/
+
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN,
+  dsn: process.env.SENTRY_DSN ?? "https://93b576fea5428984b0a59e272d62cddb@o4511156410253312.ingest.de.sentry.io/4511156700774480",
 
-  sendDefaultPii: true,
-  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
+  tracesSampleRate: 1,
 
   enableLogs: true,
+
+  sendDefaultPii: true,
 });

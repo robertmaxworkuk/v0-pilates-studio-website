@@ -8,6 +8,4 @@ export async function register() {
   }
 }
 
-// Automatically captures all unhandled server-side request errors
-// Requires @sentry/nextjs >= 8.28.0
 export { captureRequestError as onRequestError } from "@sentry/nextjs";
