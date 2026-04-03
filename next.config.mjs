@@ -14,14 +14,11 @@ export default withSentryConfig(nextConfig, {
   org: "robertmaxwork",
   project: "v0-pilates-studio-website",
 
-  // Source map upload auth token (optional, add SENTRY_AUTH_TOKEN when ready)
+  // Source map upload (needs SENTRY_AUTH_TOKEN — add later)
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
-  // Upload wider set of client source files for better stack traces
+  // Upload wider set of client source files
   widenClientFileUpload: true,
-
-  // Proxy API route to bypass ad-blockers
-  tunnelRoute: "/monitoring",
 
   // Suppress non-CI build output
   silent: !process.env.CI,
