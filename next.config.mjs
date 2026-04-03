@@ -11,7 +11,10 @@ const nextConfig = {
 };
 
 export default withSentryConfig(nextConfig, {
-  // Source map upload — requires SENTRY_AUTH_TOKEN, SENTRY_ORG, SENTRY_PROJECT
+  org: "robertmaxwork",
+  project: "v0-pilates-studio-website",
+
+  // Source map upload auth token (optional, add SENTRY_AUTH_TOKEN when ready)
   authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Upload wider set of client source files for better stack traces
