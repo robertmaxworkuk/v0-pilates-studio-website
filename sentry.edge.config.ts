@@ -4,9 +4,10 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.SENTRY_DSN ?? "https://93b576fea5428984b0a59e272d62cddb@o4511156410253312.ingest.de.sentry.io/4511156700774480",
+  dsn: process.env.SENTRY_DSN,
 
-  tracesSampleRate: 1,
+  // 100% in dev, 10% in production
+  tracesSampleRate: process.env.NODE_ENV === "development" ? 1.0 : 0.1,
 
   enableLogs: true,
 

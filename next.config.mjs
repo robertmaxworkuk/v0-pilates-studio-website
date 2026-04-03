@@ -14,18 +14,11 @@ export default withSentryConfig(nextConfig, {
   org: "robertmaxwork",
   project: "v0-pilates-studio-website",
 
-  // Only print logs for uploading source maps in CI
+  // Suppress non-CI build output (avoids noise during local development)
   silent: !process.env.CI,
 
-  // Upload a larger set of source maps for prettier stack traces
+  // Upload wider set of source maps for readable stack traces in Sentry
   widenClientFileUpload: true,
 
-  // tunnelRoute: "/monitoring", // uncomment to bypass ad-blockers
-
-  webpack: {
-    automaticVercelMonitors: true,
-    treeshake: {
-      removeDebugLogging: true,
-    },
-  },
+  // tunnelRoute: "/monitoring", // enable to bypass ad-blockers (increases server load)
 });
