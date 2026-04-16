@@ -1,35 +1,123 @@
-# v0-pilates-studio-website
+# Pilates Studio Website
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Добро пожаловать в репозиторий проекта сайта студии пилатеса! Этот веб-сайт представляет собой современный, высокопроизводительный Landing Page, разработанный для предоставления премиального и удобного пользовательского опыта. Дизайн включает элементы **стеклянного морфизма (glassmorphism)**, плавные **scroll-анимации** и модульную сетку **Bento Grid**.
 
-## Built with v0
+## Оглавление
+1. [Обзор проекта](#обзор-проекта)
+2. [Технический стек](#технический-стек)
+3. [Структура директорий](#структура-директорий)
+4. [Инструкции по локальному запуску](#инструкции-по-локальному-запуску)
+5. [Разработка и GitHub Workflow](#разработка-и-github-workflow)
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+---
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_qeby4JBadr6qLQXEEhR4WR6oUoPz)
+## Обзор проекта
 
-## Getting Started
+Сайт представляет современную студию пилатеса и призван информировать посетителей о программах, тренерах и ценах, а также собирать заявки.
+Основные фичи интерфейса:
+- Респонсивный и адаптивный дизайн для всех устройств.
+- Продвинутые секции: Hero, About, Program, Pricing, Testimonials, FAQ и Contact.
+- Форма обратной связи с валидацией "на лету".
 
-First, run the development server:
+Вся разработка ведётся в рабочей ветке `dev`. Ветка `main` заблокирована и используется только для эталонных (production) релизов.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
+---
+
+## Технический стек
+
+Проект построен на передовом React-экосистеме для обеспечения лучшего опыта как для пользователей, так и для разработчиков.
+
+### ⚙️ Язык, Фреймворк и Роутинг
+- **Язык разработки:** TypeScript (строгая типизация)
+- **Фреймворк:** [Next.js 16](https://nextjs.org/) (с использованием последнего React 19)
+- **Роутинг:** App Router (`app/`) для SSR (Server-Side Rendering) и RSC (React Server Components).
+
+### 🎨 Стилизация, UI и Анимации
+- **CSS-движок:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **UI Библиотека:** [shadcn/ui](https://ui.shadcn.com/) (включая примитивы от Radix UI: `radix-ui/react-accordion`, `radix-ui/react-dialog` и т.д.)
+- **Иконки:** [Lucide React](https://lucide.dev/)
+- **Карусель и Слайдеры:** [Embla Carousel React](https://www.embla-carousel.com/)
+- **Анимации:** [Framer Motion](https://www.framer.com/motion/) в сочетании со вспомогательными утилитами (например, `tw-animate-css` и `tailwindcss-animate`).
+- **Смена тем (Светлая/Темная):** `next-themes`
+
+### 📋 Формы и Обмен данными
+- **Управление формами:** [React Hook Form](https://react-hook-form.com/)
+- **Схема валидации данных:** [Zod](https://zod.dev/)
+
+### 🚀 Инфраструктура, Мониторинг и Аналитика
+- **Хостинг и CD:** Vercel
+- **Аналитика посещаемости:** `@vercel/analytics`
+- **Агрегация и трекинг ошибок:** [Sentry](https://sentry.io/) (`@sentry/nextjs` с интеграцией на клиенте, сервере и Edge).
+- **Среда разработки:** Node v22+
+
+---
+
+## Структура директорий
+
+Кодовая база спроектирована модульно:
+
+```text
+├── app/                  # Next.js App Router (содержит layout.tsx, page.tsx, globals.css, global-error.tsx)
+├── components/           # React компоненты
+│   ├── layout/           # Общие элементы макета (Header, Footer)
+│   ├── sections/         # Блоки-секции лендинга (hero-section, about-section, faq-section и т.д.)
+│   ├── ui/               # Базовые UI-компоненты (shadcn/ui - кнопки, инпуты, диалоги)
+│   └── shared/           # Переиспользуемые междоменные компоненты
+├── hooks/                # Пользовательские хуки (use-mobile, use-toast)
+├── lib/                  # Утилиты и конфигурационные файлы (utils.ts, format.ts)
+│   └── data/             # Моковые данные или статичный контент
+├── public/               # Статические ресурсы (изображения, иконки, шрифты)
+├── implementation/       # Планы и документация по имплементации (IMPLEMENTATION_PLAN.md)
+└── root файлы            # Конфиги: next.config.mjs, postcss.config.mjs, sentry.server/edge/client.config.ts и т.д.
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Инструкции по локальному запуску
 
-## Learn More
+Склонируйте репозиторий проекта:
 
-To learn more, take a look at the following resources:
+```bash
+git clone https://github.com/robertmaxworkuk/v0-pilates-studio-website.git
+cd v0-pilates-studio-website
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+Обязательно переключитесь на ветку разработки **`dev`**:
+```bash
+git checkout dev
+```
 
-<a href="https://v0.app/chat/api/kiro/clone/robertmaxworkuk/v0-pilates-studio-website" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+1. **Установите зависимости:**
+   Используйте один из пакетных менеджеров (`npm`, `yarn` или `pnpm`).
+   ```bash
+   npm install
+   ```
+
+2. **Переменные окружения:**
+   Скопируйте пример файла конфигурации `.env.example` (при наличии) в `.env` и добавьте ключи (Sentry, аналитика и др., если необходимо тестировать локально).
+
+3. **Запустите development-сервер:**
+   ```bash
+   npm run dev
+   ```
+
+4. **Работа в браузере:**
+   Откройте [http://localhost:3000](http://localhost:3000). Страница будет автоматически (Hot Reload) обновляться по мере того, как вы вносите изменения в `app/page.tsx` или в компоненты из `components/sections/`.
+
+---
+
+## Разработка и GitHub Workflow
+
+Мы работаем по строгим правилам для обеспечения бесперебойного процесса слияния кода и прозрачности:
+
+> **ВАЖНО!** Любая разработка без предварительного создания и привязки к **Issue** ЗАПРЕЩЕНА.
+
+Пожалуйста, перед началом работы *внимательно* изучите: 
+👉 **[GITHUB_ISSUES_GUIDE.md](./GITHUB_ISSUES_GUIDE.md)**
+
+Вкратце, разработчики и ИИ-агенты:
+1. Читают и заносят задачи через интегрированные `search_issues` / `list_issues`.
+2. Создают временную ветку под задачу: формата `feature/ID-title`, `bugfix/ID-title`, или `docs/ID-title` от базовой ветки `dev`.
+3. Оставляют прозрачные комментарии прогресса в Issue трекере (Status Start, In Progress, Blockers, PR ready).
+4. Делают Pull Request `-> dev`, добавляя связанный тег к описанию PR (`Closes #ID`).
+5. **НИКОГДА** не производят локальный Merge и Merge Pull Request без явного разрешения и подтверждения от владельца/Tech Lead в процессе сессии.
