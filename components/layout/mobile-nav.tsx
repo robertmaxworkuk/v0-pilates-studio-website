@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { CTAButton } from '@/components/shared/cta-button'
+import { AuthNav } from '@/components/layout/auth-nav'
 import { BrandLogo } from '@/components/shared/brand-logo'
 
 interface NavItem {
@@ -59,7 +60,8 @@ export function MobileNav({ navItems }: MobileNavProps) {
               {item.label}
             </button>
           ))}
-          <div className="mt-6 pt-6 border-t border-border">
+          <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2">
+            <AuthNav isMobile={true} className="w-full justify-start px-4 text-base font-medium" />
             <CTAButton className="w-full" size="lg" />
           </div>
         </nav>

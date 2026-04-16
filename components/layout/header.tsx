@@ -8,6 +8,7 @@ import { ThemeToggle } from '@/components/shared/theme-toggle'
 import { BrandLogo } from '@/components/shared/brand-logo'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { AuthNav } from '@/components/layout/auth-nav'
 
 const MobileNav = dynamic(() => import('./mobile-nav').then(mod => mod.MobileNav), {
   ssr: false,
@@ -105,7 +106,8 @@ export function Header() {
           {/* Right side */}
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <div className="hidden lg:block">
+            <div className="hidden lg:flex items-center gap-3">
+              <AuthNav />
               <CTAButton size="default" />
             </div>
             <div className="lg:hidden">
