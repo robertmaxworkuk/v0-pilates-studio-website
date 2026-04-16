@@ -13,6 +13,7 @@ const signInSchema = z.object({
 const signUpSchema = signInSchema.extend({
   first_name: z.string().min(2, 'Имя должно содержать минимум 2 буквы'),
   last_name: z.string().min(2, 'Фамилия должна содержать минимум 2 буквы'),
+  phone: z.string().min(10, 'Введите корректный номер телефона'),
 })
 
 export async function signInAction(formData: FormData) {
@@ -55,6 +56,7 @@ export async function signUpAction(formData: FormData) {
       data: {
         first_name: validation.data.first_name,
         last_name: validation.data.last_name,
+        phone: validation.data.phone,
       }
     }
   })

@@ -1,12 +1,12 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { signUpAction } from './actions'
+import { signUpAction } from '../actions'
+import { motion } from 'framer-motion'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -19,17 +19,32 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ArrowLeft } from 'lucide-react'
+import { BrandLogo } from '@/components/shared/brand-logo'
 
 const signUpSchema = z.object({
   first_name: z.string().min(2, 'Имя должно содержать минимум 2 буквы'),
   last_name: z.string().min(2, 'Фамилия должна содержать минимум 2 буквы'),
+  phone: z.string().min(10, 'Введите корректный номер телефона'),
   email: z.string().email('Некорректный email адрес'),
   password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
 })
 
+// Контейнер с анимациями для дочерних элементов
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 15 },
+  show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } },
+}
+
 export default function SignUpPage() {
-  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -38,6 +53,7 @@ export default function SignUpPage() {
     defaultValues: {
       first_name: '',
       last_name: '',
+      phone: '',
       email: '',
       password: '',
     },
@@ -62,21 +78,37 @@ export default function SignUpPage() {
   }
 
   return (
-    <div className="container relative min-h-screen flex items-center justify-center pt-20 pb-12">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-        <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            Создать аккаунт
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Введите свои данные для создания аккаунта
-          </p>
+    <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
+      {/* Левая панель с формой */}
+      <div className="flex items-center justify-center p-8 bg-background relative">
+        <div className="absolute top-8 left-8 sm:top-12 sm:left-12">
+          <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
+            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+            На главную
+          </Link>
         </div>
 
-        <div className="grid gap-6">
+        <motion.div 
+          className="w-full max-w-[400px] mt-12"
+          variants={containerVariants}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.div variants={itemVariants} className="text-center mb-10">
+            <div className="flex justify-center mb-6">
+              <BrandLogo />
+            </div>
+            <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+              Создать аккаунт
+            </h1>
+            <p className="text-sm text-muted-foreground mt-2">
+              Присоединяйтесь к Pilatta и начните свой путь к здоровью
+            </p>
+          </motion.div>
+
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+              <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
                   name="first_name"
@@ -84,7 +116,7 @@ export default function SignUpPage() {
                     <FormItem>
                       <FormLabel>Имя</FormLabel>
                       <FormControl>
-                        <Input placeholder="Анна" {...field} />
+                        <Input placeholder="Анна" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -97,62 +129,118 @@ export default function SignUpPage() {
                     <FormItem>
                       <FormLabel>Фамилия</FormLabel>
                       <FormControl>
-                        <Input placeholder="Смирнова" {...field} />
+                        <Input placeholder="Смирнова" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-              </div>
+              </motion.div>
 
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="name@example.com" type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Телефон</FormLabel>
+                      <FormControl>
+                        <Input placeholder="+7 (999) 000-00-00" type="tel" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
 
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Пароль</FormLabel>
-                    <FormControl>
-                      <Input placeholder="********" type="password" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input placeholder="anna@pilatta.ru" type="email" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Пароль</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Минимум 6 символов" type="password" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </motion.div>
 
               {error && (
-                <div className="text-sm font-medium text-destructive">
+                <motion.div variants={itemVariants} className="text-sm font-medium text-destructive p-3 bg-destructive/10 rounded-lg">
                   {error}
-                </div>
+                </motion.div>
               )}
 
-              <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                Зарегистрироваться
-              </Button>
+              <motion.div variants={itemVariants} className="pt-2">
+                <Button type="submit" className="w-full h-12 text-base rounded-xl hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold" disabled={isPending}>
+                  {isPending && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+                  Зарегистрироваться
+                </Button>
+              </motion.div>
             </form>
           </Form>
-        </div>
 
-        <p className="px-8 text-center text-sm text-muted-foreground">
-          Уже есть аккаунт?{" "}
-          <Link href="/sign-in" className="underline underline-offset-4 hover:text-primary">
-            Войти
-          </Link>
-        </p>
+          <motion.p variants={itemVariants} className="mt-8 text-center text-sm text-muted-foreground">
+            Уже есть аккаунт?{" "}
+            <Link href="/sign-in" className="font-semibold text-foreground hover:text-primary transition-colors underline underline-offset-4">
+              Войти
+            </Link>
+          </motion.p>
+        </motion.div>
+      </div>
+
+      {/* Правая панель с изображением */}
+      <div className="hidden md:block relative bg-muted overflow-hidden">
+        <motion.div 
+          initial={{ scale: 1.05 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.5, ease: "easeOut" }}
+          className="absolute inset-0"
+        >
+          {/* Заглушка, если нет конкретного фото, берем эстетичное случайное с Unsplash */}
+          <div 
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: "url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2069&auto=format&fit=crop')" }}
+          />
+          {/* Градиентный оверлей для премиального вида */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+          
+          <div className="absolute inset-0 flex flex-col justify-end p-12 lg:p-20">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="max-w-md"
+            >
+              <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-md">
+                Раскройте свой потенциал с Pilatta
+              </h2>
+              <p className="text-lg text-white/80 drop-shadow-sm font-medium">
+                Присоединяйтесь к комьюнити профессионалов и найдите свой идеальный баланс между телом и разумом.
+              </p>
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
     </div>
   )

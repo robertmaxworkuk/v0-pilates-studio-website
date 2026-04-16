@@ -166,12 +166,13 @@ CREATE TRIGGER on_user_packages_updated
 CREATE OR REPLACE FUNCTION "public"."on_auth_user_created"()
 RETURNS TRIGGER AS $$
 BEGIN
-    INSERT INTO "public"."users_profile" (id, email, first_name, last_name)
+    INSERT INTO "public"."users_profile" (id, email, first_name, last_name, phone)
     VALUES (
         NEW.id,
         NEW.email,
         COALESCE(NEW.raw_user_meta_data->>'first_name', ''),
-        COALESCE(NEW.raw_user_meta_data->>'last_name', '')
+        COALESCE(NEW.raw_user_meta_data->>'last_name', ''),
+        NEW.raw_user_meta_data->>'phone'
     );
     RETURN NEW;
 END;
