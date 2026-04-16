@@ -1,35 +1,52 @@
-# v0-pilates-studio-website
+# Pilates Studio Website
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [v0](https://v0.app).
+Добро пожаловать в репозиторий проекта сайта студии пилатеса! Этот проект разработан для предоставления премиального и удобного пользовательского опыта, адаптивного дизайна и высокой производительности.
 
-## Built with v0
+## Обзор проекта
 
-This repository is linked to a [v0](https://v0.app) project. You can continue developing by visiting the link below -- start new chats to make changes, and v0 will push commits directly to this repo. Every merge to `main` will automatically deploy.
+Сайт студии пилатеса с современным UX/UI (стеклянный морфизм, плавные скролл-анимации, сетка bento grid). 
+Вся разработка ведётся в ветке `dev`. Ветка `main` используется для эталонных (production) релизов.
 
-[Continue working on v0 →](https://v0.app/chat/projects/prj_qeby4JBadr6qLQXEEhR4WR6oUoPz)
+## Технический стек
 
-## Getting Started
+Проект написан на современном React-стеке с использованием Next.js (App Router).
 
-First, run the development server:
+**Core:**
+- **Фреймворк:** [Next.js 16](https://nextjs.org/) (React 19)
+- **Язык:** TypeScript
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+**Стилизация и UI:**
+- **CSS-фреймворк:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Комплексные UI-компоненты:** [shadcn/ui](https://ui.shadcn.com/) (в основе - Radix UI)
+- **Иконки:** [Lucide React](https://lucide.dev/)
+- **Анимации:** [Framer Motion](https://www.framer.com/motion/) (через `tw-animate-css` / интеграции)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Формы и валидация:**
+- **React Hook Form** + **Zod**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Инфраструктура и мониторинг:**
+- **Хостинг / Аналитика:** Vercel / @vercel/analytics
+- **Мониторинг ошибок:** [Sentry](https://sentry.io/) (@sentry/nextjs)
 
-## Learn More
+## Инструкция для разработчиков
 
-To learn more, take a look at the following resources:
+Склонируйте репозиторий и перейдите в его директорию. Убедитесь, что вы находитесь в ветке **`dev`** (основная ветка для разработки).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-- [v0 Documentation](https://v0.app/docs) - learn about v0 and how to use it.
+1. Установите зависимости (с помощью `pnpm`, `npm` или `yarn`):
+   ```bash
+   npm install
+   ```
 
-<a href="https://v0.app/chat/api/kiro/clone/robertmaxworkuk/v0-pilates-studio-website" alt="Open in Kiro"><img src="https://pdgvvgmkdvyeydso.public.blob.vercel-storage.com/open%20in%20kiro.svg?sanitize=true" /></a>
+2. Запустите сервер для разработки:
+   ```bash
+   npm run dev
+   ```
+
+3. Откройте [http://localhost:3000](http://localhost:3000) в браузере. Вы можете начинать редактирование с `app/page.tsx` — страница будет автоматически обновляться при сохранении.
+
+## Процесс работы (GitHub Workflow)
+
+Пожалуйста, ознакомьтесь с [GITHUB_ISSUES_GUIDE.md](./GITHUB_ISSUES_GUIDE.md) перед началом работы. Все агенты и разработчики должны строго придерживаться описанного там процесса:
+1. Выполнять работу только в рамках заведенных задач (Issues).
+2. Вести разработку в feature/bugfix ветках от `dev`.
+3. Все изменения попадают в `dev` ТОЛЬКО через Pull Requests с обязательной привязкой к Issue.
