@@ -222,8 +222,9 @@ export default function SignUpPage() {
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1599058917212-d750089bc07e?q=80&w=2069&auto=format&fit=crop')" }}
           />
-          {/* Градиентный оверлей для премиального вида */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+          {/* Градиентный оверлей для премиального вида и читаемости текста */}
+          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
           
           <div className="absolute inset-0 flex flex-col justify-end p-12 lg:p-20">
             <motion.div 
