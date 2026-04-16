@@ -44,7 +44,7 @@ export default function SignInPage() {
     startTransition(async () => {
       const formData = new FormData()
       Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value)
+        formData.append(key, value as string)
       })
 
       const res = await signInAction(formData)

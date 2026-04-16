@@ -48,7 +48,7 @@ export default function SignUpPage() {
     startTransition(async () => {
       const formData = new FormData()
       Object.entries(values).forEach(([key, value]) => {
-        formData.append(key, value)
+        formData.append(key, value as string)
       })
 
       const res = await signUpAction(formData)
