@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import { UsersClient } from "./users-client";
 
@@ -9,7 +10,9 @@ export default async function AdminUsersPage() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
-  const { data: users, error } = await supabase
+  // Используем Service Role client, чтобы обойти RLS и видеть всех пользователей
+  const adminDb = createAdminClient();
+  const { data: users, error } = await adminDb
     .from("users_profile")
     .select("id, email, first_name, last_name, phone, role, status, created_at")
     .order("created_at", { ascending: false });

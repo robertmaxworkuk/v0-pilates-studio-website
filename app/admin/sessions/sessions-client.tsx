@@ -5,8 +5,9 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { XCircle, MapPin, Clock, Users } from "lucide-react";
+import { XCircle, MapPin, Clock, Users, Pencil } from "lucide-react";
 import { cancelSessionAction } from "@/lib/actions/admin";
+import Link from "next/link";
 
 type Session = {
   id: string;
@@ -94,15 +95,26 @@ export function SessionsClient({ sessions }: { sessions: Session[] }) {
                 </p>
               )}
             </div>
-            {s.status === "scheduled" && (
-              <button
-                onClick={() => setCancellingId(cancellingId === s.id ? null : s.id)}
-                className="p-2 rounded-xl hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-                title="Отменить занятие"
-              >
-                <XCircle className="w-4 h-4" />
-              </button>
-            )}
+            <div className="flex items-center gap-1 shrink-0">
+              {s.status === "scheduled" && (
+                <Link
+                  href={`/admin/sessions/${s.id}/edit`}
+                  className="p-2 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
+                  title="Редактировать занятие"
+                >
+                  <Pencil className="w-4 h-4" />
+                </Link>
+              )}
+              {s.status === "scheduled" && (
+                <button
+                  onClick={() => setCancellingId(cancellingId === s.id ? null : s.id)}
+                  className="p-2 rounded-xl hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  title="Отменить занятие"
+                >
+                  <XCircle className="w-4 h-4" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Cancel form */}

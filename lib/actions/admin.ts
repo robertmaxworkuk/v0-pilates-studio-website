@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
@@ -24,11 +25,12 @@ async function requireAdmin() {
 
 // --- USERS ---
 export async function updateUserRoleAction(userId: string, role: string) {
-  const { supabase } = await requireAdmin();
+  await requireAdmin();
+  const adminDb = createAdminClient();
   const allowedRoles = ["user", "client", "trainer", "admin"];
   if (!allowedRoles.includes(role)) return { error: "Недопустимая роль" };
 
-  const { error } = await supabase
+  const { error } = await adminDb
     .from("users_profile")
     .update({ role })
     .eq("id", userId);
@@ -39,8 +41,9 @@ export async function updateUserRoleAction(userId: string, role: string) {
 }
 
 export async function updateUserStatusAction(userId: string, status: "active" | "blocked") {
-  const { supabase } = await requireAdmin();
-  const { error } = await supabase
+  await requireAdmin();
+  const adminDb = createAdminClient();
+  const { error } = await adminDb
     .from("users_profile")
     .update({ status })
     .eq("id", userId);
@@ -102,6 +105,17 @@ export async function createSessionAction(data: z.infer<typeof sessionSchema>) {
   if (!parsed.success) return { error: parsed.error.errors[0].message };
 
   const { error } = await supabase.from("sessions").insert(parsed.data);
+  if (error) return { error: error.message };
+  revalidatePath("/admin/sessions");
+  return { success: true };
+}
+
+export async function updateSessionAction(sessionId: string, data: Partial<z.infer<typeof sessionSchema>>) {
+  const { supabase } = await requireAdmin();
+  const { error } = await supabase
+    .from("sessions")
+    .update(data)
+    .eq("id", sessionId);
   if (error) return { error: error.message };
   revalidatePath("/admin/sessions");
   return { success: true };
