@@ -10,6 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Phone, Mail, MapPin, Send, Check, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { getUserStatusAction } from '@/lib/actions/user'
 
 const PHONE_MASK_LENGTH = 10
 
@@ -50,7 +51,15 @@ export function ContactSection() {
   const [phoneValue, setPhoneValue] = useState('')
   const sectionRef = useRef<HTMLDivElement>(null)
 
+  const [userStatus, setUserStatus] = useState<{ isAuthenticated: boolean; role: string | null; bookingCount: number } | null>(null)
+
   useEffect(() => {
+    const checkUser = async () => {
+      const status = await getUserStatusAction()
+      setUserStatus(status)
+    }
+    checkUser()
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -245,7 +254,9 @@ export function ContactSection() {
                     className="w-full rounded-xl border border-border/50 bg-muted/50 px-4 py-3 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
                   >
                     <option value="">Выберите программу</option>
-                    <option value="trial">Пробное занятие</option>
+                    {(!userStatus || (userStatus.role !== 'admin' && userStatus.role !== 'trainer' && userStatus.bookingCount === 0)) && (
+                      <option value="trial">Пробное занятие</option>
+                    )}
                     <option value="individual">Индивидуальные занятия</option>
                     <option value="group">Групповые занятия</option>
                     <option value="online">Онлайн-занятия</option>
@@ -277,7 +288,9 @@ export function ContactSection() {
                   ) : (
                     <>
                       <Send className="mr-2 h-5 w-5" />
-                      Записаться на пробное занятие
+                      {(!userStatus || (userStatus.role !== 'admin' && userStatus.role !== 'trainer' && userStatus.bookingCount === 0)) 
+                        ? 'Записаться на пробное занятие'
+                        : 'Записаться на занятие'}
                     </>
                   )}
                 </Button>

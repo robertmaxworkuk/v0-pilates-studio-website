@@ -25,7 +25,12 @@ async function requireAdmin() {
 
 // --- USERS ---
 export async function updateUserRoleAction(userId: string, role: string) {
-  await requireAdmin();
+  const { user: adminUser } = await requireAdmin();
+
+  if (userId === adminUser.id) {
+    return { error: "Вы не можете изменить свою собственную роль" };
+  }
+
   const adminDb = createAdminClient();
   const allowedRoles = ["user", "client", "trainer", "admin"];
   if (!allowedRoles.includes(role)) return { error: "Недопустимая роль" };

@@ -3,6 +3,8 @@
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ArrowRight } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { getUserStatusAction } from '@/lib/actions/user'
 
 interface CTAButtonProps {
   variant?: 'default' | 'outline' | 'ghost'
@@ -19,6 +21,24 @@ export function CTAButton({
   children = 'Записаться на пробное',
   showArrow = true,
 }: CTAButtonProps) {
+  const [isVisible, setIsVisible] = useState(true)
+
+  useEffect(() => {
+    // Only apply visibility logic if it's the default "book a trial" button
+    if (children === 'Записаться на пробное') {
+      const checkVisibility = async () => {
+        const status = await getUserStatusAction()
+        if (
+          status.isAuthenticated &&
+          (status.role === 'admin' || status.role === 'trainer' || status.bookingCount > 0)
+        ) {
+          setIsVisible(false)
+        }
+      }
+      checkVisibility()
+    }
+  }, [children])
+
   const handleClick = () => {
     const contactSection = document.getElementById('contact')
     if (contactSection) {
@@ -31,6 +51,8 @@ export function CTAButton({
       }, 800)
     }
   }
+
+  if (!isVisible) return null
 
   return (
     <Button
