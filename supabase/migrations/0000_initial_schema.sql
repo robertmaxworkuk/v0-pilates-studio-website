@@ -191,7 +191,9 @@ ALTER TABLE "public"."sessions" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."bookings" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."global_settings" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE "public"."user_packages" ENABLE ROW LEVEL SECURITY;
-
+ALTER TABLE "public"."user_history" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."session_history" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE "public"."booking_history" ENABLE ROW LEVEL SECURITY;
 -- Политики users_profile 
 -- Пользователи могут читать только свой профиль
 CREATE POLICY "Users can view own profile" 

@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { Loader2, ArrowLeft } from 'lucide-react'
+import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { BrandLogo } from '@/components/shared/brand-logo'
 
 const signUpSchema = z.object({
@@ -47,6 +47,7 @@ const itemVariants = {
 export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
+  const [showPassword, setShowPassword] = useState(false)
 
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
@@ -177,7 +178,26 @@ export default function SignUpPage() {
                     <FormItem>
                       <FormLabel>Пароль</FormLabel>
                       <FormControl>
-                        <Input placeholder="Минимум 6 символов" type="password" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
+                        <div className="relative">
+                          <Input
+                            placeholder="Минимум 6 символов"
+                            type={showPassword ? 'text' : 'password'}
+                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pr-12"
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.preventDefault()
+                              setShowPassword(v => !v)
+                            }}
+                            className="absolute right-3 top-1/2 -translate-y-1/2 p-2 z-10 text-muted-foreground hover:text-foreground transition-colors cursor-pointer rounded-lg"
+                            tabIndex={-1}
+                            aria-label="Показать/скрыть пароль"
+                          >
+                            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
