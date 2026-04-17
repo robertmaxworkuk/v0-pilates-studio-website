@@ -23,15 +23,14 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
     ? `${profile.first_name?.[0] || ""}${profile.last_name?.[0] || ""}`.toUpperCase() || "U"
     : "U";
 
+  const fullName = profile?.first_name || profile?.last_name
+    ? `${profile?.first_name ?? ""} ${profile?.last_name ?? ""}`.trim()
+    : undefined;
+
   return (
     <div className="min-h-screen bg-background flex flex-col md:overflow-hidden">
-      {/* 
-        Glassmorphism Header 
-        Added backdrop-blur and specific styling to make it premium.
-      */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center px-4 md:px-8">
-          {/* Logo Section */}
           <Link href="/" className="mr-6 flex items-center space-x-2 group">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl group-hover:bg-primary/90 transition-colors">
               P
@@ -41,8 +40,7 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
             </span>
           </Link>
           
-          {/* Client Navigation (Desktop Links + User Dropdown + Mobile Bottom Tab) */}
-          <ClientTopNav userEmail={user.email || ""} initials={initials} />
+          <ClientTopNav userEmail={user.email || ""} initials={initials} fullName={fullName} />
         </div>
       </header>
 

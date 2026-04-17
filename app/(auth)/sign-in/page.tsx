@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -20,30 +19,32 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { toast } from 'sonner'
-import { Loader2, ArrowLeft, Eye, EyeOff } from 'lucide-react'
+import { Loader2, ArrowLeft, Eye, EyeOff, Phone, Mail } from 'lucide-react'
 import { BrandLogo } from '@/components/shared/brand-logo'
 
 const signInSchema = z.object({
-  email: z.string().email('Некорректный email адрес'),
+  identifier: z.string().min(1, 'Введите email или номер телефона'),
   password: z.string().min(1, 'Введите пароль'),
 })
 
-// Контейнер с анимациями для дочерних элементов
 const containerVariants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.08, delayChildren: 0.1 },
   },
 }
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 15 },
-  show: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 300, damping: 24 } },
+  hidden: { opacity: 0, y: 12 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { type: 'spring' as const, stiffness: 340, damping: 30 },
+  },
 }
 
 export default function SignInPage() {
-  const router = useRouter()
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)
@@ -51,10 +52,15 @@ export default function SignInPage() {
   const form = useForm<z.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
-      email: '',
+      identifier: '',
       password: '',
     },
   })
+
+  // Определяем иконку по введенному значению
+  const identifierValue = form.watch('identifier')
+  const isPhone = /^[\d\s\+\-\(\)]+$/.test(identifierValue) && identifierValue.length > 0
+  const IdentifierIcon = isPhone ? Phone : Mail
 
   function onSubmit(values: z.infer<typeof signInSchema>) {
     setError(null)
@@ -69,41 +75,39 @@ export default function SignInPage() {
         setError(res.error)
         toast.error('Ошибка входа', { description: res.error })
       } else {
-        toast.success('Успешный вход')
+        toast.success('Добро пожаловать!')
       }
     })
   }
 
   return (
     <div className="min-h-screen grid grid-cols-1 md:grid-cols-2">
-      {/* Левая панель с изображением (для авторизации меняем местами для разнообразия) */}
-      <div className="hidden md:block relative bg-muted overflow-hidden order-2 md:order-1">
-        <motion.div 
+      {/* Левая панель — изображение */}
+      <div className="hidden md:block relative bg-muted overflow-hidden">
+        <motion.div
           initial={{ scale: 1.05 }}
           animate={{ scale: 1 }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
+          transition={{ duration: 1.8, ease: 'easeOut' }}
           className="absolute inset-0"
         >
-          {/* Эстетичное фото для входа */}
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=2070&auto=format&fit=crop')" }}
           />
-          {/* Затенение для читаемости */}
           <div className="absolute inset-0 bg-black/30" />
           <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-          
+
           <div className="absolute inset-0 flex flex-col justify-end p-12 lg:p-20">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
+            <motion.div
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5, duration: 0.8 }}
+              transition={{ delay: 0.6, duration: 0.9, ease: 'easeOut' }}
               className="max-w-md"
             >
               <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4 drop-shadow-md">
                 С возвращением
               </h2>
-              <p className="text-lg text-white/90 drop-shadow-sm font-medium">
+              <p className="text-lg text-white/85 drop-shadow-sm font-medium leading-relaxed">
                 Продолжайте заботиться о себе вместе с нашими профессиональными тренерами.
               </p>
             </motion.div>
@@ -111,22 +115,26 @@ export default function SignInPage() {
         </motion.div>
       </div>
 
-      {/* Правая панель с формой */}
-      <div className="flex items-center justify-center p-8 bg-background relative order-1 md:order-2">
-        <div className="absolute top-8 left-8 sm:top-12 sm:right-12 sm:left-auto">
-          <Link href="/" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group">
-            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1 sm:hidden" />
+      {/* Правая панель — форма */}
+      <div className="flex items-center justify-center p-8 bg-background relative">
+        {/* Кнопка назад */}
+        <div className="absolute top-8 left-8 sm:top-10 sm:left-10">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors group"
+          >
+            <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
             На главную
-            <ArrowLeft className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1 hidden sm:block rotate-180" />
           </Link>
         </div>
 
-        <motion.div 
-          className="w-full max-w-[400px] mt-12"
+        <motion.div
+          className="w-full max-w-[400px] mt-8"
           variants={containerVariants}
           initial="hidden"
           animate="show"
         >
+          {/* Логотип и заголовок */}
           <motion.div variants={itemVariants} className="text-center mb-10">
             <div className="flex justify-center mb-6">
               <BrandLogo />
@@ -135,21 +143,40 @@ export default function SignInPage() {
               Вход в аккаунт
             </h1>
             <p className="text-sm text-muted-foreground mt-2">
-              Введите email и пароль для доступа к расписанию
+              Войдите через email или номер телефона
             </p>
           </motion.div>
 
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {/* Email / Phone field */}
               <motion.div variants={itemVariants}>
                 <FormField
                   control={form.control}
-                  name="email"
+                  name="identifier"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Email или телефон</FormLabel>
                       <FormControl>
-                        <Input placeholder="name@example.com" type="email" className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl" {...field} />
+                        <div className="relative">
+                          <Input
+                            placeholder="name@example.com или +7 999 000 00 00"
+                            type="text"
+                            autoComplete="username"
+                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pl-12"
+                            {...field}
+                          />
+                          <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
+                            <motion.div
+                              key={isPhone ? 'phone' : 'mail'}
+                              initial={{ opacity: 0, scale: 0.8 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <IdentifierIcon className="w-4 h-4" />
+                            </motion.div>
+                          </div>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -157,6 +184,7 @@ export default function SignInPage() {
                 />
               </motion.div>
 
+              {/* Password field */}
               <motion.div variants={itemVariants}>
                 <FormField
                   control={form.control}
@@ -165,13 +193,19 @@ export default function SignInPage() {
                     <FormItem>
                       <div className="flex items-center justify-between">
                         <FormLabel>Пароль</FormLabel>
-                        <Link href="#" className="text-sm font-medium text-primary hover:underline underline-offset-4">Забыли пароль?</Link>
+                        <Link
+                          href="#"
+                          className="text-sm font-medium text-primary hover:underline underline-offset-4"
+                        >
+                          Забыли пароль?
+                        </Link>
                       </div>
                       <FormControl>
                         <div className="relative">
                           <Input
                             placeholder="••••••••"
                             type={showPassword ? 'text' : 'password'}
+                            autoComplete="current-password"
                             className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pr-12"
                             {...field}
                           />
@@ -195,14 +229,24 @@ export default function SignInPage() {
                 />
               </motion.div>
 
+              {/* Сообщение об ошибке */}
               {error && (
-                <motion.div variants={itemVariants} className="text-sm font-medium text-destructive p-3 bg-destructive/10 rounded-lg">
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-sm font-medium text-destructive p-3 bg-destructive/10 rounded-xl"
+                >
                   {error}
                 </motion.div>
               )}
 
+              {/* Кнопка входа */}
               <motion.div variants={itemVariants} className="pt-2">
-                <Button type="submit" className="w-full h-12 text-base rounded-xl hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold" disabled={isPending}>
+                <Button
+                  type="submit"
+                  className="w-full h-12 text-base rounded-xl hover:shadow-lg hover:shadow-primary/20 transition-all font-semibold"
+                  disabled={isPending}
+                >
                   {isPending && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
                   Войти
                 </Button>
@@ -211,8 +255,11 @@ export default function SignInPage() {
           </Form>
 
           <motion.p variants={itemVariants} className="mt-8 text-center text-sm text-muted-foreground">
-            Нет аккаунта?{" "}
-            <Link href="/sign-up" className="font-semibold text-foreground hover:text-primary transition-colors underline underline-offset-4">
+            Нет аккаунта?{' '}
+            <Link
+              href="/sign-up"
+              className="font-semibold text-foreground hover:text-primary transition-colors underline underline-offset-4"
+            >
               Создать сейчас
             </Link>
           </motion.p>
