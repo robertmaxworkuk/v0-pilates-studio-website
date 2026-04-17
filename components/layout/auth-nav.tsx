@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { LogIn, User as UserIcon, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
+import { getUserStatusAction } from '@/lib/actions/user'
 
 export function AuthNav({ className, isMobile = false }: { className?: string, isMobile?: boolean }) {
   const [user, setUser] = useState<User | null>(null)
@@ -15,11 +16,20 @@ export function AuthNav({ className, isMobile = false }: { className?: string, i
   const supabase = createClient()
   const router = useRouter()
 
+  const [role, setRole] = useState<string | null>(null)
+
   useEffect(() => {
-    // Получаем текущего пользователя
+    // Получаем текущего пользователя и его статус
     supabase.auth.getUser().then(({ data }) => {
       setUser(data.user)
-      setLoading(false)
+      if (data.user) {
+        getUserStatusAction().then(status => {
+          setRole(status.role)
+          setLoading(false)
+        })
+      } else {
+        setLoading(false)
+      }
     })
 
     // Подписываемся на изменения состояния авторизации
@@ -49,7 +59,7 @@ export function AuthNav({ className, isMobile = false }: { className?: string, i
     return (
       <div className={cn("flex items-center gap-2", isMobile ? "flex-col w-full" : "", className)}>
         <Button variant="outline" className={cn(isMobile ? "w-full justify-start" : "")} asChild>
-          <Link href="/profile">
+          <Link href={role === 'admin' ? '/admin/dashboard' : role === 'trainer' ? '/trainer/schedule' : '/profile'}>
             <UserIcon className="mr-2 h-4 w-4 text-primary" />
             Кабинет
           </Link>

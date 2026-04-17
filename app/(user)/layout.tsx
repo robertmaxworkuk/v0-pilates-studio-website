@@ -12,10 +12,10 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
     redirect("/sign-in")
   }
 
-  // Get user profile for avatar info
+  // Get user profile for avatar info and role
   const { data: profile } = await supabase
     .from('users_profile')
-    .select('first_name, last_name')
+    .select('first_name, last_name, role')
     .eq('id', user.id)
     .single()
 
@@ -40,7 +40,12 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
             </span>
           </Link>
           
-          <ClientTopNav userEmail={user.email || ""} initials={initials} fullName={fullName} />
+          <ClientTopNav 
+            userEmail={user.email || ""} 
+            initials={initials} 
+            fullName={fullName} 
+            role={profile?.role}
+          />
         </div>
       </header>
 

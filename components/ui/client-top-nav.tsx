@@ -18,20 +18,26 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeToggle } from "@/components/global/theme-toggle";
 
-const NAV_LINKS = [
-  { name: "Профиль", href: "/profile", icon: LayoutDashboard },
-  { name: "Расписание", href: "/schedule", icon: CalendarDays },
-];
-
 interface ClientTopNavProps {
   userEmail: string;
   initials: string;
   fullName?: string;
+  role?: string;
 }
 
-export function ClientTopNav({ userEmail, initials, fullName }: ClientTopNavProps) {
+const getNavLinks = (role?: string) => [
+  { 
+    name: "Профиль", 
+    href: role === 'admin' ? '/admin/dashboard' : role === 'trainer' ? '/trainer/schedule' : '/profile', 
+    icon: LayoutDashboard 
+  },
+  { name: "Расписание", href: "/schedule", icon: CalendarDays },
+];
+
+export function ClientTopNav({ userEmail, initials, fullName, role }: ClientTopNavProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const navLinks = getNavLinks(role);
 
   const handleSignOut = async () => {
     const supabase = createClient();
@@ -44,7 +50,7 @@ export function ClientTopNav({ userEmail, initials, fullName }: ClientTopNavProp
     <>
       {/* ── Desktop Navigation ────────────────────────────── */}
       <nav className="mr-8 hidden md:flex items-center gap-1">
-        {NAV_LINKS.map((link) => {
+        {navLinks.map((link) => {
           const isActive =
             pathname === link.href || pathname.startsWith(link.href + "/");
           const Icon = link.icon;
@@ -107,7 +113,7 @@ export function ClientTopNav({ userEmail, initials, fullName }: ClientTopNavProp
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/profile" className="cursor-pointer flex items-center">
+              <Link href={role === 'admin' ? '/admin/dashboard' : role === 'trainer' ? '/trainer/schedule' : '/profile'} className="cursor-pointer flex items-center">
                 <User className="mr-2 w-4 h-4" />
                 Мой профиль
               </Link>
@@ -127,7 +133,7 @@ export function ClientTopNav({ userEmail, initials, fullName }: ClientTopNavProp
       {/* ── Mobile Bottom Tab Bar ─────────────────────────── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-t safe-bottom">
         <div className="flex items-center h-16 px-4">
-          {NAV_LINKS.map((link) => {
+          {navLinks.map((link) => {
             const isActive =
               pathname === link.href || pathname.startsWith(link.href + "/");
             const Icon = link.icon;
