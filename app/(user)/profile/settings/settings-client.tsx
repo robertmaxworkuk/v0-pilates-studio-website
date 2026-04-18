@@ -5,7 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
-import { updateUserThemePreferenceAction, type ThemePreference } from "@/lib/actions/user";
+import type { ThemePreference } from "@/lib/actions/user";
 import { useRouter } from "next/navigation";
 import {
   Shield, Moon, Sun, Monitor, LogOut, Trash2, ChevronRight, Mail, User, Lock
@@ -31,13 +31,26 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
+  const supabase = createClient();
 
   const applyTheme = async (value: ThemePreference) => {
     setTheme(value);
-    const result = await updateUserThemePreferenceAction(value);
-    if (result?.error) {
-      toast.error("Не удалось сохранить тему", { description: result.error });
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      toast.error("Не удалось сохранить тему", { description: "Пользователь не авторизован" });
+      return;
     }
+
+    const { error } = await supabase
+      .from("users_profile")
+      .update({ theme_preference: value })
+      .eq("id", user.id);
+
+    if (error) {
+      toast.error("Не удалось сохранить тему", { description: error.message });
+      return;
+    }
+
   };
 
   const handleSignOut = async () => {

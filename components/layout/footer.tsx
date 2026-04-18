@@ -17,7 +17,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear()
 
   return (
-    <footer className="bg-foreground text-background">
+    <footer className="bg-zinc-950 text-zinc-50">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="py-12 md:py-16">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
@@ -26,7 +26,7 @@ export function Footer() {
               <div className="mb-4">
                 <BrandLogo light />
               </div>
-              <p className="max-w-md text-background/70 leading-relaxed">
+              <p className="max-w-md text-zinc-300 leading-relaxed">
                 Персональные и групповые занятия пилатесом для здоровья, 
                 красоты и гармонии тела и духа.
               </p>
@@ -40,7 +40,7 @@ export function Footer() {
                   <li key={link.href}>
                     <a
                       href={link.href}
-                      className="text-background/70 hover:text-background transition-colors"
+                      className="text-zinc-300 hover:text-zinc-50 transition-colors"
                     >
                       {link.label}
                     </a>
@@ -52,11 +52,11 @@ export function Footer() {
             {/* Contact */}
             <div>
               <h4 className="font-semibold mb-4">Контакты</h4>
-              <ul className="space-y-2 text-background/70">
+              <ul className="space-y-2 text-zinc-300">
                 <li>
                   <a 
                     href={`tel:${studioInfo.phone}`}
-                    className="hover:text-background transition-colors"
+                    className="hover:text-zinc-50 transition-colors"
                   >
                     {formatPhone(studioInfo.phone)}
                   </a>
@@ -64,7 +64,7 @@ export function Footer() {
                 <li>
                   <a 
                     href={`mailto:${studioInfo.email}`}
-                    className="hover:text-background transition-colors"
+                    className="hover:text-zinc-50 transition-colors"
                   >
                     {studioInfo.email}
                   </a>
@@ -78,9 +78,9 @@ export function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-background/10 py-6">
+        <div className="border-t border-white/10 py-6">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <p className="text-sm text-background/50">
+            <p className="text-sm text-zinc-400">
               {currentYear} Pilatta. Все права защищены.
             </p>
             <div className="flex gap-6">
@@ -90,7 +90,7 @@ export function Footer() {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-background/50 hover:text-background transition-colors"
+                  className="text-sm text-zinc-400 hover:text-zinc-50 transition-colors"
                 >
                   {link.platform}
                 </a>
