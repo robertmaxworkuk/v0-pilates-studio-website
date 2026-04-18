@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useLayoutEffect, useRef } from "react"
 import { useTheme } from "next-themes"
 import { createClient } from "@/lib/supabase/client"
 import type { ThemePreference } from "@/lib/actions/user"
@@ -12,12 +12,20 @@ function isThemePreference(value: string): value is ThemePreference {
 export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemePreference | null }) {
   const { theme, setTheme } = useTheme()
   const supabase = createClient()
+  const lastAppliedTheme = useRef<ThemePreference | null>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!preferredTheme) return
-    if (theme === preferredTheme) return
+    if (theme === preferredTheme) {
+      lastAppliedTheme.current = preferredTheme
+      return
+    }
+
+    if (lastAppliedTheme.current === preferredTheme) return
+
+    lastAppliedTheme.current = preferredTheme
     setTheme(preferredTheme)
-  }, [preferredTheme, setTheme])
+  }, [preferredTheme, setTheme, theme])
 
   useEffect(() => {
     let isActive = true
