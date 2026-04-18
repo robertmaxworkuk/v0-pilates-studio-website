@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -6,15 +7,17 @@ import { EditSessionForm } from "./edit-form";
 
 export const metadata = { title: "Редактировать занятие | Pilatta Admin" };
 
-export default async function EditSessionPage({ params }: { params: { id: string } }) {
+export default async function EditSessionPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
+  const adminDb = createAdminClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
   const [{ data: session }, { data: sessionTypes }, { data: trainers }] = await Promise.all([
-    supabase.from("sessions").select("*").eq("id", params.id).single(),
-    supabase.from("session_types").select("id, title, default_price, default_capacity").eq("is_active", true),
-    supabase.from("users_profile").select("id, first_name, last_name").in("role", ["trainer", "admin"]),
+    adminDb.from("sessions").select("*").eq("id", id).single(),
+    adminDb.from("session_types").select("id, title, default_price, default_capacity").eq("is_active", true),
+    adminDb.from("users_profile").select("id, first_name, last_name").in("role", ["trainer", "admin"]),
   ]);
 
   if (!session) return notFound();
