@@ -11,11 +11,36 @@ import { TestimonialsSection } from '@/components/sections/testimonials-section'
 import { FAQSection } from '@/components/sections/faq-section'
 import { StudioSection } from '@/components/sections/studio-section'
 import { ContactSection } from '@/components/sections/contact-section'
+import { createClient } from '@/lib/supabase/server'
 
-export default function Home() {
+export default async function Home() {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  let initialUserStatus = {
+    isAuthenticated: false,
+    role: null as string | null,
+    bookingCount: 0,
+  }
+
+  if (user) {
+    const [profileResult, bookingsResult] = await Promise.all([
+      supabase.from('users_profile').select('role').eq('id', user.id).single(),
+      supabase.from('bookings').select('id', { count: 'exact', head: true }).eq('user_id', user.id),
+    ])
+
+    initialUserStatus = {
+      isAuthenticated: true,
+      role: profileResult.data?.role ?? 'user',
+      bookingCount: bookingsResult.count ?? 0,
+    }
+  }
+
   return (
     <>
-      <Header />
+      <Header initialUserStatus={initialUserStatus} />
       <main>
         <HeroSection />
         <AboutSection />

@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { getUserStatusAction } from '@/lib/actions/user'
 
@@ -12,6 +12,7 @@ interface CTAButtonProps {
   className?: string
   children?: React.ReactNode
   showArrow?: boolean
+  initialVisible?: boolean
 }
 
 export function CTAButton({
@@ -20,12 +21,17 @@ export function CTAButton({
   className,
   children = 'Записаться на пробное',
   showArrow = true,
+  initialVisible,
 }: CTAButtonProps) {
-  const [isVisible, setIsVisible] = useState(true)
+  const isTrialCta = children === 'Записаться на пробное'
+  const [isVisible, setIsVisible] = useState(
+    initialVisible !== undefined ? initialVisible : !isTrialCta ? true : false
+  )
+  const [isChecking, setIsChecking] = useState(isTrialCta && initialVisible === undefined)
 
   useEffect(() => {
     // Only apply visibility logic if it's the default "book a trial" button
-    if (children === 'Записаться на пробное') {
+    if (isTrialCta && initialVisible === undefined) {
       const checkVisibility = async () => {
         const status = await getUserStatusAction()
         if (
@@ -33,11 +39,14 @@ export function CTAButton({
           (status.role === 'admin' || status.role === 'trainer' || status.bookingCount > 0)
         ) {
           setIsVisible(false)
+        } else {
+          setIsVisible(true)
         }
+        setIsChecking(false)
       }
       checkVisibility()
     }
-  }, [children])
+  }, [isTrialCta, initialVisible])
 
   const handleClick = () => {
     const contactSection = document.getElementById('contact')
@@ -50,6 +59,21 @@ export function CTAButton({
         }
       }, 800)
     }
+  }
+
+  if (isChecking) {
+    return (
+      <Button
+        variant={variant}
+        size={size}
+        disabled
+        aria-busy="true"
+        className={cn('font-semibold gap-2', className)}
+      >
+        <Loader2 className="h-4 w-4 animate-spin" />
+        <span>Загрузка...</span>
+      </Button>
+    )
   }
 
   if (!isVisible) return null
