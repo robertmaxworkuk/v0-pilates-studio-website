@@ -67,7 +67,7 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
     });
     const supabase = createClient();
     supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
     });
   };
 

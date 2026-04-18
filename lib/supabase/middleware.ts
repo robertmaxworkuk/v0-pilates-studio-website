@@ -43,9 +43,14 @@ export async function updateSession(request: NextRequest) {
 
   const pathname = request.nextUrl.pathname
   const isAuthRoute = pathname.startsWith('/sign-in') || pathname.startsWith('/sign-up')
+  const isPublicAuthRoute =
+    isAuthRoute ||
+    pathname.startsWith('/forgot-password') ||
+    pathname.startsWith('/reset-password') ||
+    pathname.startsWith('/auth/callback')
 
   // Неавторизованный пользователь пытается зайти на защищённый маршрут
-  if (!user && !isAuthRoute && pathname !== '/') {
+  if (!user && !isPublicAuthRoute && pathname !== '/') {
     const url = request.nextUrl.clone()
     url.pathname = '/sign-in'
     return NextResponse.redirect(url)
