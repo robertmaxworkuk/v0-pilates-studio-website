@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server"
 import { redirect } from "next/navigation"
 import { ProfileDashboard } from "./profile-dashboard"
+import { BlockedProfileBanner } from "./blocked-profile-banner"
 
 export default async function UserProfile() {
   const supabase = await createClient()
@@ -15,6 +16,10 @@ export default async function UserProfile() {
     .select('*')
     .eq('id', user.id)
     .single()
+
+  if (profile?.status === 'blocked') {
+    return <BlockedProfileBanner />
+  }
 
   // Admins and trainers can access the generic profile to edit their info and settings.
 
