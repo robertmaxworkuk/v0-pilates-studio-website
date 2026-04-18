@@ -118,6 +118,9 @@ git checkout dev
 Для настройки подтверждения email и шаблонов писем Supabase:
 👉 **[AUTH_EMAIL_SETUP.md](./implementation/AUTH_EMAIL_SETUP.md)**
 
+Для стандартизации и очистки labels в issues:
+👉 **[ISSUE_LABELS_REWORK.md](./implementation/ISSUE_LABELS_REWORK.md)**
+
 Вкратце, разработчики и ИИ-агенты:
 1. Читают и заносят задачи через интегрированные `search_issues` / `list_issues`.
 2. Создают временную ветку под задачу: формата `feature/ID-title`, `bugfix/ID-title`, или `docs/ID-title` от базовой ветки `dev`.
