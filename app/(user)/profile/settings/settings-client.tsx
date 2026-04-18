@@ -5,6 +5,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
 import { createClient } from "@/lib/supabase/client";
+import { updateUserThemePreferenceAction, type ThemePreference } from "@/lib/actions/user";
 import { useRouter } from "next/navigation";
 import {
   Shield, Moon, Sun, Monitor, LogOut, Trash2, ChevronRight, Mail, User, Lock
@@ -30,6 +31,14 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const [isSigningOut, setIsSigningOut] = useState(false);
+
+  const applyTheme = async (value: ThemePreference) => {
+    setTheme(value);
+    const result = await updateUserThemePreferenceAction(value);
+    if (result?.error) {
+      toast.error("Не удалось сохранить тему", { description: result.error });
+    }
+  };
 
   const handleSignOut = async () => {
     setIsSigningOut(true);
@@ -105,7 +114,7 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
           {themeOptions.map(({ value, label, icon: Icon }) => (
             <button
               key={value}
-              onClick={() => setTheme(value)}
+              onClick={() => void applyTheme(value as ThemePreference)}
               className={`flex flex-col items-center gap-2 p-4 rounded-2xl border-2 text-sm font-medium transition-all ${
                 theme === value
                   ? "border-primary bg-primary/5 text-primary"
