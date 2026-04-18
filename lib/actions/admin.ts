@@ -58,6 +58,49 @@ export async function updateUserStatusAction(userId: string, status: "active" | 
   return { success: true };
 }
 
+const updateUserProfileSchema = z.object({
+  first_name: z.string().trim().min(1, "Имя обязательно"),
+  last_name: z.string().trim().min(1, "Фамилия обязательна"),
+  phone: z.string().trim().optional(),
+  city: z.string().trim().optional(),
+  country: z.string().trim().optional(),
+  role: z.enum(["user", "client", "trainer", "admin"]),
+  status: z.enum(["active", "blocked"]),
+});
+
+export async function updateUserProfileAdminAction(
+  userId: string,
+  data: z.infer<typeof updateUserProfileSchema>
+) {
+  const { user: adminUser } = await requireAdmin();
+  const parsed = updateUserProfileSchema.safeParse(data);
+  if (!parsed.success) {
+    return { error: parsed.error.errors[0]?.message ?? "Некорректные данные" };
+  }
+
+  if (userId === adminUser.id && parsed.data.role !== "admin") {
+    return { error: "Вы не можете снять с себя роль администратора" };
+  }
+
+  const adminDb = createAdminClient();
+  const payload = {
+    first_name: parsed.data.first_name,
+    last_name: parsed.data.last_name,
+    phone: parsed.data.phone || null,
+    city: parsed.data.city || null,
+    country: parsed.data.country || null,
+    role: parsed.data.role,
+    status: parsed.data.status,
+  };
+
+  const { error } = await adminDb.from("users_profile").update(payload).eq("id", userId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/users");
+  revalidatePath(`/admin/users/${userId}`);
+  return { success: true };
+}
+
 // --- SESSION TYPES ---
 const sessionTypeSchema = z.object({
   title: z.string().min(1),

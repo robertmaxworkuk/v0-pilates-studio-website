@@ -12,9 +12,11 @@ export default async function SettingsPage() {
 
   const { data: profile } = await supabase
     .from("users_profile")
-    .select("email, first_name, last_name, role")
+    .select("email, first_name, last_name, role, status")
     .eq("id", user.id)
     .single();
+
+  if (profile?.status === "blocked") redirect("/profile");
 
   return (
     <div className="min-h-screen">

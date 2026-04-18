@@ -3,25 +3,37 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
-import { User } from '@supabase/supabase-js'
 import { Button } from '@/components/ui/button'
 import { LogIn, User as UserIcon, LogOut } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useRouter } from 'next/navigation'
 import { getUserStatusAction } from '@/lib/actions/user'
 
-export function AuthNav({ className, isMobile = false }: { className?: string, isMobile?: boolean }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [loading, setLoading] = useState(true)
+interface AuthState {
+  isAuthenticated: boolean
+  role: string | null
+}
+
+export function AuthNav({
+  className,
+  isMobile = false,
+  initialAuthState,
+}: {
+  className?: string
+  isMobile?: boolean
+  initialAuthState?: AuthState
+}) {
+  const [isAuthenticated, setIsAuthenticated] = useState(Boolean(initialAuthState?.isAuthenticated))
+  const [loading, setLoading] = useState(initialAuthState ? false : true)
   const supabase = createClient()
   const router = useRouter()
 
-  const [role, setRole] = useState<string | null>(null)
+  const [role, setRole] = useState<string | null>(initialAuthState?.role ?? null)
 
   useEffect(() => {
     // Получаем текущего пользователя и его статус
     supabase.auth.getUser().then(({ data }) => {
-      setUser(data.user)
+      setIsAuthenticated(Boolean(data.user))
       if (data.user) {
         getUserStatusAction().then(status => {
           setRole(status.role)
@@ -35,7 +47,7 @@ export function AuthNav({ className, isMobile = false }: { className?: string, i
     // Подписываемся на изменения состояния авторизации
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        setUser(session?.user ?? null)
+        setIsAuthenticated(Boolean(session?.user))
         router.refresh()
       }
     )
@@ -55,7 +67,7 @@ export function AuthNav({ className, isMobile = false }: { className?: string, i
     return <div className={cn("h-10 w-24 animate-pulse rounded-md bg-muted", className)} />
   }
 
-  if (user) {
+  if (isAuthenticated) {
     return (
       <div className={cn("flex items-center gap-2", isMobile ? "flex-col w-full" : "", className)}>
         <Button variant="outline" className={cn(isMobile ? "w-full justify-start" : "")} asChild>

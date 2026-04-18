@@ -29,7 +29,15 @@ const navItems = [
   { label: 'Контакты', href: '#contact' },
 ]
 
-export function Header() {
+interface HeaderProps {
+  initialUserStatus?: {
+    isAuthenticated: boolean
+    role: string | null
+    bookingCount: number
+  }
+}
+
+export function Header({ initialUserStatus }: HeaderProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [activeSection, setActiveSection] = useState('')
 
@@ -107,8 +115,29 @@ export function Header() {
           <div className="flex items-center gap-3">
             <ThemeToggle />
             <div className="hidden lg:flex items-center gap-3">
-              <AuthNav />
-              <CTAButton size="default" />
+              <AuthNav
+                initialAuthState={
+                  initialUserStatus
+                    ? {
+                        isAuthenticated: initialUserStatus.isAuthenticated,
+                        role: initialUserStatus.role,
+                      }
+                    : undefined
+                }
+              />
+              <CTAButton
+                size="default"
+                initialVisible={
+                  initialUserStatus
+                    ? !(
+                        initialUserStatus.isAuthenticated &&
+                        (initialUserStatus.role === 'admin' ||
+                          initialUserStatus.role === 'trainer' ||
+                          initialUserStatus.bookingCount > 0)
+                      )
+                    : undefined
+                }
+              />
             </div>
             <div className="lg:hidden">
               <MobileNav navItems={navItems} />

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import { Plus, Edit2, Trash2, X, Check, Dumbbell } from "lucide-react";
 import { createSessionTypeAction, updateSessionTypeAction, deleteSessionTypeAction } from "@/lib/actions/admin";
+import Link from "next/link";
 
 type SessionType = {
   id: string;
@@ -149,13 +150,23 @@ export function SessionTypesClient({ sessionTypes }: { sessionTypes: SessionType
               <div className="p-2 bg-primary/10 rounded-xl">
                 <Dumbbell className="w-4 h-4 text-primary" />
               </div>
-              <button
-                onClick={() => handleDelete(st.id)}
-                disabled={isPending}
-                className="p-1.5 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors"
-              >
-                <Trash2 className="w-4 h-4" />
-              </button>
+              <div className="flex items-center gap-1">
+                <Link
+                  href={`/admin/session-types/${st.id}/edit`}
+                  className="p-1.5 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors"
+                  title="Редактировать тип"
+                >
+                  <Edit2 className="w-4 h-4" />
+                </Link>
+                <button
+                  onClick={() => handleDelete(st.id)}
+                  disabled={isPending}
+                  className="p-1.5 rounded-lg hover:bg-destructive/10 hover:text-destructive transition-colors"
+                  title="Деактивировать тип"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              </div>
             </div>
             <h3 className="font-semibold mb-1">{st.title}</h3>
             {st.description && <p className="text-xs text-muted-foreground mb-3 line-clamp-2">{st.description}</p>}

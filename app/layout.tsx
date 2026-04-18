@@ -1,7 +1,9 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
+import { ThemePreferenceSync } from '@/components/global/theme-preference-sync'
 import { Toaster } from '@/components/ui/sonner'
+import { createClient } from '@/lib/supabase/server'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -31,20 +33,46 @@ export const viewport: Viewport = {
   ],
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  let userPreferredTheme: 'light' | 'dark' | 'system' | null = null
+
+  if (user) {
+    const { data } = await supabase
+      .from('users_profile')
+      .select('theme_preference')
+      .eq('id', user.id)
+      .single()
+
+    if (
+      data?.theme_preference === 'light' ||
+      data?.theme_preference === 'dark' ||
+      data?.theme_preference === 'system'
+    ) {
+      userPreferredTheme = data.theme_preference
+    }
+  }
+
+  const initialTheme = userPreferredTheme ?? 'light'
+
   return (
     <html lang="ru" suppressHydrationWarning>
       <body className="font-sans antialiased">
         <ThemeProvider
           attribute="class"
-          defaultTheme="light"
+          defaultTheme={initialTheme}
           enableSystem
           disableTransitionOnChange
         >
+          <ThemePreferenceSync preferredTheme={userPreferredTheme} />
           {children}
         </ThemeProvider>
         <Toaster />

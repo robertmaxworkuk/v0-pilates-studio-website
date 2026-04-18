@@ -3,6 +3,7 @@
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
+import { updateUserThemePreferenceAction, type ThemePreference } from "@/lib/actions/user"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,6 +16,11 @@ import {
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme()
 
+  const applyTheme = (value: ThemePreference) => {
+    setTheme(value)
+    void updateUserThemePreferenceAction(value)
+  }
+
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
@@ -25,13 +31,13 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
+        <DropdownMenuItem onClick={() => applyTheme("light")}>
           Светлая
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
+        <DropdownMenuItem onClick={() => applyTheme("dark")}>
           Темная
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
+        <DropdownMenuItem onClick={() => applyTheme("system")}>
           Как в системе
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -1,23 +1,26 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Mail, Phone, MapPin, Calendar } from "lucide-react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+import { UserEditForm } from "./user-edit-form";
 
 export default async function AdminUserDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const supabase = await createClient();
+  const adminDb = createAdminClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/sign-in");
 
   const [{ data: profile }, { data: bookings }] = await Promise.all([
-    supabase
+    adminDb
       .from("users_profile")
       .select("*")
       .eq("id", id)
       .single(),
-    supabase
+    adminDb
       .from("bookings")
       .select("id, status, booked_at, is_paid, sessions(title, start_time, location)")
       .eq("user_id", id)
@@ -94,6 +97,19 @@ export default async function AdminUserDetailPage({ params }: { params: Promise<
             </div>
           </div>
         </div>
+
+        <UserEditForm
+          userId={profile.id}
+          initialValues={{
+            first_name: profile.first_name ?? "",
+            last_name: profile.last_name ?? "",
+            phone: profile.phone ?? "",
+            city: profile.city ?? "",
+            country: profile.country ?? "",
+            role: profile.role ?? "user",
+            status: profile.status ?? "active",
+          }}
+        />
       </div>
 
       {/* Bookings */}
