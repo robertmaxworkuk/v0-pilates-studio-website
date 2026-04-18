@@ -70,7 +70,13 @@ export function AuthNav({
   if (isAuthenticated) {
     return (
       <div className={cn("flex items-center gap-2", isMobile ? "flex-col w-full" : "", className)}>
-        <Button variant="outline" className={cn(isMobile ? "w-full justify-start" : "")} asChild>
+        <Button
+          variant={isMobile ? 'default' : 'outline'}
+          className={cn(
+            isMobile ? 'h-12 w-full justify-start rounded-xl px-4 text-base font-semibold' : ''
+          )}
+          asChild
+        >
           <Link href={role === 'admin' ? '/admin/dashboard' : role === 'trainer' ? '/trainer/schedule' : '/profile'}>
             <UserIcon className="mr-2 h-4 w-4 text-primary" />
             Кабинет
@@ -79,7 +85,11 @@ export function AuthNav({
         <Button 
           variant="ghost" 
           size={isMobile ? "default" : "icon"} 
-          className={cn(isMobile ? "w-full justify-start text-muted-foreground hover:text-destructive" : "text-muted-foreground hover:text-destructive")}
+          className={cn(
+            isMobile
+              ? 'h-12 w-full justify-start rounded-xl px-4 text-base font-medium text-muted-foreground hover:text-destructive'
+              : 'text-muted-foreground hover:text-destructive'
+          )}
           onClick={handleSignOut}
           title="Выйти"
         >
@@ -91,7 +101,14 @@ export function AuthNav({
   }
 
   return (
-    <Button variant="ghost" className={cn(isMobile ? "w-full justify-start" : "", className)} asChild>
+    <Button
+      variant={isMobile ? 'default' : 'ghost'}
+      className={cn(
+        isMobile ? 'h-12 w-full justify-start rounded-xl px-4 text-base font-semibold' : '',
+        className
+      )}
+      asChild
+    >
       <Link href="/sign-in">
         <LogIn className="mr-2 h-4 w-4 text-primary" />
         Войти

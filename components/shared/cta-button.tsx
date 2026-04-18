@@ -25,26 +25,45 @@ export function CTAButton({
 }: CTAButtonProps) {
   const isTrialCta = children === 'Записаться на пробное'
   const [isVisible, setIsVisible] = useState(
-    initialVisible !== undefined ? initialVisible : !isTrialCta ? true : false
+    initialVisible !== undefined ? initialVisible : true
   )
-  const [isChecking, setIsChecking] = useState(isTrialCta && initialVisible === undefined)
+  const [isChecking, setIsChecking] = useState(false)
 
   useEffect(() => {
     // Only apply visibility logic if it's the default "book a trial" button
     if (isTrialCta && initialVisible === undefined) {
+      let isActive = true
+
+      setIsChecking(true)
+
       const checkVisibility = async () => {
-        const status = await getUserStatusAction()
-        if (
-          status.isAuthenticated &&
-          (status.role === 'admin' || status.role === 'trainer' || status.bookingCount > 0)
-        ) {
-          setIsVisible(false)
-        } else {
-          setIsVisible(true)
+        try {
+          const status = await getUserStatusAction()
+          if (!isActive) return
+
+          if (
+            status.isAuthenticated &&
+            (status.role === 'admin' || status.role === 'trainer' || status.bookingCount > 0)
+          ) {
+            setIsVisible(false)
+          } else {
+            setIsVisible(true)
+          }
+        } catch {
+          if (isActive) {
+            setIsVisible(true)
+          }
+        } finally {
+          if (isActive) {
+            setIsChecking(false)
+          }
         }
-        setIsChecking(false)
       }
+
       checkVisibility()
+      return () => {
+        isActive = false
+      }
     }
   }, [isTrialCta, initialVisible])
 
@@ -61,27 +80,13 @@ export function CTAButton({
     }
   }
 
-  if (isChecking) {
-    return (
-      <Button
-        variant={variant}
-        size={size}
-        disabled
-        aria-busy="true"
-        className={cn('font-semibold gap-2', className)}
-      >
-        <Loader2 className="h-4 w-4 animate-spin" />
-        <span>Загрузка...</span>
-      </Button>
-    )
-  }
-
   if (!isVisible) return null
 
   return (
     <Button
       variant={variant}
       size={size}
+      disabled={isChecking}
       onClick={handleClick}
       className={cn(
         'group font-semibold transition-all duration-300 gap-2',
@@ -89,6 +94,7 @@ export function CTAButton({
         className
       )}
     >
+      {isChecking && <Loader2 className="h-4 w-4 animate-spin" />}
       <span>{children}</span>
       {showArrow && (
         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />

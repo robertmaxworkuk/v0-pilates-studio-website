@@ -160,10 +160,10 @@ export default function SignInPage() {
                       <FormControl>
                         <div className="relative">
                           <Input
-                            placeholder="name@example.com или +7 999 000 00 00"
+                            placeholder="Email или телефон"
                             type="text"
                             autoComplete="username"
-                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pl-12"
+                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pl-12 pr-4 text-sm sm:text-base"
                             {...field}
                           />
                           <div className="absolute left-3.5 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">
@@ -206,7 +206,7 @@ export default function SignInPage() {
                             placeholder="••••••••"
                             type={showPassword ? 'text' : 'password'}
                             autoComplete="current-password"
-                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pr-12"
+                            className="h-12 bg-muted/50 border-none focus-visible:ring-1 focus-visible:ring-primary/40 rounded-xl pr-12 text-sm sm:text-base"
                             {...field}
                           />
                           <button

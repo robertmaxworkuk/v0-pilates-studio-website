@@ -37,7 +37,10 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
     const result = await updateUserThemePreferenceAction(value);
     if (result?.error) {
       toast.error("Не удалось сохранить тему", { description: result.error });
+      return;
     }
+
+    router.refresh();
   };
 
   const handleSignOut = async () => {

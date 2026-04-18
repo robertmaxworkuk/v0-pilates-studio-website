@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect } from "react"
-import { usePathname } from "next/navigation"
 import { useTheme } from "next-themes"
 import { createClient } from "@/lib/supabase/client"
 import type { ThemePreference } from "@/lib/actions/user"
@@ -12,14 +11,13 @@ function isThemePreference(value: string): value is ThemePreference {
 
 export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemePreference | null }) {
   const { theme, setTheme } = useTheme()
-  const pathname = usePathname()
   const supabase = createClient()
 
   useEffect(() => {
     if (!preferredTheme) return
     if (theme === preferredTheme) return
     setTheme(preferredTheme)
-  }, [preferredTheme, setTheme, theme])
+  }, [preferredTheme, setTheme])
 
   useEffect(() => {
     let isActive = true
@@ -60,7 +58,7 @@ export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemeP
       isActive = false
       subscription.unsubscribe()
     }
-  }, [pathname, setTheme, theme, supabase])
+  }, [setTheme, supabase])
 
   return null
 }
