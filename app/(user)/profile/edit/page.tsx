@@ -19,6 +19,7 @@ export default async function EditProfilePage() {
     .single();
 
   if (!profile) redirect("/profile");
+  if (profile.status === "blocked") redirect("/profile");
 
   return (
     <div className="min-h-screen">
