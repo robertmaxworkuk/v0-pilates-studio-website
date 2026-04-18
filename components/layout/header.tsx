@@ -115,6 +115,21 @@ export function Header({ initialUserStatus }: HeaderProps) {
           {/* Right side */}
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            {initialUserStatus?.isAuthenticated === true && (
+              <Button variant="outline" size="sm" asChild className="h-9 rounded-full px-4 lg:hidden">
+                <Link
+                  href={
+                    initialUserStatus.role === 'admin'
+                      ? '/admin/dashboard'
+                      : initialUserStatus.role === 'trainer'
+                        ? '/trainer/schedule'
+                        : '/profile'
+                  }
+                >
+                  Профиль
+                </Link>
+              </Button>
+            )}
             {initialUserStatus?.isAuthenticated === false && (
               <Button variant="outline" size="sm" asChild className="h-9 rounded-full px-4 lg:hidden">
                 <Link href="/sign-in">Войти</Link>
@@ -146,7 +161,7 @@ export function Header({ initialUserStatus }: HeaderProps) {
               />
             </div>
             <div className="lg:hidden">
-              <MobileNav navItems={navItems} isAuthenticated={initialUserStatus?.isAuthenticated} />
+              <MobileNav navItems={navItems} />
             </div>
           </div>
         </div>
