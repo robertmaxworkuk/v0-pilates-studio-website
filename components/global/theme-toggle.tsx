@@ -3,7 +3,8 @@
 import * as React from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
-import { updateUserThemePreferenceAction, type ThemePreference } from "@/lib/actions/user"
+import type { ThemePreference } from "@/lib/actions/user"
+import { createClient } from "@/lib/supabase/client"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -15,10 +16,19 @@ import {
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme()
+  const supabase = React.useMemo(() => createClient(), [])
 
   const applyTheme = (value: ThemePreference) => {
     setTheme(value)
-    void updateUserThemePreferenceAction(value)
+    void (async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) return
+
+      await supabase
+        .from("users_profile")
+        .update({ theme_preference: value })
+        .eq("id", user.id)
+    })()
   }
 
   return (

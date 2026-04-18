@@ -3,12 +3,13 @@
 import * as React from 'react'
 import { Moon, Sun } from 'lucide-react'
 import { useTheme } from 'next-themes'
-import { updateUserThemePreferenceAction } from '@/lib/actions/user'
+import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = React.useState(false)
+  const supabase = React.useMemo(() => createClient(), [])
 
   React.useEffect(() => {
     setMounted(true)
@@ -30,7 +31,15 @@ export function ThemeToggle() {
       onClick={() => {
         const nextTheme = theme === 'light' ? 'dark' : 'light'
         setTheme(nextTheme)
-        void updateUserThemePreferenceAction(nextTheme)
+        void (async () => {
+          const { data: { user } } = await supabase.auth.getUser()
+          if (!user) return
+
+          await supabase
+            .from('users_profile')
+            .update({ theme_preference: nextTheme })
+            .eq('id', user.id)
+        })()
       }}
     >
       <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />

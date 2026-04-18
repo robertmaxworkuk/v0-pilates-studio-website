@@ -72,10 +72,54 @@ export function UsersClient({ users }: { users: User[] }) {
 
       <p className="text-sm text-muted-foreground">Найдено: {filtered.length}</p>
 
+      {/* Mobile cards */}
+      <div className="space-y-3 md:hidden">
+        {filtered.map((u) => (
+          <div key={u.id} className="rounded-2xl border bg-card/60 backdrop-blur-sm p-4 shadow-sm space-y-4">
+            <div className="space-y-1">
+              <Link href={`/admin/users/${u.id}`} className="block hover:text-primary transition-colors">
+                <div className="font-medium">{u.first_name} {u.last_name}</div>
+                <div className="text-xs text-muted-foreground break-all">{u.email}</div>
+              </Link>
+              <div className="text-xs text-muted-foreground">{u.phone ?? "Телефон не указан"}</div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <select
+                value={u.role}
+                disabled={isPending}
+                onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                className="min-w-[9rem] flex-1 text-xs rounded-lg border bg-background px-2 py-2 cursor-pointer focus:outline-none focus:ring-1 focus:ring-primary/40"
+              >
+                {ROLES.map((r) => (
+                  <option key={r} value={r}>{ROLE_LABELS[r]}</option>
+                ))}
+              </select>
+
+              <span className={`text-xs font-medium px-2 py-1 rounded-full ${STATUS_COLORS[u.status] ?? ""}`}>
+                {u.status === "active" ? "Активен" : "Заблокирован"}
+              </span>
+
+              <button
+                disabled={isPending}
+                onClick={() => handleStatusToggle(u.id, u.status)}
+                className="ml-auto p-2 rounded-lg hover:bg-muted transition-colors"
+                title={u.status === "active" ? "Заблокировать" : "Разблокировать"}
+              >
+                {u.status === "active"
+                  ? <ShieldOff className="w-4 h-4 text-muted-foreground hover:text-destructive" />
+                  : <Shield className="w-4 h-4 text-green-600" />
+                }
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
       {/* Table */}
-      <div className="rounded-2xl border bg-card/60 backdrop-blur-sm overflow-hidden shadow-sm">
+      <div className="hidden md:block rounded-2xl border bg-card/60 backdrop-blur-sm overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-sm min-w-[760px]">
             <thead>
               <tr className="border-b bg-muted/30">
                 <th className="text-left px-4 py-3 font-medium text-muted-foreground">Пользователь</th>

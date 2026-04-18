@@ -3,6 +3,8 @@ import Link from "next/link"
 import { createClient } from "@/lib/supabase/server"
 import { ClientTopNav } from "@/components/ui/client-top-nav"
 import { redirect } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Home } from "lucide-react"
 
 export default async function UserLayout({ children }: { children: ReactNode }) {
   const supabase = await createClient()
@@ -29,7 +31,7 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
 
   return (
     <div className="min-h-screen bg-background flex flex-col md:overflow-hidden">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-50 w-full border-b bg-background">
         <div className="container flex h-16 items-center px-4 md:px-8">
           <Link href="/" className="mr-6 flex items-center space-x-2 group">
             <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl group-hover:bg-primary/90 transition-colors">
@@ -39,6 +41,13 @@ export default async function UserLayout({ children }: { children: ReactNode }) 
               Pilatta Studio
             </span>
           </Link>
+
+          <Button variant="outline" size="sm" asChild className="mr-4 inline-flex shrink-0">
+            <Link href="/">
+              <Home className="mr-2 h-4 w-4" />
+              На сайт
+            </Link>
+          </Button>
           
           <ClientTopNav 
             userEmail={user.email || ""} 

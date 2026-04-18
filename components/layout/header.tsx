@@ -9,6 +9,7 @@ import { BrandLogo } from '@/components/shared/brand-logo'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AuthNav } from '@/components/layout/auth-nav'
+import Link from 'next/link'
 
 const MobileNav = dynamic(() => import('./mobile-nav').then(mod => mod.MobileNav), {
   ssr: false,
@@ -114,6 +115,11 @@ export function Header({ initialUserStatus }: HeaderProps) {
           {/* Right side */}
           <div className="flex items-center gap-3">
             <ThemeToggle />
+            {initialUserStatus?.isAuthenticated === false && (
+              <Button variant="outline" size="sm" asChild className="h-9 rounded-full px-4 lg:hidden">
+                <Link href="/sign-in">Войти</Link>
+              </Button>
+            )}
             <div className="hidden lg:flex items-center gap-3">
               <AuthNav
                 initialAuthState={
@@ -140,7 +146,7 @@ export function Header({ initialUserStatus }: HeaderProps) {
               />
             </div>
             <div className="lg:hidden">
-              <MobileNav navItems={navItems} />
+              <MobileNav navItems={navItems} isAuthenticated={initialUserStatus?.isAuthenticated} />
             </div>
           </div>
         </div>
