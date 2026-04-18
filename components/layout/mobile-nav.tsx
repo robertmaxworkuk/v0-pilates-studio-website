@@ -22,9 +22,10 @@ interface NavItem {
 interface MobileNavProps {
   navItems: NavItem[]
   isAuthenticated?: boolean
+  role?: string | null
 }
 
-export function MobileNav({ navItems, isAuthenticated }: MobileNavProps) {
+export function MobileNav({ navItems, isAuthenticated, role = null }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleNavClick = (href: string) => {
@@ -45,26 +46,34 @@ export function MobileNav({ navItems, isAuthenticated }: MobileNavProps) {
           <span className="sr-only">Открыть меню</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-sm bg-background border-l border-border">
+      <SheetContent side="right" className="w-full max-w-sm h-full bg-background border-l border-border">
         <SheetHeader className="text-left">
           <SheetTitle>
             <BrandLogo compact />
           </SheetTitle>
         </SheetHeader>
-        <nav className="mt-8 flex flex-col gap-2">
-          {navItems.map((item) => (
-            <button
-              key={item.href}
-              onClick={() => handleNavClick(item.href)}
-              className="text-left text-lg font-medium text-muted-foreground transition-all hover:text-foreground hover:bg-muted px-4 py-3 rounded-xl"
-            >
-              {item.label}
-            </button>
-          ))}
-          <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2">
+        <nav className="mt-6 flex flex-1 flex-col min-h-0">
+          <div className="flex flex-col gap-2">
+            {navItems.map((item) => (
+              <button
+                key={item.href}
+                onClick={() => handleNavClick(item.href)}
+                className="text-left text-lg font-medium text-muted-foreground transition-all hover:text-foreground hover:bg-muted px-4 py-3 rounded-xl"
+              >
+                {item.label}
+              </button>
+            ))}
+
             {isAuthenticated && (
-              <AuthNav isMobile={true} className="w-full justify-start px-4 text-base font-medium" />
+              <AuthNav
+                isMobile={true}
+                className="w-full justify-start px-4 text-base font-medium"
+                initialAuthState={{ isAuthenticated: true, role }}
+              />
             )}
+          </div>
+
+          <div className="mt-auto pt-6 border-t border-border flex flex-col gap-2">
             <CTAButton className="w-full" size="lg" initialVisible onClick={() => setIsOpen(false)} />
           </div>
         </nav>
