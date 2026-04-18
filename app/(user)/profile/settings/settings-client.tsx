@@ -51,7 +51,6 @@ export function SettingsClient({ email, profile }: SettingsClientProps) {
       return;
     }
 
-    router.refresh();
   };
 
   const handleSignOut = async () => {

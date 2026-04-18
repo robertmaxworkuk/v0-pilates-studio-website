@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { ThemeProvider } from '@/components/theme-provider'
-import { ThemePreferenceSync } from '@/components/global/theme-preference-sync'
 import { Toaster } from '@/components/ui/sonner'
 import { createClient } from '@/lib/supabase/server'
 import './globals.css'
@@ -72,7 +71,6 @@ export default async function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <ThemePreferenceSync preferredTheme={userPreferredTheme} />
           {children}
         </ThemeProvider>
         <Toaster />
