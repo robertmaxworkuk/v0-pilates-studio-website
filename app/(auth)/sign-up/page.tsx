@@ -46,6 +46,7 @@ const itemVariants = {
 
 export default function SignUpPage() {
   const [error, setError] = useState<string | null>(null)
+  const [successMessage, setSuccessMessage] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
   const [showPassword, setShowPassword] = useState(false)
 
@@ -62,6 +63,7 @@ export default function SignUpPage() {
 
   function onSubmit(values: z.infer<typeof signUpSchema>) {
     setError(null)
+    setSuccessMessage(null)
     startTransition(async () => {
       const formData = new FormData()
       Object.entries(values).forEach(([key, value]) => {
@@ -73,7 +75,16 @@ export default function SignUpPage() {
         setError(res.error)
         toast.error('Ошибка регистрации', { description: res.error })
       } else {
-        toast.success('Успешная регистрация', { description: 'Добро пожаловать в студию!' })
+        const message = res?.message ?? 'Проверьте почту для подтверждения регистрации.'
+        setSuccessMessage(message)
+        toast.success('Письмо отправлено', { description: message })
+        form.reset({
+          first_name: '',
+          last_name: '',
+          phone: '',
+          email: '',
+          password: '',
+        })
       }
     })
   }
@@ -208,6 +219,12 @@ export default function SignUpPage() {
               {error && (
                 <motion.div variants={itemVariants} className="text-sm font-medium text-destructive p-3 bg-destructive/10 rounded-lg">
                   {error}
+                </motion.div>
+              )}
+
+              {successMessage && (
+                <motion.div variants={itemVariants} className="text-sm font-medium text-emerald-700 dark:text-emerald-300 p-3 bg-emerald-500/10 rounded-lg">
+                  {successMessage}
                 </motion.div>
               )}
 

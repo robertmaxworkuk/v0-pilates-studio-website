@@ -6,6 +6,20 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { z } from 'zod'
 
+function getSiteUrl() {
+  const siteUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.VERCEL_PROJECT_PRODUCTION_URL ||
+    process.env.VERCEL_URL
+
+  if (!siteUrl) {
+    return 'http://localhost:3000'
+  }
+
+  return siteUrl.startsWith('http') ? siteUrl : `https://${siteUrl}`
+}
+
 // Признак телефонного номера: только цифры, +, -, (), пробелы
 function isPhoneNumber(value: string): boolean {
   return /^[\d\s\+\-\(\)]{7,}$/.test(value.trim())
@@ -41,6 +55,14 @@ const signUpSchema = z.object({
   first_name: z.string().min(2, 'Имя должно содержать минимум 2 буквы'),
   last_name: z.string().min(2, 'Фамилия должна содержать минимум 2 буквы'),
   phone: z.string().min(10, 'Введите корректный номер телефона'),
+})
+
+const forgotPasswordSchema = z.object({
+  email: z.string().email('Введите корректный email'),
+})
+
+const updatePasswordSchema = z.object({
+  password: z.string().min(6, 'Пароль должен содержать минимум 6 символов'),
 })
 
 export async function signInAction(formData: FormData) {
@@ -90,6 +112,7 @@ export async function signInAction(formData: FormData) {
 
 export async function signUpAction(formData: FormData) {
   const supabase = await createClient()
+  const siteUrl = getSiteUrl()
 
   const rawData = Object.fromEntries(formData)
   const validation = signUpSchema.safeParse(rawData)
@@ -103,6 +126,7 @@ export async function signUpAction(formData: FormData) {
     email: validation.data.email,
     password: validation.data.password,
     options: {
+      emailRedirectTo: `${siteUrl}/auth/callback?next=/profile`,
       data: {
         first_name: validation.data.first_name,
         last_name: validation.data.last_name,
@@ -115,12 +139,68 @@ export async function signUpAction(formData: FormData) {
     return { error: error.message }
   }
 
-  // Новый пользователь всегда идет в профиль
   revalidatePath('/', 'layout')
-  if (signUpData.user) {
+
+  // Если Supabase выдал сессию сразу, пользователь может зайти без подтверждения email.
+  if (signUpData.session && signUpData.user) {
     const redirectPath = await getRoleRedirectPath(signUpData.user.id)
     redirect(redirectPath)
-  } else {
-    redirect('/profile')
   }
+
+  return {
+    success: true,
+    message: 'Проверьте почту и подтвердите email, чтобы завершить регистрацию.',
+  }
+}
+
+export async function requestPasswordResetAction(formData: FormData) {
+  const supabase = await createClient()
+  const siteUrl = getSiteUrl()
+
+  const rawData = Object.fromEntries(formData)
+  const validation = forgotPasswordSchema.safeParse(rawData)
+
+  if (!validation.success) {
+    return { error: 'Введите корректный email' }
+  }
+
+  const { error } = await supabase.auth.resetPasswordForEmail(validation.data.email, {
+    redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true }
+}
+
+export async function updatePasswordAction(formData: FormData) {
+  const supabase = await createClient()
+
+  const rawData = Object.fromEntries(formData)
+  const validation = updatePasswordSchema.safeParse(rawData)
+
+  if (!validation.success) {
+    const firstError = validation.error.errors[0]?.message
+    return { error: firstError || 'Некорректный пароль' }
+  }
+
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    return { error: 'Сессия восстановления устарела. Повторите запрос на смену пароля.' }
+  }
+
+  const { error } = await supabase.auth.updateUser({
+    password: validation.data.password,
+  })
+
+  if (error) {
+    return { error: error.message }
+  }
+
+  return { success: true }
 }
