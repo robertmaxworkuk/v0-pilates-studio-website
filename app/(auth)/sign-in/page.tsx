@@ -194,7 +194,7 @@ export default function SignInPage() {
                       <div className="flex items-center justify-between">
                         <FormLabel>Пароль</FormLabel>
                         <Link
-                          href="#"
+                          href="/forgot-password"
                           className="text-sm font-medium text-primary hover:underline underline-offset-4"
                         >
                           Забыли пароль?
