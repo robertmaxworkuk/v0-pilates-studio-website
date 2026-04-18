@@ -13,6 +13,7 @@ function isThemePreference(value: string): value is ThemePreference {
 export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemePreference | null }) {
   const { theme, setTheme } = useTheme()
   const pathname = usePathname()
+  const supabase = createClient()
 
   useEffect(() => {
     if (!preferredTheme) return
@@ -24,7 +25,6 @@ export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemeP
     let isActive = true
 
     const syncFromServer = async () => {
-      const supabase = createClient()
       const {
         data: { user },
       } = await supabase.auth.getUser()
@@ -45,10 +45,22 @@ export function ThemePreferenceSync({ preferredTheme }: { preferredTheme: ThemeP
 
     void syncFromServer()
 
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION" || event === "TOKEN_REFRESHED") {
+        void syncFromServer()
+      }
+      if (event === "SIGNED_OUT") {
+        setTheme("light")
+      }
+    })
+
     return () => {
       isActive = false
+      subscription.unsubscribe()
     }
-  }, [pathname, setTheme, theme])
+  }, [pathname, setTheme, theme, supabase])
 
   return null
 }
