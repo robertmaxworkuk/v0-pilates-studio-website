@@ -21,9 +21,10 @@ interface NavItem {
 
 interface MobileNavProps {
   navItems: NavItem[]
+  isAuthenticated?: boolean
 }
 
-export function MobileNav({ navItems }: MobileNavProps) {
+export function MobileNav({ navItems, isAuthenticated }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleNavClick = (href: string) => {
@@ -61,8 +62,10 @@ export function MobileNav({ navItems }: MobileNavProps) {
             </button>
           ))}
           <div className="mt-6 pt-6 border-t border-border flex flex-col gap-2">
-            <AuthNav isMobile={true} className="w-full justify-start px-4 text-base font-medium" />
-            <CTAButton className="w-full" size="lg" initialVisible />
+            {isAuthenticated && (
+              <AuthNav isMobile={true} className="w-full justify-start px-4 text-base font-medium" />
+            )}
+            <CTAButton className="w-full" size="lg" initialVisible onClick={() => setIsOpen(false)} />
           </div>
         </nav>
       </SheetContent>

@@ -13,6 +13,7 @@ interface CTAButtonProps {
   children?: React.ReactNode
   showArrow?: boolean
   initialVisible?: boolean
+  onClick?: () => void
 }
 
 export function CTAButton({
@@ -22,6 +23,7 @@ export function CTAButton({
   children = 'Записаться на пробное',
   showArrow = true,
   initialVisible,
+  onClick,
 }: CTAButtonProps) {
   const isTrialCta = children === 'Записаться на пробное'
   const [isVisible, setIsVisible] = useState(
@@ -68,6 +70,8 @@ export function CTAButton({
   }, [isTrialCta, initialVisible])
 
   const handleClick = () => {
+    onClick?.()
+
     const contactSection = document.getElementById('contact')
     if (contactSection) {
       contactSection.scrollIntoView({ behavior: 'smooth' })
