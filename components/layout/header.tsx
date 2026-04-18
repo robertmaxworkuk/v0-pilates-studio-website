@@ -161,11 +161,7 @@ export function Header({ initialUserStatus }: HeaderProps) {
               />
             </div>
             <div className="lg:hidden">
-              <MobileNav
-                navItems={navItems}
-                isAuthenticated={initialUserStatus?.isAuthenticated}
-                role={initialUserStatus?.role ?? null}
-              />
+              <MobileNav navItems={navItems} />
             </div>
           </div>
         </div>

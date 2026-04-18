@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -11,7 +11,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { CTAButton } from '@/components/shared/cta-button'
-import { AuthNav } from '@/components/layout/auth-nav'
 import { BrandLogo } from '@/components/shared/brand-logo'
 
 interface NavItem {
@@ -21,12 +20,21 @@ interface NavItem {
 
 interface MobileNavProps {
   navItems: NavItem[]
-  isAuthenticated?: boolean
-  role?: string | null
 }
 
-export function MobileNav({ navItems, isAuthenticated, role = null }: MobileNavProps) {
+export function MobileNav({ navItems }: MobileNavProps) {
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isOpen) return
+
+    const originalOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+
+    return () => {
+      document.body.style.overflow = originalOverflow
+    }
+  }, [isOpen])
 
   const handleNavClick = (href: string) => {
     setIsOpen(false)
@@ -46,14 +54,17 @@ export function MobileNav({ navItems, isAuthenticated, role = null }: MobileNavP
           <span className="sr-only">Открыть меню</span>
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="w-full max-w-sm h-full bg-background border-l border-border">
+      <SheetContent
+        side="right"
+        className="w-full max-w-sm h-dvh bg-background border-l border-border overflow-hidden pb-[max(env(safe-area-inset-bottom),0.75rem)]"
+      >
         <SheetHeader className="text-left">
           <SheetTitle>
             <BrandLogo compact />
           </SheetTitle>
         </SheetHeader>
-        <nav className="mt-6 flex flex-1 flex-col min-h-0">
-          <div className="flex flex-col gap-2">
+        <nav className="mt-4 flex flex-1 flex-col min-h-0">
+          <div className="flex flex-col gap-2 overflow-y-auto px-1">
             {navItems.map((item) => (
               <button
                 key={item.href}
@@ -63,17 +74,9 @@ export function MobileNav({ navItems, isAuthenticated, role = null }: MobileNavP
                 {item.label}
               </button>
             ))}
-
-            {isAuthenticated && (
-              <AuthNav
-                isMobile={true}
-                className="w-full justify-start px-4 text-base font-medium"
-                initialAuthState={{ isAuthenticated: true, role }}
-              />
-            )}
           </div>
 
-          <div className="mt-auto pt-6 border-t border-border flex flex-col gap-2">
+          <div className="mt-auto px-4 pt-5 border-t border-border/70">
             <CTAButton className="w-full" size="lg" initialVisible onClick={() => setIsOpen(false)} />
           </div>
         </nav>
